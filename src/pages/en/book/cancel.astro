@@ -1,0 +1,18 @@
+---
+import Base from '../../../layouts/Base.astro';
+import CancelBooking from '../../../components/sections/CancelBooking.astro';
+import { getCopy } from '../../../content/copy';
+
+const locale = 'en' as const;
+const t = getCopy(locale);
+---
+
+<Base
+  locale={locale}
+  routeKey="bookingCancel"
+  title={`${t.cancel.title} | Mezomite.ai`}
+  description={t.cancel.lead}
+  noIndex
+>
+  <CancelBooking locale={locale} />
+</Base>

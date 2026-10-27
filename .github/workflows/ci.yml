@@ -1,0 +1,38 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: Astro and TypeScript diagnostics
+        run: npm run check
+
+      - name: Pages Functions types
+        run: npm run check:functions
+
+      - name: Static build
+        run: npm run build
+
+      - name: Check the build output
+        run: |
+          test -f dist/index.html
+          test -f dist/en/index.html
+          test -f dist/sitemap-index.xml
+          test -f dist/robots.txt

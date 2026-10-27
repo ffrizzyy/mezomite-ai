@@ -1,0 +1,101 @@
+---
+import Button from '../ui/Button.astro';
+import { getCopy } from '../../content/copy';
+import { route, type Locale } from '../../lib/i18n';
+
+interface Props {
+  locale: Locale;
+  eyebrow?: string;
+  title?: string;
+  lead?: string;
+  primaryLabel?: string;
+  primaryHref?: string;
+  secondaryLabel?: string;
+  secondaryHref?: string;
+}
+
+const { locale } = Astro.props;
+const t = getCopy(locale);
+const {
+  eyebrow = t.home.ctaEyebrow,
+  title = t.home.ctaTitle,
+  lead = t.home.ctaLead,
+  primaryLabel = t.home.ctaPrimary,
+  primaryHref = route('booking', locale),
+  secondaryLabel = t.home.ctaSecondary,
+  secondaryHref = route('contact', locale),
+} = Astro.props;
+---
+
+<section class="section cta-band" aria-labelledby="cta-band-title">
+  <div class="container">
+    <div class="cta-band__panel corners">
+      <div class="cta-band__copy">
+        <p class="label label--ticked label--accent">{eyebrow}</p>
+        <h2 id="cta-band-title">{title}</h2>
+        <p class="lede">{lead}</p>
+      </div>
+      <div class="cta-band__actions">
+        <Button href={primaryHref} icon="calendar-check" iconPosition="start">{primaryLabel}</Button>
+        <Button href={secondaryHref} variant="secondary" icon="paper-plane-tilt" iconPosition="start">
+          {secondaryLabel}
+        </Button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .cta-band__panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
+    align-items: end;
+    gap: clamp(1.5rem, 4vw, 3rem);
+    padding: clamp(1.75rem, 4vw, 3rem);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-m);
+    background:
+      linear-gradient(to bottom, transparent, var(--surface)),
+      repeating-linear-gradient(
+        to right,
+        var(--grid-line) 0 1px,
+        transparent 1px 32px
+      ),
+      var(--surface);
+  }
+
+  .cta-band__copy h2 {
+    margin-top: var(--space-3);
+    max-width: 24ch;
+  }
+
+  .cta-band__copy .lede {
+    margin-top: var(--space-3);
+    font-size: var(--text-body);
+    max-width: 52ch;
+  }
+
+  .cta-band__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    justify-content: flex-end;
+  }
+
+  @media (max-width: 899.98px) {
+    .cta-band__panel {
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+
+    .cta-band__actions {
+      justify-content: flex-start;
+    }
+  }
+
+  @media (max-width: 599.98px) {
+    .cta-band__actions > :global(.btn) {
+      width: 100%;
+    }
+  }
+</style>

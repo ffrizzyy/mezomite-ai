@@ -1,0 +1,246 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/sections/PageHeader.astro';
+import PlanCards from '../components/sections/PlanCards.astro';
+import Faq from '../components/sections/Faq.astro';
+import CtaBand from '../components/sections/CtaBand.astro';
+import SectionHead from '../components/ui/SectionHead.astro';
+import Button from '../components/ui/Button.astro';
+import Icon from '../components/ui/Icon.astro';
+import { getCopy } from '../content/copy';
+import { route } from '../lib/i18n';
+import { formatIDR } from '../lib/format';
+import { PACKAGES } from '../data/packages';
+
+const locale = 'id' as const;
+const t = getCopy(locale);
+const entry = PACKAGES.find((item) => item.entry) ?? PACKAGES[0];
+---
+
+<Base
+  locale={locale}
+  routeKey="pricing"
+  title={t.pages.pricing.title}
+  description={t.pages.pricing.description}
+>
+  <PageHeader
+    eyebrow={t.pricing.eyebrow}
+    title={t.pricing.title}
+    lead={t.pricing.lead}
+    meta={[
+      { label: t.pricing.entryLabel, value: formatIDR(entry.price) },
+      { label: t.common.duration, value: entry.duration[locale] },
+      { label: t.common.updated, value: t.site.lastUpdated },
+    ]}
+  >
+    <Button href={route('booking', locale)} icon="calendar-check" iconPosition="start">
+      {t.common.bookCall}
+    </Button>
+  </PageHeader>
+
+  <section class="section section--flush" aria-labelledby="plans-title">
+    <div class="container">
+      <h2 id="plans-title" class="visually-hidden">{t.pricing.title}</h2>
+      <PlanCards locale={locale} />
+      <p class="plans-note">{t.common.usdNote}</p>
+      <p class="plans-note">{t.site.currencyNote}</p>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="choose-title">
+    <div class="container">
+      <SectionHead
+        id="choose-title"
+        eyebrow={t.pricing.entryLabel}
+        title={t.pricing.chooseTitle}
+      />
+      <ol class="choose">
+        {
+          t.pricing.chooseItems.map((item, index) => (
+            <li class="choose__item">
+              <span class="index-num">{String(index + 1).padStart(2, '0')}</span>
+              <div>
+                <h3>{item.title}</h3>
+                <p>{item.body}</p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="free-title">
+    <div class="container">
+      <div class="free-panel corners">
+        <div class="free-panel__copy">
+          <p class="label label--ticked label--accent">{t.common.freeDiagnosticShort}</p>
+          <h2 id="free-title">{t.pricing.freeTitle}</h2>
+          <p>{t.pricing.freeBody}</p>
+        </div>
+        <div class="free-panel__action">
+          <Button href={route('booking', locale)} icon="calendar-check" iconPosition="start">
+            {t.pricing.freeCta}
+          </Button>
+          <p class="free-panel__note">
+            <Icon name="clock-countdown" size={16} />
+            {t.booking.timezoneNote}
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="payment-title">
+    <div class="container">
+      <div class="payment">
+        <div>
+          <p class="label label--ticked">{t.pricing.paymentTitle}</p>
+          <h2 id="payment-title" class="visually-hidden">{t.pricing.paymentTitle}</h2>
+          <p>{t.pricing.paymentBody}</p>
+        </div>
+        <p class="payment__seal mono">
+          <Icon name="shield-check" size={20} />
+          {locale === 'id' ? 'Tidak ada pembayaran di situs ini' : 'No payment is taken on this site'}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="faq-title">
+    <div class="container container--narrow">
+      <SectionHead id="faq-title" eyebrow={t.pricing.faqTitle} title={t.pricing.faqTitle} />
+      <Faq items={t.pricing.faq} label={t.pricing.faqTitle} />
+    </div>
+  </section>
+
+  <CtaBand
+    locale={locale}
+    eyebrow={t.home.ctaEyebrow}
+    title={t.home.ctaTitle}
+    lead={t.home.ctaLead}
+    primaryLabel={t.home.ctaPrimary}
+    primaryHref={route('booking', locale)}
+    secondaryLabel={t.home.ctaSecondary}
+    secondaryHref={route('contact', locale)}
+  />
+</Base>
+
+<style>
+  .plans-note {
+    margin-top: var(--space-3);
+    font-size: var(--text-small);
+    color: var(--text-muted);
+    max-width: 72ch;
+  }
+
+  .choose {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    border-top: 1px solid var(--border-strong);
+    border-left: 1px solid var(--border);
+  }
+
+  .choose__item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-3);
+    padding: var(--space-5);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .choose__item h3 {
+    font-size: 1rem;
+    margin-bottom: var(--space-2);
+  }
+
+  .choose__item p {
+    font-size: var(--text-small);
+    line-height: 1.6;
+    color: var(--text-muted);
+  }
+
+  .free-panel {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.8fr);
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: end;
+    padding: clamp(1.75rem, 4vw, 2.75rem);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-m);
+    background: var(--accent-quiet);
+  }
+
+  .free-panel__copy h2 {
+    margin-top: var(--space-3);
+  }
+
+  .free-panel__copy p:not(.label) {
+    margin-top: var(--space-3);
+    color: var(--text-muted);
+    max-width: 58ch;
+  }
+
+  .free-panel__action {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .free-panel__note {
+    display: flex;
+    gap: var(--space-2);
+    align-items: flex-start;
+    font-size: var(--text-small);
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .free-panel__note svg {
+    margin-top: 0.15em;
+  }
+
+  .payment {
+    display: grid;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.6fr);
+    gap: clamp(1.5rem, 4vw, 3rem);
+    align-items: start;
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--border-strong);
+  }
+
+  .payment p:not(.label):not(.payment__seal) {
+    margin-top: var(--space-3);
+    color: var(--text-muted);
+    max-width: 58ch;
+  }
+
+  .payment__seal {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-4);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-s);
+    font-size: var(--text-small);
+    color: var(--text-muted);
+    background: var(--surface);
+  }
+
+  @media (max-width: 899.98px) {
+    .choose {
+      grid-template-columns: 1fr;
+    }
+
+    .free-panel,
+    .payment {
+      grid-template-columns: 1fr;
+    }
+
+    .free-panel__action {
+      align-items: stretch;
+    }
+  }
+</style>

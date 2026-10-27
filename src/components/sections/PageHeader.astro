@@ -1,0 +1,112 @@
+---
+/**
+ * The header every inner page shares. It carries one eyebrow, one h1, one
+ * lead, and an optional slot for the page's primary action. It never repeats
+ * the navigation, because the header already owns that job.
+ */
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lead?: string;
+  /** Small facts under the rule: duration, price, or availability. */
+  meta?: { label: string; value: string }[];
+  tone?: 'default' | 'blueprint';
+}
+
+const { eyebrow, title, lead, meta = [], tone = 'default' } = Astro.props;
+---
+
+<header class:list={['page-header', tone === 'blueprint' && 'page-header--blueprint blueprint']}>
+  <div class="container">
+    <div class="page-header__inner">
+      <div class="page-header__copy stack stack--tight">
+        {eyebrow && <p class="label label--ticked">{eyebrow}</p>}
+        <h1>{title}</h1>
+        {lead && <p class="lede">{lead}</p>}
+      </div>
+      <div class="page-header__action">
+        <slot />
+      </div>
+    </div>
+
+    {
+      meta.length > 0 && (
+        <dl class="page-header__meta">
+          {meta.map((item) => (
+            <div>
+              <dt class="label">{item.label}</dt>
+              <dd class="mono">{item.value}</dd>
+            </div>
+          ))}
+        </dl>
+      )
+    }
+  </div>
+</header>
+
+<style>
+  .page-header {
+    padding-block: clamp(2.75rem, 6vw, 5rem) clamp(2rem, 4vw, 3rem);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .page-header--blueprint {
+    border-bottom-color: var(--border-strong);
+    background-color: var(--bg);
+  }
+
+  .page-header__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: end;
+    gap: var(--space-8);
+  }
+
+  .page-header__copy {
+    max-width: 44rem;
+  }
+
+  .page-header h1 {
+    max-width: 22ch;
+  }
+
+  .page-header__action {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    padding-bottom: var(--space-1);
+  }
+
+  .page-header__meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-8);
+    margin-top: clamp(2rem, 4vw, 3rem);
+    padding-top: var(--space-4);
+    border-top: 1px solid var(--border);
+  }
+
+  .page-header__meta dt {
+    margin-bottom: var(--space-1);
+  }
+
+  .page-header__meta dd {
+    font-size: var(--text-small);
+    color: var(--text);
+  }
+
+  @media (max-width: 767.98px) {
+    .page-header__inner {
+      grid-template-columns: 1fr;
+      align-items: start;
+    }
+
+    .page-header__action {
+      padding-bottom: 0;
+    }
+
+    .page-header__meta {
+      gap: var(--space-5);
+    }
+  }
+</style>

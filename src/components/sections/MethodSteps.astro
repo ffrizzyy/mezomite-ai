@@ -1,0 +1,177 @@
+---
+import MethodDiagram from './MethodDiagram.astro';
+import { getCopy } from '../../content/copy';
+import type { Locale } from '../../lib/i18n';
+import { METHOD_STEPS } from '../../data/method';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getCopy(locale);
+---
+
+<ol class="steps">
+  {
+    METHOD_STEPS.map((step) => (
+      <li class="step" id={step.id}>
+        <div class="step__aside">
+          <span class="step__number">{step.number}</span>
+          <h3 class="step__title">{step.title[locale]}</h3>
+          <p class="step__summary">{step.summary[locale]}</p>
+          <div class="step__diagram">
+            <MethodDiagram
+              kind={step.diagram}
+              label={
+                locale === 'id'
+                  ? `Diagram langkah ${step.number}: ${step.title.id}`
+                  : `Diagram for step ${step.number}: ${step.title.en}`
+              }
+            />
+          </div>
+        </div>
+
+        <div class="step__body">
+          <div class="step__bucket">
+            <p class="label label--ticked">{t.method.consultantLabel}</p>
+            <ul>
+              {step.consultant[locale].map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="step__bucket">
+            <p class="label label--ticked">{t.method.clientLabel}</p>
+            <ul>
+              {step.client[locale].map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+
+          <div class="step__bucket step__bucket--output">
+            <p class="label label--ticked">{t.method.outputLabel}</p>
+            <ul>
+              {step.output[locale].map((item) => (
+                <li>{item}</li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .steps {
+    border-top: 1px solid var(--border-strong);
+  }
+
+  .step {
+    display: grid;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    gap: clamp(1.5rem, 5vw, 4rem);
+    padding-block: clamp(2.5rem, 5vw, 4rem);
+    border-bottom: 1px solid var(--border);
+    scroll-margin-top: calc(var(--header-height) + var(--space-6));
+  }
+
+  .step__aside {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    align-items: flex-start;
+  }
+
+  .step__number {
+    font-family: var(--font-mono);
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--accent);
+  }
+
+  .step__title {
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    line-height: var(--leading-heading);
+    letter-spacing: var(--tracking-display);
+    font-weight: 600;
+  }
+
+  .step__summary {
+    color: var(--text-muted);
+    max-width: 38ch;
+  }
+
+  .step__diagram {
+    margin-top: var(--space-2);
+    padding: var(--space-3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-s);
+    background: var(--surface);
+    width: 100%;
+    max-width: 18rem;
+  }
+
+  .step__body {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-5);
+  }
+
+  .step__bucket {
+    padding: var(--space-4) var(--space-5);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-s);
+    background: var(--surface);
+  }
+
+  .step__bucket--output {
+    border-color: color-mix(in oklab, var(--accent) 40%, var(--border));
+    background: var(--accent-quiet);
+  }
+
+  .step__bucket .label {
+    margin-bottom: var(--space-3);
+  }
+
+  .step__bucket ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    font-size: var(--text-small);
+    line-height: 1.55;
+    color: var(--text-muted);
+  }
+
+  .step__bucket li {
+    position: relative;
+    padding-left: 1.1rem;
+  }
+
+  .step__bucket li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--border-strong);
+  }
+
+  .step__bucket--output li {
+    color: var(--text);
+  }
+
+  @media (max-width: 899.98px) {
+    .step {
+      grid-template-columns: 1fr;
+    }
+
+    .step__diagram {
+      max-width: 100%;
+    }
+  }
+</style>

@@ -1,0 +1,144 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/sections/PageHeader.astro';
+import ContactForm from '../components/sections/ContactForm';
+import Icon from '../components/ui/Icon.astro';
+import { getCopy } from '../content/copy';
+import { route } from '../lib/i18n';
+import { CONTACT, mailtoLink, whatsappLink } from '../lib/contact';
+
+const locale = 'id' as const;
+const t = getCopy(locale);
+
+const labels = {
+  formTitle: t.contact.formTitle,
+  name: t.contact.name,
+  namePlaceholder: t.contact.namePlaceholder,
+  email: t.contact.email,
+  emailPlaceholder: t.contact.emailPlaceholder,
+  company: t.contact.company,
+  companyPlaceholder: t.contact.companyPlaceholder,
+  employees: t.contact.employees,
+  employeesPlaceholder: t.contact.employeesPlaceholder,
+  employeeOptions: t.contact.employeeOptions,
+  message: t.contact.message,
+  messagePlaceholder: t.contact.messagePlaceholder,
+  consent: t.contact.consent,
+  consentLink: t.contact.consentLink,
+  submit: t.contact.submit,
+  submitting: t.contact.submitting,
+  successTitle: t.contact.successTitle,
+  successBody: t.contact.successBody,
+  successRef: t.contact.successRef,
+  successNext: t.contact.successNext,
+  successPricing: t.contact.successPricing,
+  successBook: t.contact.successBook,
+  privacyNote: t.contact.privacyNote,
+  turnstileNote: t.contact.turnstileNote,
+  required: t.common.required,
+  optional: t.common.optional,
+};
+
+const errors = {
+  nameRequired: t.errors.nameRequired,
+  emailRequired: t.errors.emailRequired,
+  emailInvalid: t.errors.emailInvalid,
+  messageShort: t.errors.messageShort,
+  consentRequired: t.errors.consentRequired,
+  submitFailed: t.errors.submitFailed,
+  rateLimited: t.errors.rateLimited,
+  network: t.errors.network,
+  summary: t.errors.summary,
+};
+---
+
+<Base
+  locale={locale}
+  routeKey="contact"
+  title={t.pages.contact.title}
+  description={t.pages.contact.description}
+>
+  <PageHeader
+    eyebrow={t.contact.eyebrow}
+    title={t.contact.title}
+    lead={t.contact.lead}
+    meta={[
+      { label: locale === 'id' ? 'Respons' : 'Response', value: t.site.responseTime },
+      { label: t.footer.locationLabel, value: t.site.location },
+      { label: t.common.freeDiagnosticShort, value: '30 min' },
+    ]}
+  />
+
+  <section class="section section--flush" aria-label={t.contact.formTitle}>
+    <div class="container">
+      <div class="contact-layout">
+        <ContactForm
+          client:load
+          locale={locale}
+          labels={labels}
+          errors={errors}
+          privacyHref={route('privacy', locale)}
+          pricingHref={route('pricing', locale)}
+          bookingHref={route('booking', locale)}
+        />
+
+        <aside class="contact-aside">
+          <div>
+            <p class="label label--ticked">{t.contact.asideTitle}</p>
+            <ol class="contact-aside__steps">
+              {
+                t.contact.asideSteps.map((step) => (
+                  <li class="contact-aside__step">
+                    <span class="index-num">{step.index}</span>
+                    <div>
+                      <h3>{step.title}</h3>
+                      <p>{step.body}</p>
+                    </div>
+                  </li>
+                ))
+              }
+            </ol>
+          </div>
+
+          <div class="contact-aside__channels">
+            <p class="label label--ticked">{t.contact.asideChannels}</p>
+            <ul>
+              <li>
+                <a href={mailtoLink(locale)}>
+                  <Icon name="envelope-simple" size={16} />
+                  <span>
+                    <span class="visually-hidden">{t.contact.asideEmailLabel}: </span>
+                    {CONTACT.email}
+                  </span>
+                </a>
+              </li>
+              <li>
+                <a
+                  href={whatsappLink(locale, route('contact', locale))}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <Icon name="whatsapp-logo" size={16} />
+                  <span>
+                    <span class="visually-hidden">{t.contact.asideWhatsappLabel}: </span>
+                    {t.site.whatsappDisplay}
+                  </span>
+                </a>
+              </li>
+            </ul>
+            <p class="contact-aside__hours">{t.contact.asideResponse}</p>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .contact-aside__hours {
+    margin-top: var(--space-4);
+    font-size: var(--text-small);
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+</style>

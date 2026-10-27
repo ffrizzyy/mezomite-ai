@@ -1,0 +1,61 @@
+---
+import { REPORT_CONTENTS } from '../../data/method';
+import type { Locale } from '../../lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const items = REPORT_CONTENTS[locale];
+---
+
+<ol class="report">
+  {
+    items.map((item, index) => (
+      <li class="report__item" data-spotlight>
+        <span class="index-num">{String(index + 1).padStart(2, '0')}</span>
+        <div>
+          <h3>{item.title}</h3>
+          <p>{item.detail}</p>
+        </div>
+      </li>
+    ))
+  }
+</ol>
+
+<style>
+  .report {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    border-top: 1px solid var(--border-strong);
+    border-left: 1px solid var(--border);
+  }
+
+  .report__item {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-4);
+    padding: clamp(1.25rem, 3vw, 2rem);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .report__item h3 {
+    font-size: 1.0625rem;
+    margin-bottom: var(--space-2);
+  }
+
+  .report__item p {
+    font-size: var(--text-small);
+    line-height: 1.6;
+    color: var(--text-muted);
+    max-width: 40ch;
+  }
+
+  @media (max-width: 767.98px) {
+    .report {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

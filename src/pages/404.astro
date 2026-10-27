@@ -1,0 +1,150 @@
+---
+import Base from '../layouts/Base.astro';
+import Button from '../components/ui/Button.astro';
+import Icon from '../components/ui/Icon.astro';
+import { getCopy } from '../content/copy';
+import { route } from '../lib/i18n';
+
+const locale = 'id' as const;
+const t = getCopy(locale);
+
+const links = [
+  { href: route('home', locale), label: t.nav.home },
+  { href: route('services', locale), label: t.nav.services },
+  { href: route('pricing', locale), label: t.nav.pricing },
+  { href: route('contact', locale), label: t.nav.contact },
+];
+---
+
+<Base
+  locale={locale}
+  routeKey="home"
+  title={t.pages.notFound.title}
+  description={t.pages.notFound.description}
+  noIndex
+>
+  <section class="not-found blueprint" aria-labelledby="not-found-title">
+    <div class="container not-found__inner">
+      <div class="not-found__code" aria-hidden="true">
+        <span>4</span>
+        <span class="not-found__zero">
+          <Icon name="flow-arrow" size={72} />
+        </span>
+        <span>4</span>
+      </div>
+
+      <div class="not-found__copy">
+        <p class="label label--ticked">{t.notFound.code}</p>
+        <h1 id="not-found-title">{t.notFound.title}</h1>
+        <p class="lede">{t.notFound.body}</p>
+
+        <div class="not-found__actions">
+          <Button href={route('home', locale)} icon="arrow-left" iconPosition="start">
+            {t.nav.home}
+          </Button>
+          <Button href={route('contact', locale)} variant="secondary" icon="paper-plane-tilt" iconPosition="start">
+            {t.nav.contact}
+          </Button>
+        </div>
+      </div>
+
+      <nav class="not-found__links" aria-label={t.notFound.linksTitle}>
+        <p class="label label--ticked">{t.notFound.linksTitle}</p>
+        <ul>
+          {
+            links.map((link) => (
+              <li>
+                <a class="link" href={link.href}>
+                  {link.label}
+                  <Icon name="arrow-right" size={16} />
+                </a>
+              </li>
+            ))
+          }
+          <li>
+            <a class="link" href="/en/" hreflang="en" lang="en">
+              English <Icon name="translate" size={16} />
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .not-found {
+    min-height: calc(100dvh - var(--header-height));
+    display: flex;
+    align-items: center;
+    padding-block: clamp(3rem, 8vw, 6rem);
+  }
+
+  .not-found__inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1.1fr) minmax(0, 0.7fr);
+    align-items: center;
+    gap: clamp(2rem, 6vw, 5rem);
+  }
+
+  .not-found__code {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    grid-column: 1 / -1;
+    font-family: var(--font-mono);
+    font-size: clamp(4rem, 14vw, 10rem);
+    font-weight: 500;
+    line-height: 0.8;
+    letter-spacing: -0.06em;
+    color: var(--text);
+  }
+
+  .not-found__zero {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--accent);
+  }
+
+  .not-found__zero svg {
+    width: clamp(3.5rem, 12vw, 8.5rem);
+    height: auto;
+  }
+
+  .not-found__copy h1 {
+    margin-top: var(--space-3);
+  }
+
+  .not-found__copy .lede {
+    margin-top: var(--space-4);
+  }
+
+  .not-found__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+
+  .not-found__links {
+    padding: var(--space-6);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+  }
+
+  .not-found__links ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+    font-size: var(--text-small);
+  }
+
+  @media (max-width: 767.98px) {
+    .not-found__inner {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

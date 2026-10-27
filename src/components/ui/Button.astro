@@ -1,0 +1,86 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+  href?: string;
+  variant?: 'primary' | 'secondary' | 'ghost' | 'quiet';
+  size?: 'sm' | 'md';
+  icon?: string;
+  iconPosition?: 'start' | 'end';
+  block?: boolean;
+  type?: 'button' | 'submit';
+  extraClass?: string;
+  external?: boolean;
+  download?: boolean;
+  disabled?: boolean;
+  ariaLabel?: string;
+  attrs?: Record<string, string | number | boolean | undefined>;
+}
+
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  icon,
+  iconPosition = 'end',
+  block = false,
+  type = 'button',
+  extraClass,
+  external = false,
+  download = false,
+  disabled = false,
+  ariaLabel,
+  attrs = {},
+} = Astro.props;
+
+const classes = [
+  'btn',
+  `btn--${variant}`,
+  size === 'sm' ? 'btn--sm' : '',
+  block ? 'btn--block' : '',
+  extraClass ?? '',
+]
+  .filter(Boolean)
+  .join(' ');
+---
+
+{
+  href ? (
+    <a
+      href={href}
+      class={classes}
+      aria-label={ariaLabel}
+      aria-disabled={disabled ? 'true' : undefined}
+      target={external ? '_blank' : undefined}
+      rel={external ? 'noopener noreferrer' : undefined}
+      download={download || undefined}
+      {...attrs}
+    >
+      {icon && iconPosition === 'start' && (
+        <span class="btn__icon">
+          <Icon name={icon as any} size={size === 'sm' ? 16 : 18} />
+        </span>
+      )}
+      <span><slot /></span>
+      {icon && iconPosition === 'end' && (
+        <span class="btn__icon btn__icon--forward">
+          <Icon name={icon as any} size={size === 'sm' ? 16 : 18} />
+        </span>
+      )}
+    </a>
+  ) : (
+    <button type={type} class={classes} disabled={disabled} aria-label={ariaLabel} {...attrs}>
+      {icon && iconPosition === 'start' && (
+        <span class="btn__icon">
+          <Icon name={icon as any} size={size === 'sm' ? 16 : 18} />
+        </span>
+      )}
+      <span><slot /></span>
+      {icon && iconPosition === 'end' && (
+        <span class="btn__icon btn__icon--forward">
+          <Icon name={icon as any} size={size === 'sm' ? 16 : 18} />
+        </span>
+      )}
+    </button>
+  )
+}

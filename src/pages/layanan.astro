@@ -1,0 +1,60 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/sections/PageHeader.astro';
+import ServiceRows from '../components/sections/ServiceRows.astro';
+import CtaBand from '../components/sections/CtaBand.astro';
+import Button from '../components/ui/Button.astro';
+import { getCopy } from '../content/copy';
+import { route } from '../lib/i18n';
+import { formatIDR } from '../lib/format';
+import { SERVICES } from '../data/services';
+
+const locale = 'id' as const;
+const t = getCopy(locale);
+---
+
+<Base
+  locale={locale}
+  routeKey="services"
+  title={t.pages.services.title}
+  description={t.pages.services.description}
+>
+  <PageHeader
+    eyebrow={t.services.eyebrow}
+    title={t.services.title}
+    lead={t.services.lead}
+    meta={[
+      { label: locale === 'id' ? 'Jumlah layanan' : 'Services', value: '03' },
+      { label: t.services.priceLabel, value: formatIDR(SERVICES[0].price) },
+      { label: t.common.duration, value: '2–6 minggu' },
+    ]}
+  >
+    <Button href={route('booking', locale)} icon="calendar-check" iconPosition="start">
+      {t.common.bookCall}
+    </Button>
+  </PageHeader>
+
+  <section class="section section--flush" aria-label={t.services.title}>
+    <div class="container">
+      <p class="services-order label label--ticked">{t.services.orderNote}</p>
+      <ServiceRows locale={locale} full />
+    </div>
+  </section>
+
+  <CtaBand
+    locale={locale}
+    eyebrow={t.services.eyebrow}
+    title={t.services.ctaTitle}
+    lead={t.services.ctaLead}
+    primaryLabel={t.common.freeDiagnostic}
+    primaryHref={route('booking', locale)}
+    secondaryLabel={t.common.viewPricing}
+    secondaryHref={route('pricing', locale)}
+  />
+</Base>
+
+<style>
+  .services-order {
+    margin-bottom: var(--space-5);
+  }
+</style>

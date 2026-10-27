@@ -1,0 +1,30 @@
+# Build output
+dist/
+.astro/
+.output/
+
+# Dependencies
+node_modules/
+
+# Environment and secrets
+.env
+.env.*
+!.env.example
+.dev.vars
+
+# Wrangler / Cloudflare
+.wrangler/
+
+# Logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# OS and editor
+.DS_Store
+Thumbs.db
+.vscode/*
+!.vscode/extensions.json
+
+# Screenshots and local QA artefacts
+.qa/

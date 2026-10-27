@@ -1,0 +1,197 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/sections/PageHeader.astro';
+import BookingForm from '../components/sections/BookingForm';
+import Icon from '../components/ui/Icon.astro';
+import Button from '../components/ui/Button.astro';
+import { getCopy } from '../content/copy';
+import { route } from '../lib/i18n';
+import { BOOKING_WINDOWS } from '../data/schedule';
+
+const locale = 'id' as const;
+const t = getCopy(locale);
+const windowInfo = BOOKING_WINDOWS[locale];
+
+const labels = {
+  dayLabel: t.booking.dayLabel,
+  timeLabel: t.booking.timeLabel,
+  detailsLabel: t.booking.detailsLabel,
+  name: t.booking.name,
+  email: t.booking.email,
+  company: t.booking.company,
+  notes: t.booking.notes,
+  notesPlaceholder: t.booking.notesPlaceholder,
+  submit: t.booking.submit,
+  submitting: t.booking.submitting,
+  loading: t.booking.loading,
+  empty: t.booking.empty,
+  holidayNote: t.booking.holidayNote,
+  timezoneNote: t.booking.timezoneNote,
+  successTitle: t.booking.successTitle,
+  successBody: t.booking.successBody,
+  successRef: t.booking.successRef,
+  successCancel: t.booking.successCancel,
+  stepOne: t.booking.stepOne,
+  stepTwo: t.booking.stepTwo,
+  stepThree: t.booking.stepThree,
+  durationValue: `30 ${t.common.minutes}`,
+  durationLabel: t.common.duration,
+  selectionLabel: t.booking.selectionLabel,
+  timezoneLabel: windowInfo.timezoneLabel,
+  turnstileNote: t.contact.turnstileNote,
+};
+
+const errors = {
+  nameRequired: t.errors.nameRequired,
+  emailRequired: t.errors.emailRequired,
+  emailInvalid: t.errors.emailInvalid,
+  slotRequired: t.errors.slotRequired,
+  slotTaken: t.errors.slotTaken,
+  bookingFailed: t.errors.bookingFailed,
+  network: t.errors.network,
+};
+---
+
+<Base
+  locale={locale}
+  routeKey="booking"
+  title={t.pages.booking.title}
+  description={t.pages.booking.description}
+>
+  <PageHeader
+    eyebrow={t.booking.eyebrow}
+    title={t.booking.title}
+    lead={t.booking.lead}
+    meta={[
+      { label: t.common.duration, value: `30 ${t.common.minutes}` },
+      { label: t.booking.metaTimezone, value: windowInfo.timezoneLabel },
+      { label: t.booking.metaFee, value: t.common.freeDiagnosticShort },
+    ]}
+  />
+
+  <section class="section section--flush" aria-label={t.booking.title}>
+    <div class="container">
+      <div class="booking-page">
+        <div>
+          <BookingForm client:load locale={locale} labels={labels} errors={errors} />
+        </div>
+
+        <aside class="booking-aside" aria-labelledby="booking-details">
+          <div>
+            <p class="label label--ticked" id="booking-details">{t.booking.asideTitle}</p>
+            <dl class="booking-facts">
+              <div>
+                <dt>{t.common.duration}</dt>
+                <dd>30 {t.common.minutes}</dd>
+              </div>
+              <div>
+                <dt>{t.booking.hoursLabel}</dt>
+                <dd>{windowInfo.label}</dd>
+              </div>
+              <div>
+                <dt>{t.booking.metaTimezone}</dt>
+                <dd>{windowInfo.timezoneLabel}</dd>
+              </div>
+              <div>
+                <dt>{t.booking.metaFee}</dt>
+                <dd>{t.common.freeDiagnosticShort}</dd>
+              </div>
+            </dl>
+          </div>
+
+          <div class="booking-aside__note">
+            <Icon name="calendar-check" size={18} />
+            <p>{t.booking.successCancel}</p>
+          </div>
+
+          <Button href={route('contact', locale)} variant="secondary" size="sm" icon="paper-plane-tilt">
+            {t.nav.contact}
+          </Button>
+        </aside>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .booking-page {
+    display: grid;
+    grid-template-columns: minmax(0, 1.5fr) minmax(0, 0.8fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+
+  .booking-aside {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-6);
+    align-items: flex-start;
+    padding: var(--space-6);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+  }
+
+  .booking-facts {
+    display: grid;
+    gap: var(--space-3);
+    margin: var(--space-4) 0 0;
+  }
+
+  .booking-facts > div {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.4fr);
+    gap: var(--space-3);
+    padding-bottom: var(--space-3);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .booking-facts > div:last-child {
+    padding-bottom: 0;
+    border-bottom: 0;
+  }
+
+  .booking-facts dt {
+    font-size: var(--text-small);
+    color: var(--text-muted);
+  }
+
+  .booking-facts dd {
+    margin: 0;
+    font-size: var(--text-small);
+    line-height: 1.5;
+  }
+
+  .booking-aside__note {
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: var(--text-small);
+    line-height: 1.55;
+  }
+
+  .booking-aside__note svg {
+    margin-top: 0.1em;
+    color: var(--accent);
+  }
+
+  @media (min-width: 1024px) {
+    .booking-aside {
+      position: sticky;
+      top: calc(var(--header-height) + var(--space-4));
+    }
+  }
+
+  @media (max-width: 1023.98px) {
+    .booking-page {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .booking-aside {
+      max-width: 34rem;
+    }
+  }
+</style>

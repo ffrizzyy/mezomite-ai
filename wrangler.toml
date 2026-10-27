@@ -1,0 +1,14 @@
+# Cloudflare Pages configuration.
+# Astro builds to ./dist; Pages Functions live in ./functions.
+name = "mezomite-ai"
+compatibility_date = "2026-10-24"
+pages_build_output_dir = "./dist"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "mezomite-db"
+database_id = "00000000-0000-0000-0000-000000000000"
+migrations_dir = "db/migrations"
+
+[vars]
+SITE_ORIGIN = "https://mezomite.ai"

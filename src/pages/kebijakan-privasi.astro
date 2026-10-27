@@ -1,0 +1,40 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/sections/PageHeader.astro';
+import LegalDoc from '../components/sections/LegalDoc.astro';
+import { getCopy } from '../content/copy';
+import { getLegal } from '../content/legal';
+
+const locale = 'id' as const;
+const t = getCopy(locale);
+const legal = getLegal(locale);
+const doc = legal.privacy;
+---
+
+<Base
+  locale={locale}
+  routeKey="privacy"
+  title={t.pages.privacy.title}
+  description={t.pages.privacy.description}
+>
+  <PageHeader
+    eyebrow="Legal"
+    title={doc.title}
+    meta={[
+      { label: t.common.updated, value: doc.updated },
+      { label: locale === 'id' ? 'Berlaku untuk' : 'Applies to', value: 'mezomite.ai' },
+    ]}
+  />
+
+  <section class="section section--flush" aria-label={doc.title}>
+    <div class="container">
+      <LegalDoc
+        doc={doc}
+        draft={legal.draft}
+        draftNote={legal.draftNote}
+        locale={locale}
+        updatedLabel={t.common.updated}
+      />
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,9 @@
+# Normalise line endings in the repository, whatever the checkout runs on.
+* text=auto eol=lf
+
+# Binary assets are never normalised.
+*.png binary
+*.jfif binary
+*.jpg binary
+*.woff2 binary
+*.ico binary

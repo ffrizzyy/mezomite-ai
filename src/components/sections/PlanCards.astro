@@ -1,0 +1,214 @@
+---
+import ShinyText from '../reactbits/ShinyText';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+import { getCopy } from '../../content/copy';
+import { route, type Locale } from '../../lib/i18n';
+import { formatIDR, formatUSD } from '../../lib/format';
+import { PACKAGES } from '../../data/packages';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getCopy(locale);
+const bookingHref = route('booking', locale);
+---
+
+<div class="plans" role="list">
+  {
+    PACKAGES.map((pkg) => (
+      <article
+        class:list={['plan', pkg.entry && 'plan--entry']}
+        role="listitem"
+        data-package={pkg.id}
+        data-spotlight
+      >
+        <div class="plan__head">
+          <span class="index-num">{String(pkg.order).padStart(2, '0')}</span>
+          {pkg.badge ? (
+            <span class="badge badge--solid plan__badge">
+              <ShinyText>{pkg.badge[locale]}</ShinyText>
+            </span>
+          ) : (
+            <span class="badge">{pkg.duration[locale]}</span>
+          )}
+        </div>
+
+        <h3 class="plan__name">{pkg.name[locale]}</h3>
+
+        <div class="plan__price">
+          <span class="price price--xl">{formatIDR(pkg.price)}</span>
+          <span class="plan__usd mono">≈ {formatUSD(pkg.price)}</span>
+          <span class="price__note">{t.common.priceVatNote}</span>
+        </div>
+
+        <p class="plan__summary">{pkg.summary[locale]}</p>
+
+        <div class="plan__meta">
+          <span class="label">{t.common.duration}</span>
+          <span>{pkg.duration[locale]}</span>
+        </div>
+
+        <div class="plan__list">
+          <p class="label">{t.common.includes}</p>
+          <ul class="ticks">
+            {pkg.includes[locale].map((item) => (
+              <li>
+                <Icon name="check" size={14} />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <div class="plan__list plan__list--excludes">
+          <p class="label">{t.common.excludes}</p>
+          <ul class="crosses">
+            {pkg.excludes[locale].map((item) => (
+              <li>
+                <Icon name="x" size={13} />
+                <span>{item}</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+
+        <Button
+          href={`${bookingHref}?package=${pkg.id}`}
+          variant={pkg.entry ? 'primary' : 'secondary'}
+          icon="calendar-check"
+          iconPosition="start"
+          block
+          extraClass="plan__cta"
+        >
+          {pkg.cta[locale]}
+        </Button>
+      </article>
+    ))
+  }
+</div>
+
+<style>
+  .plans {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--space-5);
+    align-items: stretch;
+  }
+
+  .plan {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    padding: clamp(1.25rem, 2.5vw, 1.75rem);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--border);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+  }
+
+  .plan--entry {
+    border-color: var(--accent);
+    border-top-width: 2px;
+    background: color-mix(in oklab, var(--accent-soft) 40%, var(--surface));
+  }
+
+  .plan__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+  }
+
+  .plan__badge {
+    max-width: 100%;
+  }
+
+  .plan__name {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .plan__price {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .plan__usd {
+    font-size: var(--text-small);
+    color: var(--text-muted);
+  }
+
+  .plan__summary {
+    font-size: var(--text-small);
+    line-height: 1.6;
+    color: var(--text-muted);
+  }
+
+  .plan__meta {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: var(--space-2);
+    padding-block: var(--space-3);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    font-size: var(--text-small);
+  }
+
+  .plan__list .label {
+    margin-bottom: var(--space-3);
+  }
+
+  .plan__list--excludes {
+    padding-top: var(--space-2);
+  }
+
+  .ticks,
+  .crosses {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    font-size: var(--text-small);
+  }
+
+  .ticks li,
+  .crosses li {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--space-2);
+    line-height: 1.5;
+    color: var(--text-muted);
+  }
+
+  .ticks svg {
+    margin-top: 0.2em;
+    color: var(--accent);
+  }
+
+  .crosses svg {
+    margin-top: 0.25em;
+    color: var(--text-muted);
+  }
+
+  .plan__cta {
+    margin-top: auto;
+  }
+
+  @media (max-width: 1023.98px) {
+    .plans {
+      grid-template-columns: 1fr;
+    }
+
+    .plan {
+      max-width: 38rem;
+    }
+  }
+</style>

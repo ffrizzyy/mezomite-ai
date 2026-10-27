@@ -1,0 +1,193 @@
+---
+import '@fontsource/public-sans/latin-400.css';
+import '@fontsource/public-sans/latin-600.css';
+import '@fontsource/public-sans/latin-700.css';
+import '@fontsource/fraunces/latin-600.css';
+import '@fontsource/ibm-plex-mono/latin-400.css';
+import '@fontsource/ibm-plex-mono/latin-500.css';
+
+import '../styles/tokens.css';
+import '../styles/base.css';
+import '../styles/components.css';
+import '../styles/motion.css';
+import '../styles/islands.css';
+
+import Header from '../components/sections/Header.astro';
+import Footer from '../components/sections/Footer.astro';
+import Tracker from '../components/sections/Tracker.astro';
+import ConsentBanner from '../components/sections/ConsentBanner';
+import { getCopy } from '../content/copy';
+import { alternateLinks, htmlLang, route, type Locale, type RouteKey } from '../lib/i18n';
+
+interface Props {
+  locale: Locale;
+  routeKey: RouteKey;
+  title: string;
+  description: string;
+  noIndex?: boolean;
+}
+
+const { locale, routeKey, title, description, noIndex = false } = Astro.props;
+const t = getCopy(locale);
+const site = Astro.site ?? new URL('https://mezomite.ai');
+const origin = site.origin;
+const canonical = new URL(route(routeKey, locale), site).href;
+const ogImage = new URL('/og.png', site).href;
+const alternates = alternateLinks(routeKey, site);
+const ogLocale = locale === 'id' ? 'id_ID' : 'en_US';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': ['ProfessionalService', 'Organization'],
+      '@id': `${origin}/#organization`,
+      name: 'Mezomite.ai',
+      url: `${origin}/`,
+      email: t.site.email,
+      description: t.site.tagline,
+      areaServed: { '@type': 'Country', name: 'Indonesia' },
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: 'Jakarta',
+        addressCountry: 'ID',
+      },
+      knowsLanguage: ['id', 'en'],
+      priceRange: 'Rp 1.500.000 - Rp 15.000.000',
+    },
+    {
+      '@type': 'WebSite',
+      '@id': `${origin}/#website`,
+      url: `${origin}/`,
+      name: 'Mezomite.ai',
+      inLanguage: locale === 'id' ? 'id-ID' : 'en',
+      publisher: { '@id': `${origin}/#organization` },
+    },
+  ],
+};
+
+const consentLabels = {
+  title: t.consent.title,
+  body: t.consent.body,
+  acceptAll: t.consent.acceptAll,
+  rejectOptional: t.consent.rejectOptional,
+  customise: t.consent.customise,
+  save: t.consent.save,
+  necessaryTitle: t.consent.necessaryTitle,
+  necessaryBody: t.consent.necessaryBody,
+  analyticsTitle: t.consent.analyticsTitle,
+  analyticsBody: t.consent.analyticsBody,
+  policyLink: t.consent.policyLink,
+  saved: t.consent.saved,
+  error: t.consent.error,
+  preferencesTitle: t.consent.preferencesTitle,
+  close: t.consent.close,
+};
+---
+
+<!doctype html>
+<html lang={htmlLang(locale)} data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+    <!-- Theme and language choices are applied before the first paint, so the
+         page never flashes a light theme at someone who chose dark. The file is
+         external so the CSP needs no script hash or 'unsafe-inline'. -->
+    <script is:inline src="/init.js"></script>
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    {
+      alternates.map((alternate) => (
+        <link rel="alternate" hreflang={alternate.hreflang} href={alternate.href} />
+      ))
+    }
+    <meta name="robots" content={noIndex ? 'noindex,nofollow' : 'index,follow'} />
+    <meta name="author" content="Mezomite.ai" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#F7F8F7" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#0E1A21" media="(prefers-color-scheme: dark)" />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Mezomite.ai" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={t.site.tagline} />
+    <meta property="og:locale" content={ogLocale} />
+    <meta property="og:locale:alternate" content={locale === 'id' ? 'en_US' : 'id_ID'} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="icon" href="/favicon.png" sizes="64x64" type="image/png" />
+    <link rel="icon" href="/favicon-32.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+
+    <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
+  </head>
+
+  <body data-page={routeKey} data-locale={locale}>
+    <a class="skip-link" href="#main">{t.nav.skip}</a>
+
+    <Header locale={locale} routeKey={routeKey} />
+
+    <main id="main" tabindex="-1">
+      <slot />
+    </main>
+
+    <Footer locale={locale} routeKey={routeKey} />
+
+    <Tracker />
+
+    <ConsentBanner
+      client:idle
+      locale={locale}
+      labels={consentLabels}
+      policyHref={route('cookies', locale)}
+    />
+
+    <script>
+      // Spotlight hover for cards and service rows. Kept in vanilla JS so a
+      // decorative effect never costs a React island. Touch and reduced
+      // motion users get the same content without the effect.
+      const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      if (finePointer && !reduceMotion) {
+        let active: HTMLElement | null = null;
+
+        document.addEventListener(
+          'pointermove',
+          (event) => {
+            const target = event.target as HTMLElement | null;
+            const element = target?.closest<HTMLElement>('[data-spotlight]') ?? null;
+
+            if (active && active !== element) active.dataset.spotlight = 'off';
+            active = element;
+            if (!element) return;
+
+            element.dataset.spotlight = 'on';
+            const rect = element.getBoundingClientRect();
+            element.style.setProperty('--mx', `${event.clientX - rect.left}px`);
+            element.style.setProperty('--my', `${event.clientY - rect.top}px`);
+          },
+          { passive: true },
+        );
+      }
+    </script>
+  </body>
+</html>
+
+<style>
+  main:focus {
+    outline: none;
+  }
+</style>

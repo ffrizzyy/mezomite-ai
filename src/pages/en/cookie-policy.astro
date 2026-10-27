@@ -1,0 +1,40 @@
+---
+import Base from '../../layouts/Base.astro';
+import PageHeader from '../../components/sections/PageHeader.astro';
+import LegalDoc from '../../components/sections/LegalDoc.astro';
+import { getCopy } from '../../content/copy';
+import { getLegal } from '../../content/legal';
+
+const locale = 'en' as const;
+const t = getCopy(locale);
+const legal = getLegal(locale);
+const doc = legal.cookies;
+---
+
+<Base
+  locale={locale}
+  routeKey="cookies"
+  title={t.pages.cookies.title}
+  description={t.pages.cookies.description}
+>
+  <PageHeader
+    eyebrow="Legal"
+    title={doc.title}
+    meta={[
+      { label: t.common.updated, value: doc.updated },
+      { label: 'Applies to', value: 'mezomite.ai' },
+    ]}
+  />
+
+  <section class="section section--flush" aria-label={doc.title}>
+    <div class="container">
+      <LegalDoc
+        doc={doc}
+        draft={legal.draft}
+        draftNote={legal.draftNote}
+        locale={locale}
+        updatedLabel={t.common.updated}
+      />
+    </div>
+  </section>
+</Base>

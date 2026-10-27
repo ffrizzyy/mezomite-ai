@@ -1,0 +1,65 @@
+---
+/**
+ * Analytics that respects the consent record. The script is bundled, but it
+ * sends nothing until `track()` finds a saved analytics consent. The
+ * `mz:consent` listener replays the page view once a visitor opts in, so a
+ * first visit is not silently missing from the funnel.
+ */
+---
+
+<script>
+  import { CONSENT_EVENT, track } from '../../lib/analytics';
+
+  const body = document.body;
+  const page = body?.dataset.page ?? '';
+  const locale = body?.dataset.locale ?? 'id';
+
+  const pageView = () =>
+    track('page_view', {
+      page,
+      locale,
+      path: window.location.pathname,
+      referrer: document.referrer || 'direct',
+    });
+
+  pageView();
+  track('locale_view', { locale });
+
+  if (page === 'services') track('service_view', { service: 'all' });
+  if (page === 'method') track('method_view', { page });
+  if (page === 'pricing') track('pricing_view', { package: 'all' });
+  if (page === 'booking') track('booking_start', { locale });
+
+  window.addEventListener(CONSENT_EVENT, pageView);
+
+  // The last audit step is the point where a reader has finished the method.
+  const lastStep = document.querySelector('#report');
+  if (lastStep && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        if (!entries[0]?.isIntersecting) return;
+        track('method_complete', { locale });
+        observer.disconnect();
+      },
+      { threshold: 0.4 },
+    );
+    observer.observe(lastStep);
+  }
+
+  // A click on a service row or a package card is intent, even without a form.
+  document.addEventListener(
+    'click',
+    (event) => {
+      const target = event.target as HTMLElement | null;
+      const service = target?.closest<HTMLElement>('[data-service-link]');
+      if (service?.dataset.serviceLink) {
+        track('lead_intent', { service: service.dataset.serviceLink, source: page });
+      }
+      const plan = target?.closest<HTMLElement>('[data-package]');
+      if (plan?.dataset.package) {
+        track('package_intent', { package: plan.dataset.package, source: page });
+      }
+    },
+    { capture: true },
+  );
+</script>

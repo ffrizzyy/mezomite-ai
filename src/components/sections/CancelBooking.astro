@@ -1,0 +1,206 @@
+---
+/**
+ * Booking cancellation surface.
+ *
+ * The link in the confirmation email carries a reference and a signed token.
+ * Cancelling needs one explicit click; nothing is released on page load, so a
+ * mail scanner that prefetches links cannot cancel a call by accident.
+ */
+import Button from '../ui/Button.astro';
+import { getCopy } from '../../content/copy';
+import { route, type Locale } from '../../lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getCopy(locale);
+---
+
+<section class="cancel section" aria-label={t.cancel.title}>
+  <div class="container">
+    <div class="cancel__card" data-cancel data-locale={locale}>
+      <noscript>
+        <p class="alert alert--danger">{t.cancel.noScript}</p>
+      </noscript>
+
+      <div class="cancel__state" data-cancel-ready hidden>
+        <p class="label label--ticked">{t.cancel.referenceLabel}</p>
+        <p class="cancel__ref mono" data-cancel-ref>—</p>
+
+        <h2 class="cancel__title" tabindex="-1">{t.cancel.title}</h2>
+        <p class="cancel__lead">{t.cancel.lead}</p>
+
+        <div class="alert alert--danger" role="alert" tabindex="-1" data-cancel-error hidden></div>
+
+        <div class="cancel__actions">
+          <button class="btn btn--primary" type="button" data-cancel-confirm>
+            {t.cancel.confirm}
+          </button>
+          <Button href={route('booking', locale)} variant="secondary">
+            {t.cancel.keep}
+          </Button>
+        </div>
+      </div>
+
+      <div class="cancel__state" data-cancel-missing hidden>
+        <h2 class="cancel__title" tabindex="-1">{t.cancel.missingTitle}</h2>
+        <p class="cancel__lead">{t.cancel.missingBody}</p>
+        <div class="cancel__actions">
+          <Button href={route('contact', locale)} variant="primary" icon="paper-plane-tilt">
+            {t.cancel.contact}
+          </Button>
+        </div>
+      </div>
+
+      <div class="cancel__state" data-cancel-success hidden>
+        <svg class="form-success__mark check-draw" viewBox="0 0 56 56" aria-hidden="true">
+          <circle cx="28" cy="28" r="27" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.35"></circle>
+          <path
+            d="M16 29.5 24.5 38 41 20.5"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.5"
+            stroke-linecap="round"
+            stroke-linejoin="round"></path>
+        </svg>
+        <h2 class="cancel__title" tabindex="-1">{t.cancel.successTitle}</h2>
+        <p class="cancel__lead">{t.cancel.successBody}</p>
+        <div class="cancel__actions">
+          <Button href={route('booking', locale)} variant="primary">
+            {t.cancel.backToBooking}
+          </Button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-cancel]');
+
+  if (root) {
+    const locale = root.dataset.locale === 'en' ? 'en' : 'id';
+    const params = new URLSearchParams(window.location.search);
+    const reference = (params.get('ref') ?? '').trim();
+    const token = (params.get('t') ?? '').trim();
+
+    const ready = root.querySelector<HTMLElement>('[data-cancel-ready]');
+    const missing = root.querySelector<HTMLElement>('[data-cancel-missing]');
+    const success = root.querySelector<HTMLElement>('[data-cancel-success]');
+    const refLabel = root.querySelector<HTMLElement>('[data-cancel-ref]');
+    const errorBox = root.querySelector<HTMLElement>('[data-cancel-error]');
+    const confirm = root.querySelector<HTMLButtonElement>('[data-cancel-confirm]');
+
+    const show = (element: HTMLElement | null) => {
+      if (!element) return;
+      element.hidden = false;
+      element.querySelector<HTMLElement>('h2')?.focus();
+    };
+
+    if (!/^BK-\d{4}-\d{4}$/.test(reference) || token.length === 0 || !ready || !confirm) {
+      show(missing);
+    } else {
+      if (refLabel) refLabel.textContent = reference;
+      ready.hidden = false;
+
+      const fallback =
+        locale === 'id'
+          ? 'Jadwal belum bisa dibatalkan. Muat ulang halaman, lalu coba lagi.'
+          : 'The booking could not be cancelled. Reload the page and try again.';
+      const confirming = locale === 'id' ? 'Membatalkan' : 'Cancelling';
+
+      confirm.addEventListener('click', async () => {
+        if (confirm.disabled) return;
+        confirm.disabled = true;
+        const original = confirm.textContent ?? '';
+        confirm.textContent = confirming;
+        if (errorBox) errorBox.hidden = true;
+
+        try {
+          const response = await fetch('/api/booking/cancel', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ ref: reference, token, locale }),
+          });
+
+          if (response.ok) {
+            ready.hidden = true;
+            show(success);
+            return;
+          }
+
+          const body = (await response.json().catch(() => ({}))) as { message?: string };
+          if (errorBox) {
+            errorBox.textContent = body.message ?? fallback;
+            errorBox.hidden = false;
+            errorBox.focus();
+          }
+        } catch {
+          if (errorBox) {
+            errorBox.textContent = fallback;
+            errorBox.hidden = false;
+            errorBox.focus();
+          }
+        } finally {
+          confirm.disabled = false;
+          confirm.textContent = original;
+        }
+      });
+    }
+  }
+</script>
+
+<style>
+  .cancel {
+    padding-block: clamp(3rem, 7vw, 6rem);
+  }
+
+  .cancel__card {
+    max-width: 34rem;
+    margin-inline: auto;
+    padding: clamp(1.5rem, 4vw, 2.5rem);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+  }
+
+  .cancel__ref {
+    margin-top: var(--space-1);
+    font-size: var(--text-h3);
+    color: var(--text);
+  }
+
+  .cancel__title {
+    margin-top: var(--space-4);
+    font-size: var(--text-h3);
+  }
+
+  .cancel__lead {
+    margin-top: var(--space-2);
+    color: var(--text-muted);
+    max-width: 46ch;
+  }
+
+  .cancel__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-5);
+  }
+
+  .cancel [data-cancel-error] {
+    margin-top: var(--space-4);
+  }
+
+  .cancel [data-cancel-success] svg {
+    width: 3rem;
+    height: 3rem;
+    color: var(--accent);
+  }
+
+  .cancel [data-cancel-success] h2 {
+    margin-top: var(--space-3);
+  }
+</style>

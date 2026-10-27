@@ -1,0 +1,86 @@
+---
+import { getCopy } from '../../content/copy';
+import type { Locale } from '../../lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getCopy(locale);
+const items = t.home.whyItems;
+---
+
+<div class="why">
+  {
+    items.map((item) => (
+      <article class="why__item" data-spotlight>
+        <span class="index-num why__index">{item.index}</span>
+        <h3 class="why__title">{item.title}</h3>
+        <p class="why__body">{item.body}</p>
+      </article>
+    ))
+  }
+</div>
+
+<style>
+  .why {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0;
+    border-top: 1px solid var(--border-strong);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .why__item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.25rem, 3vw, 2rem);
+    border-left: 1px solid var(--border);
+  }
+
+  .why__item:first-child {
+    border-left: 0;
+    padding-left: 0;
+  }
+
+  .why__item:last-child {
+    padding-right: 0;
+  }
+
+  .why__index {
+    color: var(--accent);
+  }
+
+  .why__title {
+    font-size: 1.125rem;
+    line-height: 1.35;
+    max-width: 24ch;
+  }
+
+  .why__body {
+    font-size: var(--text-small);
+    line-height: 1.6;
+    color: var(--text-muted);
+    max-width: 38ch;
+  }
+
+  @media (max-width: 899.98px) {
+    .why {
+      grid-template-columns: 1fr;
+    }
+
+    .why__item {
+      padding-inline: 0;
+      padding-block: var(--space-5);
+      border-left: 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .why__item:first-child {
+      border-top: 0;
+      padding-top: 0;
+    }
+  }
+</style>

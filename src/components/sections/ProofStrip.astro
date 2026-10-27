@@ -1,0 +1,137 @@
+---
+import CountUp from '../reactbits/CountUp';
+import { getCopy } from '../../content/copy';
+import { PROOF_IS_PLACEHOLDER, PROOF_POINTS } from '../../data/proof';
+import type { Locale } from '../../lib/i18n';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getCopy(locale);
+---
+
+<section class="proof section section--tight section--flush" aria-labelledby="proof-title">
+  <div class="container">
+    <div class="proof__head">
+      <h2 id="proof-title" class="proof__title">{t.home.proofTitle}</h2>
+      <p class="proof__note">{t.home.proofNote}</p>
+    </div>
+
+    {
+      PROOF_POINTS.length > 0 ? (
+        <dl class="proof__grid" data-placeholder={PROOF_IS_PLACEHOLDER ? 'true' : undefined}>
+          {PROOF_POINTS.map((point) => (
+            <div class="proof__item">
+              <dd class="proof__value">
+                <CountUp
+                  value={point.value}
+                  prefix={point.prefix}
+                  suffix={point.suffix}
+                  locale={locale}
+                  client:visible
+                />
+              </dd>
+              <dt class="proof__label">{point.label[locale]}</dt>
+            </div>
+          ))}
+        </dl>
+      ) : (
+        <p class="proof__empty">{t.home.proofEmpty}</p>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .proof {
+    border-top: 1px solid var(--border-strong);
+    border-bottom: 1px solid var(--border-strong);
+    background: var(--surface);
+  }
+
+  .proof__head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: var(--space-3) var(--space-8);
+    padding-bottom: var(--space-5);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .proof__title {
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    font-weight: 500;
+    letter-spacing: var(--tracking-label);
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  .proof__note {
+    font-size: var(--text-small);
+    color: var(--text-muted);
+    max-width: 52ch;
+  }
+
+  .proof__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    margin-top: var(--space-6);
+  }
+
+  .proof__item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-2);
+    padding-inline: var(--space-5);
+    border-left: 1px solid var(--border);
+  }
+
+  .proof__item:first-child {
+    padding-left: 0;
+    border-left: 0;
+  }
+
+  .proof__value {
+    font-size: clamp(2rem, 4vw, 2.75rem);
+    font-weight: 600;
+    line-height: 1;
+    letter-spacing: -0.03em;
+    color: var(--text);
+  }
+
+  .proof__label {
+    font-size: var(--text-small);
+    line-height: 1.4;
+    color: var(--text-muted);
+    max-width: 22ch;
+  }
+
+  .proof__empty {
+    margin-top: var(--space-6);
+    max-width: 58ch;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 767.98px) {
+    .proof__grid {
+      grid-template-columns: 1fr;
+      gap: var(--space-5);
+    }
+
+    .proof__item {
+      padding-inline: 0;
+      padding-top: var(--space-4);
+      border-left: 0;
+      border-top: 1px solid var(--border);
+    }
+
+    .proof__item:first-child {
+      padding-top: 0;
+      border-top: 0;
+    }
+  }
+</style>

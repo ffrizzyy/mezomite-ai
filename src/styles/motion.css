@@ -1,0 +1,258 @@
+/* ==========================================================================
+   React Bits style motion layer.
+   Rules:
+   - transform and opacity only, except one 11px label (see .shiny-text)
+   - entrances are 4–10px, never scale(0)
+   - nothing animates on scroll except diagrams that carry information
+   - every animation is opt-out through prefers-reduced-motion (base.css)
+   ========================================================================== */
+
+/* ------------------------------------------------------------ SplitText */
+
+.split-text {
+  display: inline;
+}
+
+.split-text__words {
+  display: inline;
+}
+
+.split-text__word {
+  display: inline-block;
+  /* Room for descenders while the word slides up out of its own line box. */
+  padding-bottom: 0.14em;
+  margin-bottom: -0.14em;
+  overflow: hidden;
+  vertical-align: bottom;
+}
+
+.split-text__inner {
+  display: inline-block;
+  opacity: 0;
+  transform: translateY(0.52em);
+  animation: split-word-in var(--dur-reveal) var(--ease-enter) forwards;
+}
+
+@keyframes split-word-in {
+  from {
+    opacity: 0;
+    transform: translateY(0.52em);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* A child that must not be split (an accent word, an icon, a link). */
+.split-text__part {
+  display: inline-block;
+}
+
+/* ------------------------------------------------------------ CountUp */
+
+.counter {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
+}
+
+/* ------------------------------------------------------------ ShinyText */
+
+.shiny-text {
+  background-image: linear-gradient(
+    100deg,
+    currentColor 0%,
+    currentColor 38%,
+    color-mix(in oklab, currentColor 35%, white) 50%,
+    currentColor 62%,
+    currentColor 100%
+  );
+  background-size: 260% 100%;
+  background-repeat: no-repeat;
+  background-position: 120% 0;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+  animation: shiny-sweep 6s var(--ease-standard) infinite;
+}
+
+@keyframes shiny-sweep {
+  0% {
+    background-position: 120% 0;
+  }
+  22% {
+    background-position: -40% 0;
+  }
+  100% {
+    background-position: -40% 0;
+  }
+}
+
+/* ------------------------------------------------------------ Spotlight */
+
+/* Applied with a nine-line progress enhancement script in Base.astro.
+   No React island is shipped for a decorative hover. */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+
+.spotlight::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  border-radius: inherit;
+  background: radial-gradient(
+    260px circle at var(--mx, 50%) var(--my, 0%),
+    color-mix(in oklab, var(--accent) 10%, transparent),
+    transparent 72%
+  );
+  opacity: 0;
+  transition: opacity var(--dur-base) var(--ease-standard);
+  pointer-events: none;
+}
+
+.spotlight[data-spotlight='on']::before {
+  opacity: 1;
+}
+
+.spotlight > * {
+  position: relative;
+  z-index: 1;
+}
+
+@media (hover: none), (pointer: coarse) {
+  .spotlight::before {
+    display: none;
+  }
+}
+
+/* ------------------------------------------------------------ MethodFlow */
+
+.flow {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.flow__ticks line {
+  stroke: var(--border);
+  stroke-width: 1;
+}
+
+.flow__spine {
+  stroke: var(--border-strong);
+  stroke-width: 1;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+  pathLength: 1;
+}
+
+.flow__ring {
+  fill: var(--surface);
+  stroke: var(--accent);
+  stroke-width: 1.25;
+}
+
+.flow__dot {
+  fill: var(--accent);
+}
+
+.flow__index {
+  fill: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+}
+
+.flow__node {
+  transform-origin: center;
+}
+
+.flow__beam {
+  opacity: 0;
+}
+
+.flow--drawn .flow__spine {
+  stroke-dasharray: 600;
+  stroke-dashoffset: 600;
+  animation: flow-draw 900ms var(--ease-standard) forwards;
+}
+
+.flow--drawn .flow__node {
+  animation: flow-node-in 320ms var(--ease-enter) both;
+}
+
+.flow--drawn .flow__beam {
+  animation: flow-beam 1500ms var(--ease-standard) 260ms both;
+}
+
+@keyframes flow-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes flow-node-in {
+  from {
+    opacity: 0;
+    transform: scale(0.86);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes flow-beam {
+  0% {
+    opacity: 0;
+    transform: translateX(20px);
+  }
+  15% {
+    opacity: 1;
+  }
+  85% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translateX(620px);
+  }
+}
+
+/* ------------------------------------------------------------ Page enter */
+
+/* Used by the hero only: a 4px rise, 200ms, once. */
+.rise {
+  animation: rise-in var(--dur-base) var(--ease-enter) both;
+  animation-delay: var(--rise-delay, 0ms);
+}
+
+/* ------------------------------------------------------------ Reduced motion hardening */
+
+@media (prefers-reduced-motion: reduce) {
+  .split-text__inner {
+    opacity: 1;
+    transform: none;
+    animation: none;
+  }
+
+  .shiny-text {
+    background: none;
+    color: currentColor;
+    -webkit-text-fill-color: currentColor;
+    animation: none;
+  }
+
+  .flow__beam {
+    display: none;
+  }
+
+  .spotlight::before {
+    display: none;
+  }
+}

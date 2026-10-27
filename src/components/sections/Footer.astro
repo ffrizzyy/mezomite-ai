@@ -1,0 +1,293 @@
+---
+import { getCopy } from '../../content/copy';
+import { route, type Locale, type RouteKey } from '../../lib/i18n';
+import { CONTACT, mailtoLink, whatsappLink } from '../../lib/contact';
+import { SERVICES } from '../../data/services';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+
+interface Props {
+  locale: Locale;
+  routeKey: RouteKey;
+}
+
+const { locale, routeKey } = Astro.props;
+const t = getCopy(locale);
+const other: Locale = locale === 'id' ? 'en' : 'id';
+const year = new Date().getFullYear();
+
+const companyLinks: { key: RouteKey; label: string }[] = [
+  { key: 'method', label: t.nav.method },
+  { key: 'pricing', label: t.nav.pricing },
+  { key: 'cases', label: t.nav.cases },
+  { key: 'glossary', label: t.nav.glossary },
+];
+
+const legalLinks: { key: RouteKey; label: string }[] = [
+  { key: 'privacy', label: locale === 'id' ? 'Kebijakan privasi' : 'Privacy policy' },
+  { key: 'terms', label: locale === 'id' ? 'Syarat dan ketentuan' : 'Terms' },
+  { key: 'cookies', label: locale === 'id' ? 'Kebijakan cookie' : 'Cookie policy' },
+];
+---
+
+<footer class="site-footer">
+  <div class="container footer__grid">
+    <div class="footer__brand">
+      <p class="footer__wordmark">
+        <img
+          class="footer__mark"
+          src="/brand/logo-mark.png"
+          alt=""
+          width="478"
+          height="478"
+          loading="lazy"
+          decoding="async"
+        />
+        <span>Mezomite<span class="footer__tld">.ai</span></span>
+      </p>
+      <p class="footer__tagline">{t.footer.tagline}</p>
+      <p class="footer__meta">
+        <span class="label">{t.footer.locationLabel}</span>
+        {t.site.location}
+      </p>
+    </div>
+
+    <nav class="footer__col" aria-label={t.footer.servicesTitle}>
+      <p class="label">{t.footer.servicesTitle}</p>
+      <ul>
+        {
+          SERVICES.map((service) => (
+            <li>
+              <a class="link" href={`${route('services', locale)}#${service.slug}`}>
+                {service.title[locale]}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <nav class="footer__col" aria-label={t.footer.companyTitle}>
+      <p class="label">{t.footer.companyTitle}</p>
+      <ul>
+        {
+          companyLinks.map((item) => (
+            <li>
+              <a class="link" href={route(item.key, locale)}>{item.label}</a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <nav class="footer__col" aria-label={t.footer.legalTitle}>
+      <p class="label">{t.footer.legalTitle}</p>
+      <ul>
+        {
+          legalLinks.map((item) => (
+            <li>
+              <a class="link" href={route(item.key, locale)}>{item.label}</a>
+            </li>
+          ))
+        }
+        <li>
+          <button class="footer__consent link" type="button" data-open-consent>
+            {t.footer.consentSettings}
+          </button>
+        </li>
+      </ul>
+    </nav>
+
+    <div class="footer__col footer__contact">
+      <p class="label">{t.footer.contactTitle}</p>
+      <ul>
+        <li>
+          <a class="link" href={mailtoLink(locale)}>
+            <Icon name="envelope-simple" size={16} />
+            {CONTACT.email}
+          </a>
+        </li>
+        <li>
+          <a class="link" href={whatsappLink(locale, route(routeKey, locale))} target="_blank" rel="noopener noreferrer">
+            <Icon name="whatsapp-logo" size={16} />
+            {CONTACT.whatsappDisplay}
+          </a>
+        </li>
+      </ul>
+      <Button href={route('contact', locale)} variant="secondary" size="sm" icon="paper-plane-tilt">
+        {t.nav.contact}
+      </Button>
+      <p class="footer__hours">{t.site.responseTime}</p>
+    </div>
+  </div>
+
+  <div class="container footer__bar">
+    <p class="footer__legal">© {year} {t.site.name}. {t.footer.rights}</p>
+    <div class="footer__bar-links">
+      <a class="footer__lang" href={route(routeKey, other)} hreflang={other} lang={other} data-lang-switch={other}>
+        <Icon name="translate" size={16} />
+        {other === 'id' ? 'Bahasa Indonesia' : 'English'}
+      </a>
+      <span class="footer__built">{t.footer.built}</span>
+    </div>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    margin-top: var(--space-20);
+    border-top: 1px solid var(--border-strong);
+    background: var(--surface);
+  }
+
+  .footer__grid {
+    display: grid;
+    grid-template-columns: 1.5fr repeat(3, 1fr) 1.2fr;
+    gap: var(--space-8);
+    padding-block: clamp(2.5rem, 5vw, 4rem);
+  }
+
+  .footer__wordmark {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 600;
+    letter-spacing: -0.03em;
+    margin-bottom: var(--space-3);
+  }
+
+  .footer__mark {
+    width: 1.75rem;
+    height: 1.75rem;
+    object-fit: contain;
+  }
+
+  .footer__tld {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-left: -0.06em;
+  }
+
+  .footer__tagline {
+    color: var(--text-muted);
+    font-size: var(--text-small);
+    max-width: 30ch;
+    line-height: 1.6;
+  }
+
+  .footer__meta {
+    margin-top: var(--space-4);
+    font-size: var(--text-small);
+    color: var(--text-muted);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .footer__col ul {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3);
+    margin-top: var(--space-4);
+    font-size: var(--text-small);
+  }
+
+  .footer__col .link,
+  .footer__consent {
+    color: var(--text-muted);
+    font-size: var(--text-small);
+    text-align: left;
+    transition: color var(--dur-fast) var(--ease-standard);
+  }
+
+  .footer__col .link:hover,
+  .footer__consent:hover {
+    color: var(--text);
+  }
+
+  .footer__col .link::after {
+    background: currentColor;
+  }
+
+  .footer__contact ul {
+    margin-bottom: var(--space-4);
+  }
+
+  .footer__contact li a {
+    gap: var(--space-2);
+  }
+
+  .footer__hours {
+    font-size: var(--text-small);
+    color: var(--text-muted);
+    margin-top: var(--space-3);
+  }
+
+  .footer__bar {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: var(--space-4);
+    padding-block: var(--space-5);
+    border-top: 1px solid var(--border);
+    font-size: var(--text-small);
+    color: var(--text-muted);
+  }
+
+  .footer__legal {
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    letter-spacing: 0.04em;
+  }
+
+  .footer__bar-links {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-5);
+  }
+
+  .footer__lang {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    color: var(--text-muted);
+    text-decoration: none;
+  }
+
+  .footer__lang:hover {
+    color: var(--text);
+  }
+
+  .footer__built {
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    letter-spacing: 0.04em;
+  }
+
+  @media (max-width: 1023.98px) {
+    .footer__grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: var(--space-6);
+    }
+
+    .footer__brand {
+      grid-column: 1 / -1;
+    }
+  }
+
+  @media (max-width: 599.98px) {
+    .footer__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .footer__bar {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

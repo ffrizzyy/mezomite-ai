@@ -1,0 +1,11 @@
+---
+interface Props {
+  variant?: 'default' | 'accent' | 'solid';
+  class?: string;
+}
+const { variant = 'default', class: className } = Astro.props;
+---
+
+<span class:list={['badge', variant === 'accent' && 'badge--accent', variant === 'solid' && 'badge--solid', className]}>
+  <slot />
+</span>

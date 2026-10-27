@@ -1,0 +1,111 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/sections/PageHeader.astro';
+import Button from '../components/ui/Button.astro';
+import Icon from '../components/ui/Icon.astro';
+import { getCopy } from '../content/copy';
+import { route } from '../lib/i18n';
+
+const locale = 'id' as const;
+const t = getCopy(locale);
+---
+
+<Base
+  locale={locale}
+  routeKey="cases"
+  title={t.pages.cases.title}
+  description={t.pages.cases.description}
+>
+  <PageHeader
+    eyebrow={t.cases.eyebrow}
+    title={t.cases.title}
+    lead={t.cases.lead}
+    meta={[
+      { label: locale === 'id' ? 'Status' : 'Status', value: locale === 'id' ? 'Menunggu izin' : 'Awaiting consent' },
+      { label: locale === 'id' ? 'Diterbitkan' : 'Published', value: '00' },
+    ]}
+  />
+
+  <section class="section section--flush" aria-labelledby="cases-empty-title">
+    <div class="container">
+      <div class="cases-empty corners">
+        <span class="cases-empty__icon">
+          <Icon name="seal-check" size={28} />
+        </span>
+        <div class="cases-empty__copy">
+          <h2 id="cases-empty-title">{t.cases.emptyTitle}</h2>
+          <p>{t.cases.emptyBody}</p>
+        </div>
+        <div class="cases-empty__actions">
+          <Button href={route('booking', locale)} icon="calendar-check" iconPosition="start">
+            {t.cases.cta}
+          </Button>
+          <Button href={route('services', locale)} variant="secondary" icon="arrow-right">
+            {t.common.viewServices}
+          </Button>
+        </div>
+      </div>
+    </div>
+  </section>
+</Base>
+
+<style>
+  .cases-empty {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-5) var(--space-6);
+    align-items: start;
+    padding: clamp(1.75rem, 4vw, 3rem);
+    border: 1px dashed var(--border-strong);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+    max-width: 52rem;
+  }
+
+  .cases-empty__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-s);
+    color: var(--accent);
+    background: var(--accent-quiet);
+  }
+
+  .cases-empty__copy h2 {
+    font-family: var(--font-display);
+    font-size: var(--text-h2);
+    line-height: var(--leading-heading);
+  }
+
+  .cases-empty__copy p {
+    margin-top: var(--space-3);
+    color: var(--text-muted);
+    max-width: 56ch;
+    line-height: 1.65;
+  }
+
+  .cases-empty__actions {
+    grid-column: 2 / 3;
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-2);
+  }
+
+  @media (max-width: 599.98px) {
+    .cases-empty {
+      grid-template-columns: 1fr;
+    }
+
+    .cases-empty__actions {
+      grid-column: 1 / 2;
+    }
+
+    .cases-empty__actions > :global(.btn) {
+      width: 100%;
+    }
+  }
+</style>

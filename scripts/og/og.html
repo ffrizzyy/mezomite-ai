@@ -1,0 +1,214 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="utf-8" />
+    <!-- Social card. Rendered to public/og.png by `node scripts/og/render.mjs`.
+         Everything is inline on purpose: no build step, no font CDN. -->
+    <style>
+      @font-face {
+        font-family: 'Fraunces';
+        font-style: normal;
+        font-weight: 600;
+        src: url('/node_modules/@fontsource/fraunces/files/fraunces-latin-600-normal.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Public Sans';
+        font-style: normal;
+        font-weight: 400;
+        src: url('/node_modules/@fontsource/public-sans/files/public-sans-latin-400-normal.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'Public Sans';
+        font-style: normal;
+        font-weight: 600;
+        src: url('/node_modules/@fontsource/public-sans/files/public-sans-latin-600-normal.woff2') format('woff2');
+      }
+      @font-face {
+        font-family: 'IBM Plex Mono';
+        font-style: normal;
+        font-weight: 400;
+        src: url('/node_modules/@fontsource/ibm-plex-mono/files/ibm-plex-mono-latin-400-normal.woff2')
+          format('woff2');
+      }
+
+      :root {
+        --bg: #f7f8f7;
+        --text: #16242c;
+        --muted: #55666f;
+        --accent: #0b5fa5;
+        --hairline: #c9d0cd;
+        --grid-line: rgb(26 42 51 / 0.06);
+      }
+
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      html,
+      body {
+        width: 1200px;
+        height: 630px;
+        overflow: hidden;
+      }
+
+      body {
+        position: relative;
+        background: var(--bg);
+        color: var(--text);
+        font-family: 'Public Sans', sans-serif;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .grid {
+        position: absolute;
+        inset: 0;
+        background-image: linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
+          linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
+        background-size: 120px 120px;
+        background-position: 72px 60px;
+      }
+
+      .card {
+        position: relative;
+        height: 100%;
+        padding: 64px 72px 56px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+
+      .brand img {
+        width: 56px;
+        height: 56px;
+      }
+
+      .brand span {
+        font-size: 27px;
+        font-weight: 600;
+        letter-spacing: -0.025em;
+      }
+
+      .brand .tld {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 16px;
+        font-weight: 400;
+        letter-spacing: 0;
+        color: var(--muted);
+        margin-left: 2px;
+      }
+
+      .eyebrow {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 13px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+
+      h1 {
+        margin-top: 72px;
+        max-width: 1010px;
+        font-family: 'Fraunces', Georgia, serif;
+        font-weight: 600;
+        font-size: 70px;
+        line-height: 1.06;
+        letter-spacing: -0.028em;
+      }
+
+      h1 em {
+        font-style: italic;
+        color: var(--accent);
+      }
+
+      .rule {
+        flex: none;
+        margin-top: 48px;
+        height: 1px;
+        background: var(--hairline);
+      }
+
+      .facts {
+        flex: none;
+        margin-top: 24px;
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 40px;
+      }
+
+      .facts ul {
+        display: flex;
+        gap: 56px;
+        list-style: none;
+      }
+
+      .fact strong {
+        display: block;
+        font-size: 19px;
+        font-weight: 600;
+        letter-spacing: -0.01em;
+        margin-bottom: 4px;
+      }
+
+      .fact span {
+        font-size: 15px;
+        color: var(--muted);
+      }
+
+      .place {
+        font-family: 'IBM Plex Mono', monospace;
+        font-size: 14px;
+        color: var(--muted);
+        white-space: nowrap;
+        padding-top: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="grid"></div>
+    <div class="card">
+      <div class="top">
+        <div class="brand">
+          <img src="/public/brand/logo-mark.png" alt="" />
+          <span>Mezomite<span class="tld">.ai</span></span>
+        </div>
+        <p class="eyebrow">Audit proses · Otomasi · Agen AI</p>
+      </div>
+
+      <h1>Kami audit cara kerja Anda, lalu <em>otomatiskan</em> bagian yang repetitif.</h1>
+
+      <div class="rule"></div>
+
+      <div class="facts">
+        <ul>
+          <li class="fact">
+            <strong>Rp 1,5 juta</strong>
+            <span>Paket awal, harga tetap</span>
+          </li>
+          <li class="fact">
+            <strong>2 minggu</strong>
+            <span>Laporan yang bisa dipakai</span>
+          </li>
+          <li class="fact">
+            <strong>ID / EN</strong>
+            <span>Dua bahasa, satu metode</span>
+          </li>
+        </ul>
+        <p class="place">Jakarta · Indonesia</p>
+      </div>
+    </div>
+  </body>
+</html>

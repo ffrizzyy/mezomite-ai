@@ -1,0 +1,210 @@
+---
+import { getCollection } from 'astro:content';
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/sections/PageHeader.astro';
+import Icon from '../components/ui/Icon.astro';
+import { getCopy } from '../content/copy';
+
+const locale = 'id' as const;
+const t = getCopy(locale);
+
+const entries = (await getCollection('glossary')).sort((a, b) => a.data.order - b.data.order);
+---
+
+<Base
+  locale={locale}
+  routeKey="glossary"
+  title={t.pages.glossary.title}
+  description={t.pages.glossary.description}
+>
+  <PageHeader
+    eyebrow={t.glossary.eyebrow}
+    title={t.glossary.title}
+    lead={t.glossary.lead}
+    meta={[
+      { label: locale === 'id' ? 'Jumlah istilah' : 'Terms', value: String(entries.length).padStart(2, '0') },
+      { label: locale === 'id' ? 'Bahasa' : 'Languages', value: 'ID / EN' },
+    ]}
+  />
+
+  <section class="section section--flush" aria-label={t.glossary.title}>
+    <div class="container">
+      <div class="glossary-tools">
+        <label class="glossary-search">
+          <span class="visually-hidden">{t.glossary.search}</span>
+          <Icon name="magnifying-glass" size={18} />
+          <input
+            type="search"
+            class="field__control"
+            placeholder={t.glossary.search}
+            autocomplete="off"
+            data-glossary-search
+          />
+        </label>
+        <p class="label glossary-count" data-glossary-count data-count-label={t.glossary.count} aria-live="polite">
+          {entries.length} {t.glossary.count}
+        </p>
+      </div>
+
+      <ol class="terms" data-glossary-list>
+        {
+          entries.map((entry) => (
+            <li
+              class="term"
+              data-term
+              data-search={`${entry.data.term} ${entry.data.termEn} ${entry.data.definition} ${entry.data.definitionEn}`.toLowerCase()}
+            >
+              <div class="term__head">
+                <span class="index-num">{String(entry.data.order).padStart(2, '0')}</span>
+                <h2 class="term__name" lang="id">{entry.data.term}</h2>
+                <p class="term__en" lang="en">{entry.data.termEn}</p>
+              </div>
+              <div class="term__defs">
+                <p lang="id">
+                  <span class="label">{t.glossary.idLabel}</span>
+                  {entry.data.definition}
+                </p>
+                <p lang="en">
+                  <span class="label">{t.glossary.enLabel}</span>
+                  {entry.data.definitionEn}
+                </p>
+              </div>
+            </li>
+          ))
+        }
+      </ol>
+
+      <p class="glossary-empty" data-glossary-empty hidden>{t.glossary.empty}</p>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const input = document.querySelector<HTMLInputElement>('[data-glossary-search]');
+  const terms = Array.from(document.querySelectorAll<HTMLElement>('[data-term]'));
+  const count = document.querySelector<HTMLElement>('[data-glossary-count]');
+  const empty = document.querySelector<HTMLElement>('[data-glossary-empty]');
+
+  if (input) {
+    const label = count?.dataset.countLabel ?? '';
+
+    const filter = () => {
+      const query = input.value.trim().toLowerCase();
+      let visible = 0;
+
+      for (const term of terms) {
+        const match = query.length === 0 || (term.dataset.search ?? '').includes(query);
+        term.hidden = !match;
+        if (match) visible += 1;
+      }
+
+      if (count) count.textContent = `${visible} ${label}`;
+      if (empty) empty.hidden = visible !== 0;
+    };
+
+    input.addEventListener('input', filter);
+    filter();
+  }
+</script>
+
+<style>
+  .glossary-tools {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-bottom: var(--space-5);
+    border-bottom: 1px solid var(--border-strong);
+  }
+
+  .glossary-search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: min(24rem, 100%);
+  }
+
+  .glossary-search svg {
+    position: absolute;
+    left: var(--space-3);
+    color: var(--text-muted);
+    pointer-events: none;
+  }
+
+  .glossary-search .field__control {
+    padding-left: 2.5rem;
+  }
+
+  .glossary-count {
+    color: var(--text-muted);
+  }
+
+  .terms {
+    border-top: 1px solid var(--border);
+  }
+
+  .term {
+    display: grid;
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    gap: clamp(1.5rem, 4vw, 3rem);
+    padding-block: clamp(1.5rem, 3vw, 2rem);
+    border-bottom: 1px solid var(--border);
+    scroll-margin-top: calc(var(--header-height) + var(--space-6));
+  }
+
+  .term[hidden] {
+    display: none;
+  }
+
+  .term__head {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: var(--space-2) var(--space-3);
+    align-content: start;
+  }
+
+  .term__name {
+    font-family: var(--font-display);
+    font-size: 1.375rem;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .term__en {
+    grid-column: 2 / 3;
+    font-family: var(--font-mono);
+    font-size: var(--text-small);
+    color: var(--accent);
+  }
+
+  .term__defs {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+  }
+
+  .term__defs p {
+    font-size: var(--text-small);
+    line-height: 1.65;
+    color: var(--text-muted);
+    max-width: 62ch;
+  }
+
+  .term__defs .label {
+    display: block;
+    margin-bottom: var(--space-1);
+  }
+
+  .glossary-empty {
+    padding-block: var(--space-8);
+    color: var(--text-muted);
+    font-size: var(--text-small);
+  }
+
+  @media (max-width: 767.98px) {
+    .term {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

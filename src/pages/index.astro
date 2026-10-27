@@ -1,0 +1,60 @@
+---
+import Base from '../layouts/Base.astro';
+import Hero from '../components/sections/Hero.astro';
+import ProofStrip from '../components/sections/ProofStrip.astro';
+import ServiceRows from '../components/sections/ServiceRows.astro';
+import WhyGrid from '../components/sections/WhyGrid.astro';
+import MethodTeaser from '../components/sections/MethodTeaser.astro';
+import CtaBand from '../components/sections/CtaBand.astro';
+import SectionHead from '../components/ui/SectionHead.astro';
+import Button from '../components/ui/Button.astro';
+import { getCopy } from '../content/copy';
+import { route } from '../lib/i18n';
+
+const locale = 'id' as const;
+const t = getCopy(locale);
+---
+
+<Base
+  locale={locale}
+  routeKey="home"
+  title={t.pages.home.title}
+  description={t.pages.home.description}
+>
+  <Hero locale={locale} />
+
+  <ProofStrip locale={locale} />
+
+  <section class="section" aria-labelledby="home-services-title">
+    <div class="container">
+      <SectionHead
+        id="home-services-title"
+        eyebrow={t.home.servicesEyebrow}
+        title={t.home.servicesTitle}
+        lead={t.home.servicesLead}
+        split
+      >
+        <Button href={route('services', locale)} variant="secondary" icon="arrow-right">
+          {t.home.servicesCta}
+        </Button>
+      </SectionHead>
+
+      <ServiceRows locale={locale} />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="home-why-title">
+    <div class="container">
+      <SectionHead
+        id="home-why-title"
+        eyebrow={t.home.whyEyebrow}
+        title={t.home.whyTitle}
+      />
+      <WhyGrid locale={locale} />
+    </div>
+  </section>
+
+  <MethodTeaser locale={locale} />
+
+  <CtaBand locale={locale} />
+</Base>

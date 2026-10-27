@@ -1,0 +1,19 @@
+---
+interface Props {
+  eyebrow?: string;
+  title: string;
+  lead?: string;
+  split?: boolean;
+  id?: string;
+}
+const { eyebrow, title, lead, split = false, id } = Astro.props;
+---
+
+<div class:list={['section__head', split && 'section__head--split']}>
+  <div class="stack stack--tight">
+    {eyebrow && <p class="label label--ticked">{eyebrow}</p>}
+    <h2 id={id}>{title}</h2>
+    {lead && <p class="lede">{lead}</p>}
+  </div>
+  <slot />
+</div>

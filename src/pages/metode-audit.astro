@@ -1,0 +1,172 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHeader from '../components/sections/PageHeader.astro';
+import MethodSteps from '../components/sections/MethodSteps.astro';
+import ReportContents from '../components/sections/ReportContents.astro';
+import CtaBand from '../components/sections/CtaBand.astro';
+import SectionHead from '../components/ui/SectionHead.astro';
+import MethodFlow from '../components/reactbits/MethodFlow';
+import Button from '../components/ui/Button.astro';
+import Icon from '../components/ui/Icon.astro';
+import { getCopy } from '../content/copy';
+import { route } from '../lib/i18n';
+import { METHOD_STEPS } from '../data/method';
+
+const locale = 'id' as const;
+const t = getCopy(locale);
+const flowLabel = `Alur lima langkah audit: ${METHOD_STEPS.map((step) => step.title.id).join(', ')}.`;
+---
+
+<Base
+  locale={locale}
+  routeKey="method"
+  title={t.pages.method.title}
+  description={t.pages.method.description}
+>
+  <PageHeader
+    tone="blueprint"
+    eyebrow={t.method.eyebrow}
+    title={t.method.title}
+    lead={t.method.lead}
+    meta={[
+      { label: t.common.duration, value: '2 minggu' },
+      { label: t.method.stepLabel, value: '01–05' },
+      { label: t.method.outputLabel, value: t.common.deliverable },
+    ]}
+  >
+    <Button href={route('booking', locale)} icon="calendar-check" iconPosition="start">
+      {t.common.bookCall}
+    </Button>
+  </PageHeader>
+
+  <section class="section section--flush method-page" aria-label={t.method.title}>
+    <div class="container">
+      <div class="method-page__flow">
+        <MethodFlow label={flowLabel} client:visible />
+      </div>
+
+      <MethodSteps locale={locale} />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="report-title">
+    <div class="container">
+      <SectionHead
+        id="report-title"
+        eyebrow={t.method.reportEyebrow}
+        title={t.method.reportTitle}
+        lead={t.method.reportLead}
+      />
+      <ReportContents locale={locale} />
+    </div>
+  </section>
+
+  <section class="section" aria-labelledby="prepare-title">
+    <div class="container">
+      <div class="prepare-grid">
+        <div>
+          <p class="label label--ticked">{t.method.prepareTitle}</p>
+          <h2 id="prepare-title" class="visually-hidden">{t.method.prepareTitle}</h2>
+          <ul class="prepare-list">
+            {
+              t.method.prepareItems.map((item) => (
+                <li>
+                  <Icon name="check" size={16} />
+                  <span>{item}</span>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <aside class="prepare-excludes">
+          <p class="label label--ticked">{t.method.excludesTitle}</p>
+          <p>{t.method.excludesBody}</p>
+          <Button href={route('pricing', locale)} variant="secondary" size="sm" icon="arrow-right">
+            {t.common.viewPricing}
+          </Button>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <CtaBand
+    locale={locale}
+    eyebrow={t.method.eyebrow}
+    title={t.method.ctaTitle}
+    lead={t.method.ctaLead}
+    primaryLabel={t.home.ctaPrimary}
+    primaryHref={route('booking', locale)}
+    secondaryLabel={t.home.ctaSecondary}
+    secondaryHref={route('contact', locale)}
+  />
+</Base>
+
+<style>
+  .method-page {
+    padding-top: clamp(2rem, 4vw, 3rem);
+  }
+
+  .method-page__flow {
+    padding: var(--space-6) var(--space-4);
+    margin-bottom: clamp(2rem, 5vw, 3.5rem);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-m);
+    background: var(--surface);
+    overflow: hidden;
+  }
+
+  .prepare-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.2fr) minmax(0, 0.8fr);
+    gap: clamp(2rem, 5vw, 4rem);
+    align-items: start;
+  }
+
+  .prepare-list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    margin-top: var(--space-5);
+  }
+
+  .prepare-list li {
+    display: flex;
+    gap: var(--space-3);
+    align-items: flex-start;
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+    line-height: 1.6;
+    max-width: 60ch;
+  }
+
+  .prepare-list svg {
+    margin-top: 0.25em;
+    color: var(--accent);
+  }
+
+  .prepare-excludes {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-4);
+    align-items: flex-start;
+    padding: var(--space-6);
+    border: 1px solid var(--border);
+    border-left: 2px solid var(--warning);
+    border-radius: var(--radius-s);
+    background: var(--surface);
+  }
+
+  .prepare-excludes p:not(.label) {
+    color: var(--text-muted);
+    font-size: var(--text-small);
+    line-height: 1.65;
+  }
+
+  @media (max-width: 899.98px) {
+    .prepare-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

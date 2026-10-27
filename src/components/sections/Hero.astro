@@ -1,0 +1,281 @@
+---
+import SplitText from '../reactbits/SplitText';
+import Button from '../ui/Button.astro';
+import Icon from '../ui/Icon.astro';
+import { getCopy } from '../../content/copy';
+import { route, type Locale } from '../../lib/i18n';
+import { formatIDR } from '../../lib/format';
+import { PACKAGES } from '../../data/packages';
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+const t = getCopy(locale);
+const entry = PACKAGES.find((item) => item.entry) ?? PACKAGES[0];
+const bookingHref = route('booking', locale);
+const methodHref = route('method', locale);
+---
+
+<section class="hero blueprint blueprint--fade" aria-labelledby="hero-title">
+  <div class="container hero__grid">
+    <div class="hero__copy">
+      <p class="label label--ticked label--accent rise">{t.home.eyebrow}</p>
+
+      <h1 id="hero-title" class="hero__title">
+        <SplitText text={t.home.title} as="span" />
+      </h1>
+
+      <p class="hero__lead rise" style="--rise-delay: 90ms">{t.home.lead}</p>
+
+      <div class="hero__offer rise" style="--rise-delay: 140ms">
+        <div class="hero__price">
+          <span class="label">{t.home.priceLabel}</span>
+          <span class="price price--xl">{formatIDR(entry.price)}</span>
+        </div>
+        <p class="hero__price-note">{t.home.priceNote}</p>
+      </div>
+
+      <div class="hero__actions rise" style="--rise-delay: 190ms">
+        <Button href={bookingHref} icon="calendar-check" iconPosition="start">
+          {t.home.primaryCta}
+        </Button>
+        <Button href={methodHref} variant="secondary" icon="arrow-right">
+          {t.home.secondaryCta}
+        </Button>
+      </div>
+
+      <p class="hero__note rise" style="--rise-delay: 230ms">
+        <Icon name="clock-countdown" size={16} />
+        {t.home.specNote}
+      </p>
+    </div>
+
+    <aside class="hero__panel corners rise" style="--rise-delay: 120ms">
+      <div class="hero__panel-head">
+        <p class="label label--ticked">{t.home.specTitle}</p>
+        <span class="badge badge--accent">{t.common.entryPackage}</span>
+      </div>
+
+      <dl class="hero__spec">
+        {
+          t.home.specRows.map((row) => (
+            <div class="hero__spec-row">
+              <dt>{row.key}</dt>
+              <dd>{row.value}</dd>
+            </div>
+          ))
+        }
+      </dl>
+
+      <div class="hero__schematic" aria-hidden="true">
+        <span class="hero__node hero__node--wide">01</span>
+        <span class="hero__link"></span>
+        <span class="hero__node">02</span>
+        <span class="hero__link"></span>
+        <span class="hero__node">03</span>
+        <span class="hero__link hero__link--dash"></span>
+        <span class="hero__node hero__node--accent">04</span>
+      </div>
+
+      <p class="hero__panel-foot mono">
+        {locale === 'id' ? 'Audit · Peta · Skor · Laporan' : 'Audit · Map · Score · Report'}
+      </p>
+    </aside>
+  </div>
+</section>
+
+<style>
+  .hero {
+    position: relative;
+    padding-block: clamp(3rem, 7vw, 5.5rem) clamp(3rem, 6vw, 5rem);
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .hero__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+    gap: clamp(2rem, 5vw, 4.5rem);
+    align-items: start;
+  }
+
+  .hero__copy {
+    position: relative;
+    z-index: 1;
+  }
+
+  .hero__title {
+    margin-top: var(--space-5);
+    max-width: 20ch;
+  }
+
+  .hero__lead {
+    margin-top: var(--space-6);
+    font-size: var(--text-lead);
+    line-height: 1.5;
+    color: var(--text-muted);
+    max-width: 54ch;
+  }
+
+  .hero__offer {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: var(--space-3) var(--space-5);
+    margin-top: var(--space-8);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--border-strong);
+  }
+
+  .hero__price {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-1);
+  }
+
+  .hero__price-note {
+    font-size: var(--text-small);
+    color: var(--text-muted);
+    max-width: 30ch;
+  }
+
+  .hero__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--space-3);
+    margin-top: var(--space-6);
+  }
+
+  .hero__note {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+    margin-top: var(--space-5);
+    font-size: var(--text-small);
+    color: var(--text-muted);
+  }
+
+  .hero__panel {
+    position: relative;
+    margin-top: var(--space-3);
+    padding: var(--space-6);
+    background: color-mix(in oklab, var(--surface) 92%, transparent);
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-s);
+  }
+
+  .hero__panel-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-3);
+    padding-bottom: var(--space-4);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .hero__spec {
+    margin-top: var(--space-2);
+  }
+
+  .hero__spec-row {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--space-4);
+    padding-block: var(--space-3);
+    border-bottom: 1px solid var(--border);
+    font-size: var(--text-small);
+  }
+
+  .hero__spec-row dt {
+    color: var(--text-muted);
+  }
+
+  .hero__spec-row dd {
+    text-align: right;
+    font-weight: 500;
+  }
+
+  .hero__schematic {
+    display: flex;
+    align-items: center;
+    gap: 0;
+    margin-top: var(--space-6);
+    padding-block: var(--space-3);
+  }
+
+  .hero__node {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2rem;
+    height: 2rem;
+    flex: none;
+    border: 1px solid var(--border-strong);
+    border-radius: var(--radius-s);
+    font-family: var(--font-mono);
+    font-size: var(--text-label);
+    color: var(--text-muted);
+    background: var(--surface);
+  }
+
+  .hero__node--wide {
+    width: 2.75rem;
+  }
+
+  .hero__node--accent {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--accent-text);
+  }
+
+  .hero__link {
+    height: 1px;
+    flex: 1;
+    min-width: var(--space-3);
+    background: var(--border-strong);
+  }
+
+  .hero__link--dash {
+    background: repeating-linear-gradient(
+      to right,
+      var(--border-strong) 0 3px,
+      transparent 3px 6px
+    );
+  }
+
+  .hero__panel-foot {
+    margin-top: var(--space-2);
+    font-size: var(--text-label);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+  }
+
+  @media (max-width: 1023.98px) {
+    .hero__grid {
+      grid-template-columns: 1fr;
+    }
+
+    .hero__panel {
+      max-width: 32rem;
+      margin-top: 0;
+    }
+  }
+
+  @media (max-width: 599.98px) {
+    .hero__title {
+      max-width: none;
+    }
+
+    .hero__actions > :global(.btn) {
+      width: 100%;
+    }
+
+    .hero__offer {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+</style>
