@@ -12,6 +12,12 @@
   margin: 0;
 }
 
+/* Class-level `display` beats the UA rule for [hidden], so state blocks that
+   opt into flex or grid would leak onto the page. Enforce it once here. */
+[hidden] {
+  display: none !important;
+}
+
 html {
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
