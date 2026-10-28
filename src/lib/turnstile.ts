@@ -18,8 +18,17 @@ declare global {
 
 const SCRIPT_SRC = 'https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit';
 
+/**
+ * Turnstile site keys are public: they ship in the HTML of every protected form
+ * and identify the widget, not the account. Keeping a default here means a
+ * build from a clean clone still renders the widget; the secret half is what
+ * lives in the dashboard, and the endpoint fails closed without it.
+ */
+const DEFAULT_SITE_KEY = '0x4AAAAAAFpJTqRa5G5vcBtw';
+
 export function mountTurnstile(element: HTMLElement, onToken: (token: string) => void): void {
-  const siteKey = import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined;
+  const siteKey =
+    (import.meta.env.PUBLIC_TURNSTILE_SITE_KEY as string | undefined) || DEFAULT_SITE_KEY;
   if (!siteKey) return;
 
   const render = () => {
