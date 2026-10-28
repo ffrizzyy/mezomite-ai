@@ -83,14 +83,20 @@ const consentLabels = {
 ---
 
 <!doctype html>
-<html lang={htmlLang(locale)} data-theme="light">
+<html lang={htmlLang(locale)} data-theme="dark">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 
+    <!-- Dark is the house default, so the static value above and this meta
+         already match it. The pre-paint script below overwrites both when a
+         visitor has explicitly chosen light. It sits after the meta tag it
+         rewrites so the change lands before the first paint. -->
+    <meta name="theme-color" content="#0A0A0B" />
+
     <!-- Theme and language choices are applied before the first paint, so the
-         page never flashes a light theme at someone who chose dark. The file is
-         external so the CSP needs no script hash or 'unsafe-inline'. -->
+         page never flashes the wrong theme. The file is external so the CSP
+         needs no script hash or 'unsafe-inline'. -->
     <script is:inline src="/init.js"></script>
 
     <title>{title}</title>
@@ -104,8 +110,6 @@ const consentLabels = {
     <meta name="robots" content={noIndex ? 'noindex,nofollow' : 'index,follow'} />
     <meta name="author" content="Mezomite.ai" />
     <meta name="generator" content={Astro.generator} />
-    <meta name="theme-color" content="#FFFFFF" media="(prefers-color-scheme: light)" />
-    <meta name="theme-color" content="#0A0A0B" media="(prefers-color-scheme: dark)" />
 
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="Mezomite.ai" />

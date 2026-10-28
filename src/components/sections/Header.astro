@@ -170,6 +170,7 @@ const waHref = whatsappLink(locale, route(routeKey, locale));
 
   // Theme toggle. The pre-paint script in <head> owns the initial value.
   const root = document.documentElement;
+  const themeMeta = document.querySelector<HTMLMetaElement>('meta[name="theme-color"]');
   document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((button) => {
     const sync = () => {
       const dark = root.dataset.theme === 'dark';
@@ -178,6 +179,8 @@ const waHref = whatsappLink(locale, route(routeKey, locale));
         'aria-label',
         dark ? button.dataset.labelLight ?? 'Light theme' : button.dataset.labelDark ?? 'Dark theme',
       );
+      // Browser chrome follows the page, not the operating system.
+      if (themeMeta) themeMeta.content = dark ? '#0A0A0B' : '#FFFFFF';
     };
     sync();
     button.addEventListener('click', () => {

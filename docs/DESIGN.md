@@ -9,7 +9,7 @@ The visual direction is a neutral instrument, not a brochure: white or near-blac
 - a one-off optical adjustment inside a diagram, written as a comment;
 - a `clamp()` whose bounds are expressed with tokens.
 
-Light and dark themes both come from the same token names. The theme is applied before first paint by `public/init.js` and stored in `localStorage` under `mz-theme`.
+Light and dark themes both come from the same token names. **Dark is the default**: the `data-theme="dark"` attribute is in the static HTML, and `public/init.js` only switches to light when a visitor has explicitly chosen it. The operating system preference is deliberately ignored, so a light-mode desktop does not override the house surface. The choice is stored in `localStorage` under `mz-theme`, and the same script rewrites the `theme-color` meta to match.
 
 Colour is state and emphasis, never decoration:
 
