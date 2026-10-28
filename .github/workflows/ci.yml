@@ -14,9 +14,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      # Read from .nvmrc rather than a version alias. `node-version: 22` resolved
+      # to 22.23.3 on the runner, one patch below the floor Astro 7 declares
+      # (>=22.23.4), and every push failed at `npm run check` before it ran a
+      # single test (CI run 40641486991).
       - uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version-file: .nvmrc
           cache: npm
 
       - run: npm ci
@@ -36,3 +40,17 @@ jobs:
           test -f dist/en/index.html
           test -f dist/sitemap-index.xml
           test -f dist/robots.txt
+
+      # The build artifact is what gets published, so the deploy runs in the same
+      # job: a red check can never reach production. Only main deploys; pull
+      # requests stop at the build.
+      - name: Publish to Cloudflare Pages
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          # Pinned: the deploy must behave the same as the local wrangler in
+          # package.json, not whatever published that morning.
+          wranglerVersion: '4.153.0'
+          command: pages deploy dist --project-name=mezomite-ai --branch=main

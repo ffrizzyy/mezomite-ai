@@ -2,6 +2,8 @@
 
 Bilingual marketing site for **Mezomite.ai**, an audit and digitisation practice in Jakarta. Indonesian is the default language at the domain root, English lives under `/en/`.
 
+**Live:** <https://mezomite-ai.pages.dev> — pushed to `main`, built and published by CI.
+
 The site is built from [`docs/PRD.md`](docs/PRD.md), which is the source of truth for scope, copy rules, design tokens, data model, and acceptance criteria.
 
 - **Framework:** Astro 7, static output, React 19 islands only where a form needs state.
@@ -122,7 +124,18 @@ These are deliberately visible in the repo and must be resolved by the firm:
 
 ## Deploy
 
-The project is already live at <https://mezomite-ai.pages.dev> (project `mezomite-ai`, production branch `main`). To ship a build:
+The site is live at <https://mezomite-ai.pages.dev> (Pages project `mezomite-ai`, production branch `main`).
+
+A push to `main` deploys it. `.github/workflows/ci.yml` runs `astro check`, the Functions type check, and the build; the same job then publishes `dist/` with `wrangler pages deploy`, so a red check cannot reach production. Pull requests stop after the build and never deploy. It needs two repository secrets:
+
+```bash
+gh secret set CLOUDFLARE_API_TOKEN   # Pages:Edit on this account
+gh secret set CLOUDFLARE_ACCOUNT_ID  # e6212891e84d74195c9b6a5020359e69
+```
+
+The build reads `PUBLIC_TURNSTILE_SITE_KEY` from `src/lib/turnstile.ts` when the environment does not set it, so a CI build needs no other variables. Runtime secrets (`TURNSTILE_SECRET_KEY`, `RESEND_API_KEY`, `CANCEL_SECRET`) live on the Pages project, not in GitHub.
+
+To ship by hand, when CI is unavailable:
 
 ```bash
 npm run check && npm run check:functions && npm run build
@@ -135,6 +148,9 @@ First-time setup, for a new account or a fork:
 2. `npx wrangler d1 create mezomite-db`, copy the id into `wrangler.toml`, then `npm run db:remote`.
 3. Add the Turnstile, Resend, and `CANCEL_SECRET` values as encrypted variables. Until `TURNSTILE_SECRET_KEY` exists the form endpoints answer `503` by design.
 4. Verify the sending domain in Resend and set `MAIL_FROM` to an address on it.
+5. Add the two repository secrets above. Without them the deploy step fails; the checks still run.
+
+Node is pinned twice, on purpose: `.nvmrc` (24) is what `actions/setup-node` and `nvm use` read, and `engines` records the floor Astro 7 declares (`>=22.23.4`). A `node-version: 22` alias resolved to 22.23.3 on the runner and failed every build.
 
 Preview branches serve `Disallow: /` in `robots.txt`; `main` allows crawling and points at the generated sitemap.
 
