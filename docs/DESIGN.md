@@ -86,7 +86,7 @@ Rules that make them acceptable on a marketing site:
 6. **Decorative surfaces never take a pointer.** `.magic-rings` is `pointer-events: none`; the CTA buttons sit above it in the stacking order inside an `isolation: isolate` panel.
 7. **The pointer enhancement is optional.** `OrderSteps` refuses an impossible order, says why in `role="status"`, and snaps the chip back. On touch there is no drag and no hint promising one.
 
-Bundle cost, gzipped: three ≈ 150 kB and fabric ≈ 90 kB, both split into their own chunks and requested only by the screens above.
+Bundle cost, gzipped: three ≈ 180 kB and fabric ≈ 90 kB, both split into their own chunks and requested only by the screens above.
 
 ## Scoped styles and child components
 
