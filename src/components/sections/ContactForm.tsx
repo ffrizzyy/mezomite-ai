@@ -24,7 +24,7 @@ type Labels = {
   companyPlaceholder: string;
   employees: string;
   employeesPlaceholder: string;
-  employeeOptions: string[];
+  employeeOptions: { value: string; label: string }[];
   message: string;
   messagePlaceholder: string;
   consent: string;
@@ -339,8 +339,8 @@ export default function ContactForm({
             >
               <option value="">{labels.employeesPlaceholder}</option>
               {labels.employeeOptions.map((option) => (
-                <option key={option} value={option}>
-                  {option}
+                <option key={option.value} value={option.value}>
+                  {option.label}
                 </option>
               ))}
             </select>

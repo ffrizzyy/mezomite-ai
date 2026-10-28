@@ -4,7 +4,12 @@ import react from '@astrojs/react';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://mezomite.ai',
+  // The address the site is actually served from. Canonicals, the sitemap, OG
+  // tags, and the cancellation links in email all derive from it, so pointing it
+  // at a domain that is not attached yet produces dead links. Swap to
+  // https://mezomite.ai (and SITE_ORIGIN in lib/contact.ts and wrangler.toml)
+  // once the domain resolves to this Pages project.
+  site: 'https://mezomite-ai.pages.dev',
   output: 'static',
   trailingSlash: 'ignore',
   i18n: {

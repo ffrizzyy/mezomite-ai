@@ -4,6 +4,8 @@
  * at build time rather than a page that silently renders English in Indonesian.
  */
 
+import type { CompanySize } from '../../data/company-sizes';
+
 export type PageKey =
   | 'home'
   | 'services'
@@ -184,7 +186,7 @@ export type Copy = {
     companyPlaceholder: string;
     employees: string;
     employeesPlaceholder: string;
-    employeeOptions: string[];
+    employeeOptions: { value: CompanySize; label: string }[];
     message: string;
     messagePlaceholder: string;
     consent: string;

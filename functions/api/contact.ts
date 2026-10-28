@@ -12,6 +12,7 @@ import { asLocale, message } from '../_shared/messages';
 import { rateLimit } from '../_shared/rate';
 import { verifyTurnstile } from '../_shared/turnstile';
 import { escapeHtml, rows, sendMail } from '../_shared/mail';
+import { COMPANY_SIZES } from '../../src/data/company-sizes';
 import { nextReference } from '../_shared/booking';
 
 type Body = {
@@ -31,7 +32,7 @@ type Body = {
 };
 
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-const SIZES = new Set(['1-10', '11-30', '31-100', '101-300', '300+']);
+const SIZES = new Set<string>(COMPANY_SIZES);
 
 function text(value: unknown): string {
   return typeof value === 'string' ? value.trim() : '';
@@ -76,7 +77,7 @@ export const onRequestPost: PagesFunction<Env> = async ({ request, env }) => {
     return fail('email', message(locale, 'email'), 400);
   }
   if (company.length > 120) return fail('company', message(locale, 'company'), 400);
-  if (size.length > 0 && !SIZES.has(size)) return fail('employees', message(locale, 'message'), 400);
+  if (size.length > 0 && !SIZES.has(size)) return fail('employees', message(locale, 'employees'), 400);
   if (messageText.length < 20 || messageText.length > 4000) {
     return fail('message', message(locale, 'message'), 400);
   }

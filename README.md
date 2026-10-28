@@ -71,9 +71,13 @@ Without `TURNSTILE_SECRET_KEY` the endpoints fail closed with `503` rather than 
 
 Validation errors return `{ ok: false, field, message, fields }`. The form islands render `fields` per input. A taken slot returns `409`, Turnstile `403`, rate limiting `429`.
 
+`company_size` is a code, not a sentence: one of `1-10`, `11-30`, `31-100`, `101-300`, `300+` (`src/data/company-sizes.ts`). The labels in the select are localised copy; the value posted is the code, and the server rejects anything else. Anything reading D1 should expect the code.
+
 Rate limits live in D1 (`rate_limits` table): 10 per minute per IP for the two forms, 30 per minute for availability, 10 per minute for cancellation.
 
 Email failures do not fail the request: the row is already stored and the visitor keeps a reference. The submission is marked `failed` so it can be resent from the dashboard.
+
+`MAIL_FROM` must be an address on a domain verified in Resend. `onboarding@resend.dev` is the shared test sender: it works without DNS work, but Resend only delivers it to the address on the Resend account. Verify a domain before writing to anyone else.
 
 ## Structure
 
@@ -133,6 +137,8 @@ First-time setup, for a new account or a fork:
 4. Verify the sending domain in Resend and set `MAIL_FROM` to an address on it.
 
 Preview branches serve `Disallow: /` in `robots.txt`; `main` allows crawling and points at the generated sitemap.
+
+The canonical URL is the working deployment, `https://mezomite-ai.pages.dev`, in three places: `site` in `astro.config.mjs`, `SITE_ORIGIN` in `src/lib/contact.ts`, and `SITE_ORIGIN` in `wrangler.toml`. That keeps canonicals, the sitemap, WhatsApp deep links, and the cancellation links in outgoing email pointing at a host that answers. Move all three to `https://mezomite.ai` in the same commit that attaches the domain.
 
 CSP note: `script-src` and `style-src` are emitted by Astro into a per-page `<meta http-equiv="content-security-policy">`, because the island bootstrap is inline and its hash differs per page. Do not add them back to `public/_headers`; a header cannot carry those hashes and the result is a page that renders but never hydrates. Only `frame-ancestors` lives in the header, since meta cannot express it.
 

@@ -12,7 +12,7 @@ export const CONTACT = {
   whatsappDisplay: (env.PUBLIC_WHATSAPP_DISPLAY as string | undefined) ?? '+62 811-7441-165',
 };
 
-export const SITE_ORIGIN = 'https://mezomite.ai';
+export const SITE_ORIGIN = 'https://mezomite-ai.pages.dev';
 
 export function mailtoLink(locale: Locale, subject?: string): string {
   const line =

@@ -294,7 +294,13 @@ export const en = {
     companyPlaceholder: 'e.g. Acme Logistics',
     employees: 'Company Size',
     employeesPlaceholder: 'Select company size',
-    employeeOptions: ['1–10 employees', '11–50 employees', '51–200 employees', '201–500 employees', '500+ employees'],
+    employeeOptions: [
+    { value: '1-10', label: '1-10 employees' },
+    { value: '11-30', label: '11-30 employees' },
+    { value: '31-100', label: '31-100 employees' },
+    { value: '101-300', label: '101-300 employees' },
+    { value: '300+', label: 'More than 300 employees' },
+  ],
     message: 'Describe your current operational issue',
     messagePlaceholder:
       'Example: Our procurement tracking relies on 3 separate spreadsheets and WhatsApp. Approvals take days, and inventory counts rarely match real stock.',

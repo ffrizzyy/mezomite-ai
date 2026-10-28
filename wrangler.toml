@@ -11,9 +11,12 @@ database_id = "ecd4a38d-d26d-484f-a168-ebf60104d779"
 migrations_dir = "db/migrations"
 
 [vars]
-SITE_ORIGIN = "https://mezomite.ai"
+# The deployment that actually answers. Swap both origins to
+# https://mezomite.ai once the domain is attached to the Pages project.
+SITE_ORIGIN = "https://mezomite-ai.pages.dev"
 # Where the firm reads its enquiries, and the identity Resend signs them with.
-# MAIL_FROM must be an address on a domain verified in Resend, or the send is
-# rejected (the row is still stored, marked failed).
-MAIL_FROM = "djournl.app@gmail.com"
+# onboarding@resend.dev is Resend's shared test sender: it delivers without a
+# verified domain, but only to the address on the Resend account. Replace it
+# with an address on a verified domain before using this in production.
+MAIL_FROM = "onboarding@resend.dev"
 MAIL_TO = "m.farrel2222@gmail.com"

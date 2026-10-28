@@ -293,7 +293,13 @@ export const id = {
     companyPlaceholder: 'mis. PT Logistik Nusantara',
     employees: 'Jumlah Karyawan',
     employeesPlaceholder: 'Pilih skala perusahaan',
-    employeeOptions: ['1–10 karyawan', '11–50 karyawan', '51–200 karyawan', '201–500 karyawan', 'Lebih dari 500 karyawan'],
+    employeeOptions: [
+      { value: '1-10', label: '1-10 karyawan' },
+      { value: '11-30', label: '11-30 karyawan' },
+      { value: '31-100', label: '31-100 karyawan' },
+      { value: '101-300', label: '101-300 karyawan' },
+      { value: '300+', label: 'Lebih dari 300 karyawan' },
+    ],
     message: 'Jelaskan kendala operasional Anda saat ini',
     messagePlaceholder:
       'Contoh: Pencatatan pembelian kami masih tersebar di 3 spreadsheet dan chat WhatsApp. Proses persetujuan butuh waktu hingga 2 hari dan stok fisik sering tidak sesuai catatan.',
