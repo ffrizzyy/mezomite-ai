@@ -77,8 +77,7 @@ const waHref = whatsappLink(locale, route(routeKey, locale));
         data-theme-toggle
         data-label-light={t.nav.themeLight}
         data-label-dark={t.nav.themeDark}
-        aria-label={t.nav.themeDark}
-        aria-pressed="false"
+        aria-label={t.nav.themeLight}
       >
         <span class="theme-toggle__icon theme-toggle__icon--sun">
           <Icon name="sun" size={18} />
@@ -174,7 +173,9 @@ const waHref = whatsappLink(locale, route(routeKey, locale));
   document.querySelectorAll<HTMLButtonElement>('[data-theme-toggle]').forEach((button) => {
     const sync = () => {
       const dark = root.dataset.theme === 'dark';
-      button.setAttribute('aria-pressed', String(dark));
+      // The label names the action, so there is no aria-pressed: "Switch to
+      // light theme, pressed" would describe the current state twice, once
+      // backwards.
       button.setAttribute(
         'aria-label',
         dark ? button.dataset.labelLight ?? 'Light theme' : button.dataset.labelDark ?? 'Dark theme',
