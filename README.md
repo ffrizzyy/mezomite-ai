@@ -112,17 +112,29 @@ These are deliberately visible in the repo and must be resolved by the firm:
 
 - `src/data/proof.ts` sets `PROOF_IS_PLACEHOLDER`. The numbers on the home page are illustrative and must be replaced with measured results or removed.
 - `src/content/legal/*` render a visible draft note until a lawyer reviews them.
-- `wrangler.toml` contains a zero UUID for `database_id`; replace it with the real D1 id.
+- `wrangler.toml` carries the id of the live `mezomite-db` D1 database. A fresh environment needs its own database and id.
 - `src/data/holidays.json` is conservative. Check it against the official SKB for each year.
-- `docs/PRD.md` still carries the original product assumptions. Operational items not yet wired: the weekly retention cron, Lighthouse/axe/Playwright suites, and ESLint/Prettier configuration.
+- `docs/PRD.md` still carries the original product assumptions. Operational items not yet wired: the weekly retention cron, and the Lighthouse and axe suites. Playwright is wired (`npm run test:e2e`), ESLint/Prettier are not.
 
 ## Deploy
 
-1. Create the Pages project from this repository (build command `npm run build`, output `dist`).
-2. Create the D1 database, copy its id into `wrangler.toml`, and run `npm run db:remote`.
-3. Add the Turnstile, Resend, and `CANCEL_SECRET` values as encrypted variables.
+The project is already live at <https://mezomite-ai.pages.dev> (project `mezomite-ai`, production branch `main`). To ship a build:
+
+```bash
+npm run check && npm run check:functions && npm run build
+npx wrangler pages deploy dist --project-name=mezomite-ai --branch=main
+```
+
+First-time setup, for a new account or a fork:
+
+1. `npx wrangler pages project create mezomite-ai --production-branch=main`
+2. `npx wrangler d1 create mezomite-db`, copy the id into `wrangler.toml`, then `npm run db:remote`.
+3. Add the Turnstile, Resend, and `CANCEL_SECRET` values as encrypted variables. Until `TURNSTILE_SECRET_KEY` exists the form endpoints answer `503` by design.
 4. Verify the sending domain in Resend and set `MAIL_FROM` to an address on it.
-5. Deploy. Preview branches serve `Disallow: /` in `robots.txt`; `main` allows crawling and points at the generated sitemap.
+
+Preview branches serve `Disallow: /` in `robots.txt`; `main` allows crawling and points at the generated sitemap.
+
+CSP note: `script-src` and `style-src` are emitted by Astro into a per-page `<meta http-equiv="content-security-policy">`, because the island bootstrap is inline and its hash differs per page. Do not add them back to `public/_headers`; a header cannot carry those hashes and the result is a page that renders but never hydrates. Only `frame-ancestors` lives in the header, since meta cannot express it.
 
 ## Design and motion
 
