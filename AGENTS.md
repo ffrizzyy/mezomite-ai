@@ -9,7 +9,7 @@ This repository is the Mezomite.ai marketing site. `docs/PRD.md` is the source o
 - **Transform and opacity only.** Never animate layout properties. Every animation respects `prefers-reduced-motion`.
 - **Two locales or none.** Every route under `src/pages/` needs its counterpart under `src/pages/en/` and an entry in `src/lib/i18n.ts`. Every UI string lives in both copy dictionaries.
 - **No secrets.** `.env` and `.dev.vars` are gitignored. Only `PUBLIC_*` values may reach the browser.
-- **No client dependency without a reason.** The only runtime dependencies are Astro, `@astrojs/react`, React, and the font packages. Effects are hand-built.
+- **No client dependency without a reason.** Runtime dependencies are Astro, `@astrojs/react`, React, the font packages, and two canvas libraries with a written exception: `three` (hero process graph) and `fabric` (method order diagram). Both are dynamic imports behind a screen-size and pointer media query, both have a server-rendered fallback, and both are documented in `docs/DESIGN.md`. Effects that can be CSS are CSS.
 
 ## Commands
 
@@ -17,6 +17,7 @@ This repository is the Mezomite.ai marketing site. `docs/PRD.md` is the source o
 npm run check            # Astro + TypeScript, must be zero errors
 npm run check:functions  # Pages Functions against Workers types
 npm run build            # static build in dist/
+npm run test:e2e         # build, then Playwright against dist/ (Chromium)
 ```
 
 Run all three before opening a pull request.

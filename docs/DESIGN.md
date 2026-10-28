@@ -55,16 +55,38 @@ The rules come from Emil Kowalski's writing on interface animation, adapted to a
 
 ## React Bits effects, hand-built
 
-No animation package is installed. Four effects from the React Bits catalogue are reimplemented in the site's own idiom:
+Most of the catalogue effects on this site are CSS and a few hundred bytes of vanilla JS, not packages:
 
 | Effect | Where | Implementation |
 |---|---|---|
 | SplitText | Home hero | `Hero.astro` splits the display line into word spans; CSS staggers `translateY` and opacity once on load. Screen readers get the intact sentence from the heading. |
 | CountUp | Proof strip | `ProofStrip.astro` renders the final number in HTML; a tiny script counts from zero only when the strip is visible and motion is allowed. With JS off, the number is already correct. |
 | ShinyText | Entry-package badge | A repeating masked gradient sweeps every 4.5s. The gradient's outer stops are `currentColor`, so the label is fully painted on every frame, and reduced motion drops the gradient entirely. |
-| MethodFlow | Method diagram | `MethodDiagram.astro` and `MethodFlow.tsx` draw an inline SVG timeline; the connector draws with `stroke-dashoffset` on load and the nodes follow in sequence. |
+| MethodFlow | Home method teaser | `MethodTeaser.astro` and `MethodFlow.tsx` draw an inline SVG timeline; the connector draws with `stroke-dashoffset` on load and the nodes follow in sequence. |
 
 The spotlight hover on cards and service rows is vanilla JS (`Base.astro`), not an island: a `pointermove` listener writes `--mx` and `--my`, and CSS paints a 7% accent wash. It is disabled for touch and reduced motion.
+
+## Canvas islands
+
+Three surfaces are drawn on a canvas, which means three deliberate exceptions to "tokens only, no dependencies". The exceptions are bounded:
+
+| Island | Library | Where | Why a canvas |
+|---|---|---|---|
+| `ProcessGraph` | three.js | Home hero package panel | A pipeline reads as a pipeline when a pulse travels along the links; CSS cannot draw depth, raycast hover, or a shared 3D sway. |
+| `MagicRings` | vendored React Bits (WebGL2) | CTA band, inside `panel--ink` | The rings are a shader effect with a bloom pass; there is no honest CSS equivalent. |
+| `OrderSteps` | fabric.js | Method page, top | Direct manipulation: a visitor picks a step up and the diagram answers whether that order could run. |
+
+Rules that make them acceptable on a marketing site:
+
+1. **A canvas cannot read `var()`.** Every colour is lifted from `tokens.css` with `getComputedStyle` at paint time, and a `MutationObserver` on `data-theme` repaints when the theme flips. A stale colour after a theme switch is a bug, not a detail.
+2. **CTA colours come from the logo, not the accent.** The rings sample the mark's blues (`#3E8CC0` light face, `#1B5F8F` fold). The hero graph and the method diagram use `--accent` because they are content, not backdrop.
+3. **Never the only route to the information.** Every island ships a server-rendered fallback: the hero draws the same four-node diagram as inline SVG, the method page renders a real `<ol>` of the five steps. The canvas is `aria-hidden`; the labels stay real text. `OrderSteps` flips `data-canvas="ready"` only after fabric has mounted, and CSS does the swap.
+4. **Import on demand, and only where the effect earns its weight.** three and fabric are dynamic imports behind a media query: `ProcessGraph` needs `min-width: 640px`, `OrderSteps` needs `(min-width: 640px) and (hover: hover) and (pointer: fine)`. A phone downloads neither library and keeps the fallback. `MagicRings` is a backdrop at every width because it replaces nothing and costs one small canvas.
+5. **The loop is a budget.** Every island paints one still frame under `prefers-reduced-motion` and never starts a frame loop. Loops stop when the surface leaves the viewport (`IntersectionObserver`) or the tab is hidden (`visibilitychange`), and device pixel ratio is capped at 2.
+6. **Decorative surfaces never take a pointer.** `.magic-rings` is `pointer-events: none`; the CTA buttons sit above it in the stacking order inside an `isolation: isolate` panel.
+7. **The pointer enhancement is optional.** `OrderSteps` refuses an impossible order, says why in `role="status"`, and snaps the chip back. On touch there is no drag and no hint promising one.
+
+Bundle cost, gzipped: three ≈ 150 kB and fabric ≈ 90 kB, both split into their own chunks and requested only by the screens above.
 
 ## Scoped styles and child components
 
@@ -87,6 +109,7 @@ Astro scoped CSS does not reach markup rendered by another component, including 
 - Form errors are announced with `role="alert"` and connected with `aria-describedby`.
 - The language switch is a link with `hreflang`, not a JavaScript toggle that rewrites the page in place.
 - Decorative diagrams are `aria-hidden`; the same information is always present as text.
+- Canvas islands follow the same rule: the graph, the rings, and the order diagram are decoration or an enhancement, and the server-rendered SVG or ordered list underneath is what a screen reader reads.
 
 ## When changing the direction
 

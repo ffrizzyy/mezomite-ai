@@ -28,3 +28,8 @@ Thumbs.db
 
 # Screenshots and local QA artefacts
 .qa/
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
