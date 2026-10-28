@@ -7,9 +7,9 @@ import type { Locale } from './i18n';
 const env = import.meta.env;
 
 export const CONTACT = {
-  email: (env.PUBLIC_CONTACT_EMAIL as string | undefined) ?? 'halo@mezomite.ai',
-  whatsapp: (env.PUBLIC_WHATSAPP_NUMBER as string | undefined) ?? '6281234567890',
-  whatsappDisplay: (env.PUBLIC_WHATSAPP_DISPLAY as string | undefined) ?? '+62 812-3456-7890',
+  email: (env.PUBLIC_CONTACT_EMAIL as string | undefined) ?? 'm.farrel2222@gmail.com',
+  whatsapp: (env.PUBLIC_WHATSAPP_NUMBER as string | undefined) ?? '628117441165',
+  whatsappDisplay: (env.PUBLIC_WHATSAPP_DISPLAY as string | undefined) ?? '+62 811-7441-165',
 };
 
 export const SITE_ORIGIN = 'https://mezomite.ai';

@@ -8,8 +8,8 @@ export const id = {
   site: {
     name: 'Mezomite.ai',
     tagline: 'Audit proses, pemetaan alur kerja, dan otomasi cerdas untuk bisnis Indonesia.',
-    email: 'halo@mezomite.ai',
-    whatsappDisplay: '+62 812-3456-7890',
+    email: 'm.farrel2222@gmail.com',
+    whatsappDisplay: '+62 811-7441-165',
     location: 'Jakarta, Indonesia',
     responseTime: 'Kami merespons dalam 1 hari kerja.',
     currencyNote: 'Semua harga dalam Rupiah (IDR) dan belum termasuk PPN.',

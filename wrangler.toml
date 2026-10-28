@@ -12,3 +12,8 @@ migrations_dir = "db/migrations"
 
 [vars]
 SITE_ORIGIN = "https://mezomite.ai"
+# Where the firm reads its enquiries, and the identity Resend signs them with.
+# MAIL_FROM must be an address on a domain verified in Resend, or the send is
+# rejected (the row is still stored, marked failed).
+MAIL_FROM = "djournl.app@gmail.com"
+MAIL_TO = "m.farrel2222@gmail.com"

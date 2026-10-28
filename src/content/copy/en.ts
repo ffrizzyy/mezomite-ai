@@ -8,8 +8,8 @@ export const en = {
   site: {
     name: 'Mezomite.ai',
     tagline: 'Streamline operations, map workflows, and automate repetitive tasks for modern Indonesian businesses.',
-    email: 'halo@mezomite.ai',
-    whatsappDisplay: '+62 812-3456-7890',
+    email: 'm.farrel2222@gmail.com',
+    whatsappDisplay: '+62 811-7441-165',
     location: 'Jakarta, Indonesia',
     responseTime: 'We usually respond within 1 business day.',
     currencyNote: 'All prices are in Indonesian Rupiah (IDR) and exclude VAT.',
