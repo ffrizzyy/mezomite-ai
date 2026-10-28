@@ -7,7 +7,7 @@ pages_build_output_dir = "./dist"
 [[d1_databases]]
 binding = "DB"
 database_name = "mezomite-db"
-database_id = "00000000-0000-0000-0000-000000000000"
+database_id = "ecd4a38d-d26d-484f-a168-ebf60104d779"
 migrations_dir = "db/migrations"
 
 [vars]
