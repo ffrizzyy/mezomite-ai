@@ -22,6 +22,8 @@ npm run test:e2e         # build, then Playwright against dist/ (Chromium)
 
 Run all three before opening a pull request.
 
+`main` deploys itself. `.github/workflows/ci.yml` runs the checks above and then publishes `dist/` to the `mezomite-ai` Pages project on Cloudflare, so a red check cannot reach production. Do not deploy by hand unless CI is unavailable. Node comes from `.nvmrc`; `engines` records the floor Astro declares.
+
 ## Where things live
 
 - `src/content/copy/{id,en}.ts` — UI copy. Both files declare `satisfies Copy`, so a missing key fails `npm run check`.
