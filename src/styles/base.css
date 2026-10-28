@@ -362,10 +362,13 @@ small {
 
 /* A soft light source behind a hero or a page header. No grid, no texture:
    the wash is there to separate the first screen from the rest, not to
-   decorate it. */
+   decorate it.
+
+   It deliberately paints no background colour. The page colour belongs to the
+   body, and the body's background propagates to the canvas, which is what lets
+   the fixed rings layer show through a wash instead of being covered by it. */
 .wash {
   position: relative;
-  background-color: var(--bg);
   background-image:
     radial-gradient(
       120% 90% at 50% -30%,

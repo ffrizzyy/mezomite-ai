@@ -9,7 +9,7 @@ This repository is the Mezomite.ai marketing site. `docs/PRD.md` is the source o
 - **Transform and opacity only.** Never animate layout properties. Every animation respects `prefers-reduced-motion`.
 - **Two locales or none.** Every route under `src/pages/` needs its counterpart under `src/pages/en/` and an entry in `src/lib/i18n.ts`. Every UI string lives in both copy dictionaries.
 - **No secrets.** `.env` and `.dev.vars` are gitignored. Only `PUBLIC_*` values may reach the browser.
-- **No client dependency without a reason.** Runtime dependencies are Astro, `@astrojs/react`, React, the font packages, and two canvas libraries with a written exception: `three` (hero process graph) and `fabric` (method order diagram). Both are dynamic imports behind a screen-size and pointer media query, both have a server-rendered fallback, and both are documented in `docs/DESIGN.md`. Effects that can be CSS are CSS.
+- **No client dependency without a reason.** Runtime dependencies are Astro, `@astrojs/react`, React, the font packages, and two canvas libraries with a written exception: `three` (hero process graph) and `fabric` (method order diagram). Both are dynamic imports behind a screen-size and pointer media query, both have a server-rendered fallback, and both are documented in `docs/DESIGN.md`. Effects that can be CSS are CSS. The page background rings are vendored source, not a dependency, and they are a fixed, aria-hidden layer at `z-index: -1`; see the canvas rules before touching them.
 
 ## Commands
 

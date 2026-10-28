@@ -72,7 +72,12 @@ const methodHref = route('method', locale);
 
       <div class="hero__graph">
         <p class="label label--ticked">{t.home.graphTitle}</p>
-        <ProcessGraph labels={t.home.graphNodes} client:idle />
+        {/* Loaded eagerly, not on idle. The page background is a full-viewport
+            shader that never stops, and on a software renderer it can hold the
+            main thread busy enough that an idle callback is never handed a
+            slot. The diagram is content; the rings are decoration, so the
+            content goes first. */}
+        <ProcessGraph labels={t.home.graphNodes} client:load />
       </div>
     </aside>
   </div>

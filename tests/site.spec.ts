@@ -199,26 +199,48 @@ test.describe('method order diagram', () => {
   });
 });
 
-test.describe('cta rings', () => {
-  test('paints a WebGL backdrop that never takes the pointer', async ({ page }) => {
+test.describe('page background rings', () => {
+  test('paints a WebGL backdrop that stays behind the page', async ({ page }) => {
     await prime(page);
     await page.goto('/');
 
-    const panel = page.locator('.cta-band__panel');
-    await panel.scrollIntoViewIfNeeded();
-    const canvas = panel.locator('.magic-rings canvas');
+    const layer = page.locator('.page-rings');
+    const canvas = layer.locator('canvas');
     await expect(canvas).toBeVisible({ timeout: 10_000 });
 
     const box = await canvas.boundingBox();
-    expect(box?.width ?? 0).toBeGreaterThan(80);
+    const viewport = page.viewportSize();
+    expect(box?.width ?? 0).toBeGreaterThan(300);
+    expect(box?.width ?? 0).toBeGreaterThanOrEqual(viewport!.width - 2);
 
-    const pointerEvents = await panel
-      .locator('.magic-rings')
-      .evaluate((element) => getComputedStyle(element).pointerEvents);
-    expect(pointerEvents).toBe('none');
+    // The layer is pinned, never interactive, and one step behind the content.
+    const style = await layer.evaluate((element) => {
+      const cs = getComputedStyle(element);
+      return { position: cs.position, zIndex: cs.zIndex, pointerEvents: cs.pointerEvents };
+    });
+    expect(style.position).toBe('fixed');
+    expect(style.zIndex).toBe('-1');
+    expect(style.pointerEvents).toBe('none');
 
-    // The CTA buttons sit above the canvas and stay clickable.
-    await expect(panel.getByRole('link').first()).toBeVisible();
+    // Nothing above it swallowed the content: the hero heading is on top and
+    // holds the click, not the canvas.
+    await expect(page.locator('.hero h1')).toBeVisible();
+    await expect(page.locator('.hero').getByRole('link').first()).toBeVisible();
+  });
+
+  test('stays a backdrop on a phone', async ({ page }) => {
+    test.skip(desktop(test.info().project.name), 'only meaningful on the mobile project');
+    await prime(page);
+    await page.goto('/');
+
+    const layer = page.locator('.page-rings');
+    await expect(layer.locator('canvas')).toBeVisible({ timeout: 10_000 });
+
+    // A fixed layer that overflows would scroll the page sideways.
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - window.innerWidth,
+    );
+    expect(overflow).toBeLessThanOrEqual(0);
   });
 });
 

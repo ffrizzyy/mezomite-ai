@@ -10,6 +10,30 @@
 
 /* --------------------------------------------------------- MagicRings */
 
+/*
+ * The rings are the page background, not a section decoration. The layer is
+ * fixed, aria-hidden and behind everything by one z-index step: the body's
+ * background propagates to the canvas, so -1 lands above the page colour and
+ * below every piece of content without raising twenty sections by hand.
+ *
+ * It is deliberately quiet. The arcs are a wash under the type, never a
+ * pattern the eye can follow across a paragraph, and the canvas never takes a
+ * pointer event.
+ */
+.page-rings {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0.55;
+}
+
+/* Light gets less ink than dark: the same arcs on white read much louder, and
+   every percent of opacity here is paid for by the body copy sitting on top. */
+[data-theme='light'] .page-rings {
+  opacity: 0.5;
+}
+
 .magic-rings {
   position: absolute;
   inset: 0;
