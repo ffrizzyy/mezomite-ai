@@ -5,7 +5,7 @@ import MethodSteps from '../../components/sections/MethodSteps.astro';
 import ReportContents from '../../components/sections/ReportContents.astro';
 import CtaBand from '../../components/sections/CtaBand.astro';
 import SectionHead from '../../components/ui/SectionHead.astro';
-import MethodFlow from '../../components/reactbits/MethodFlow';
+import OrderSteps from '../../components/reactbits/OrderSteps';
 import Button from '../../components/ui/Button.astro';
 import Icon from '../../components/ui/Icon.astro';
 import { getCopy } from '../../content/copy';
@@ -14,7 +14,6 @@ import { METHOD_STEPS } from '../../data/method';
 
 const locale = 'en' as const;
 const t = getCopy(locale);
-const flowLabel = `The five audit steps: ${METHOD_STEPS.map((step) => step.title.en).join(', ')}.`;
 ---
 
 <Base
@@ -41,8 +40,15 @@ const flowLabel = `The five audit steps: ${METHOD_STEPS.map((step) => step.title
 
   <section class="section section--flush method-page" aria-label={t.method.title}>
     <div class="container">
-      <div class="method-page__flow">
-        <MethodFlow label={flowLabel} client:visible />
+      <div class="method-page__order">
+        <OrderSteps
+          steps={METHOD_STEPS.map((step) => ({ number: step.number, title: step.title.en }))}
+          title={t.method.orderTitle}
+          hint={t.method.orderHint}
+          valid={t.method.orderValid}
+          invalid={t.method.orderInvalid}
+          client:visible
+        />
       </div>
 
       <MethodSteps locale={locale} />
@@ -107,8 +113,8 @@ const flowLabel = `The five audit steps: ${METHOD_STEPS.map((step) => step.title
     padding-top: clamp(2rem, 4vw, 3rem);
   }
 
-  .method-page__flow {
-    padding: var(--space-6) var(--space-4);
+  .method-page__order {
+    padding: var(--space-6) var(--space-4) var(--space-4);
     margin-bottom: clamp(2rem, 5vw, 3.5rem);
     border: 1px solid var(--border);
     border-radius: var(--radius-m);

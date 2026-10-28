@@ -1,5 +1,6 @@
 ---
 import SplitText from '../reactbits/SplitText';
+import ProcessGraph from '../reactbits/ProcessGraph';
 import Button from '../ui/Button.astro';
 import Icon from '../ui/Icon.astro';
 import { getCopy } from '../../content/copy';
@@ -69,19 +70,10 @@ const methodHref = route('method', locale);
         }
       </dl>
 
-      <div class="hero__schematic" aria-hidden="true">
-        <span class="hero__node hero__node--wide">01</span>
-        <span class="hero__link"></span>
-        <span class="hero__node">02</span>
-        <span class="hero__link"></span>
-        <span class="hero__node">03</span>
-        <span class="hero__link hero__link--dash"></span>
-        <span class="hero__node hero__node--accent">04</span>
+      <div class="hero__graph">
+        <p class="label label--ticked">{t.home.graphTitle}</p>
+        <ProcessGraph labels={t.home.graphNodes} client:idle />
       </div>
-
-      <p class="hero__panel-foot">
-        {locale === 'id' ? 'Audit · Peta · Skor · Laporan' : 'Audit · Map · Score · Report'}
-      </p>
     </aside>
   </div>
 </section>
@@ -198,61 +190,14 @@ const methodHref = route('method', locale);
     font-weight: 500;
   }
 
-  .hero__schematic {
-    display: flex;
-    align-items: center;
-    gap: 0;
+  .hero__graph {
     margin-top: var(--space-6);
-    padding-block: var(--space-3);
+    padding-top: var(--space-5);
+    border-top: 1px solid var(--border);
   }
 
-  .hero__node {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 2rem;
-    height: 2rem;
-    flex: none;
-    border: 1px solid var(--border);
-    border-radius: var(--radius-s);
-    font-family: var(--font-mono);
-    font-size: 0.625rem;
-    color: var(--text-muted);
-    background: var(--surface-sunken);
-  }
-
-  .hero__node--wide {
-    width: 2.75rem;
-  }
-
-  .hero__node--accent {
-    border-color: transparent;
-    background: var(--accent);
-    color: var(--accent-text);
-    box-shadow: var(--shadow-2);
-  }
-
-  .hero__link {
-    height: 1px;
-    flex: 1;
-    min-width: var(--space-3);
-    background: var(--border-strong);
-  }
-
-  .hero__link--dash {
-    background: repeating-linear-gradient(
-      to right,
-      var(--border-strong) 0 3px,
-      transparent 3px 6px
-    );
-  }
-
-  .hero__panel-foot {
-    margin-top: var(--space-2);
-    font-size: var(--text-label);
-    letter-spacing: 0.07em;
-    text-transform: uppercase;
-    color: var(--text-faint);
+  .hero__graph .label {
+    margin-bottom: var(--space-4);
   }
 
   @media (max-width: 1023.98px) {

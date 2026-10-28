@@ -1,0 +1,234 @@
+/* ==========================================================================
+   Canvas islands: the hero process graph, the MagicRings backdrop, and the
+   method page's order diagram.
+
+   These live here rather than in an .astro <style> block because React cannot
+   use Astro's scoped styles, and rather than in islands.css because that file
+   is about forms. Everything below reads from tokens.css; a raw colour here
+   would be the same defect as a raw colour in a component.
+   ========================================================================== */
+
+/* --------------------------------------------------------- MagicRings */
+
+.magic-rings {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  /* The component listens on window, so it never needs to catch a click. */
+  pointer-events: none;
+}
+
+.magic-rings__canvas {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ------------------------------------------------------- ProcessGraph */
+
+.process-graph {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.process-graph__stage {
+  position: relative;
+  height: 5.5rem;
+}
+
+.process-graph__fallback,
+.process-graph__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.process-graph__fallback line {
+  stroke: var(--border-strong);
+  stroke-width: 1;
+}
+
+.process-graph__fallback circle {
+  fill: var(--surface);
+  stroke: var(--accent);
+  stroke-width: 1.25;
+}
+
+.process-graph__fallback .process-graph__fallback-end {
+  fill: var(--accent);
+  stroke: var(--accent);
+}
+
+.process-graph__fallback .process-graph__fallback-dash {
+  stroke-dasharray: 3 4;
+  opacity: 0.7;
+}
+
+.process-graph__canvas {
+  opacity: 0;
+  transition: opacity var(--dur-slow) var(--ease-standard);
+}
+
+.process-graph[data-canvas='ready'] .process-graph__canvas {
+  opacity: 1;
+}
+
+.process-graph[data-canvas='ready'] .process-graph__fallback {
+  opacity: 0;
+}
+
+.process-graph__labels {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: var(--space-2) var(--space-3);
+}
+
+.process-graph__labels li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding-top: var(--space-2);
+  border-top: 1px solid var(--border);
+  transition: border-color var(--dur-fast) var(--ease-standard);
+}
+
+.process-graph__labels li[data-active='true'] {
+  border-top-color: var(--accent);
+}
+
+.process-graph__index {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-faint);
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+
+.process-graph__labels li[data-active='true'] .process-graph__index {
+  color: var(--accent);
+}
+
+.process-graph__label {
+  font-size: var(--text-small);
+  line-height: 1.3;
+  color: var(--text-muted);
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+
+.process-graph__labels li[data-active='true'] .process-graph__label {
+  color: var(--text);
+}
+
+@media (max-width: 599.98px) {
+  .process-graph__labels {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+/* --------------------------------------------------------- OrderSteps */
+
+.order-steps {
+  display: grid;
+  gap: var(--space-3);
+}
+
+.order-steps__fallback {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(6.5rem, 1fr));
+  gap: var(--space-2);
+}
+
+.order-steps__fallback li {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-s);
+  background: var(--surface-raised);
+}
+
+.order-steps__fallback-index {
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  letter-spacing: var(--tracking-label);
+  color: var(--text-faint);
+}
+
+.order-steps__fallback-title {
+  font-size: var(--text-small);
+  font-weight: 500;
+  line-height: 1.3;
+}
+
+.order-steps__stage {
+  display: none;
+  position: relative;
+  height: 6.5rem;
+}
+
+/* The connector spine. It used to be a fabric Line, but fabric v7 deprecates
+   Line in favour of Polyline, and a horizontal dashed rule is a border with
+   better subpixel rendering than a canvas stroke. The chips are painted on the
+   canvas above it and their opaque fill cuts the dashes, which is the same
+   read the canvas version gave. The 24px inset matches PADDING in the island. */
+.order-steps__stage::before {
+  content: '';
+  position: absolute;
+  inset-inline: 1.5rem;
+  top: 50%;
+  border-top: 1px dashed var(--border-strong);
+  opacity: 0.6;
+}
+
+.order-steps[data-canvas='ready'] .order-steps__fallback {
+  display: none;
+}
+
+.order-steps[data-canvas='ready'] .order-steps__stage {
+  display: block;
+}
+
+.order-steps__stage canvas,
+.order-steps__stage .canvas-container {
+  max-width: 100%;
+}
+
+.order-steps__status {
+  min-height: 1.5em;
+  font-size: var(--text-small);
+  line-height: 1.5;
+  color: var(--text-muted);
+  transition: color var(--dur-fast) var(--ease-standard);
+}
+
+.order-steps__status[data-tone='valid'] {
+  color: var(--success);
+}
+
+.order-steps__status[data-tone='invalid'] {
+  color: var(--danger);
+}
+
+/* The drag hint, and the valid/invalid reply, only exist where the canvas
+   exists. Leaving the hint visible on a phone would promise an interaction
+   that the phone deliberately does not get. */
+@media (max-width: 639.98px), (hover: none), (pointer: coarse) {
+  .order-steps__status {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .order-steps__status,
+  .process-graph__canvas,
+  .process-graph__labels li,
+  .process-graph__index,
+  .process-graph__label {
+    transition: none;
+  }
+}

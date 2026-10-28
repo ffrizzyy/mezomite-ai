@@ -11,6 +11,8 @@
     "check": "astro check",
     "check:functions": "tsc -p functions/tsconfig.json",
     "og": "node scripts/og/render.mjs",
+    "test:e2e": "npm run build && playwright test",
+    "test:e2e:ui": "playwright test --ui",
     "db:local": "wrangler d1 execute mezomite-db --local --file=./db/migrations/0001_init.sql",
     "db:remote": "wrangler d1 execute mezomite-db --remote --file=./db/migrations/0001_init.sql"
   },
@@ -29,8 +31,10 @@
     "@astrojs/check": "^0.9.5",
     "@cloudflare/workers-types": "^5.20261027.1",
     "@phosphor-icons/core": "^2.1.1",
+    "@playwright/test": "^1.64.1",
     "@types/react": "^19.2.0",
     "@types/react-dom": "^19.2.0",
+    "@types/three": "^0.186.0",
     "typescript": "^5.9.3",
     "wrangler": "^4.0.0"
   },

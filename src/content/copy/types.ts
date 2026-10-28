@@ -101,6 +101,9 @@ export type Copy = {
     specTitle: string;
     specRows: SpecRow[];
     specNote: string;
+    /** The four stages drawn by the hero process graph, in order. */
+    graphTitle: string;
+    graphNodes: string[];
     proofTitle: string;
     proofNote: string;
     proofEmpty: string;
@@ -135,6 +138,11 @@ export type Copy = {
     title: string;
     lead: string;
     stepLabel: string;
+    /** Copy for the draggable order diagram at the top of the method page. */
+    orderTitle: string;
+    orderHint: string;
+    orderValid: string;
+    orderInvalid: string;
     consultantLabel: string;
     clientLabel: string;
     outputLabel: string;
