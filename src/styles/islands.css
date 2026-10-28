@@ -12,8 +12,10 @@
   bottom: 0;
   z-index: var(--z-banner);
   background: var(--surface);
-  border-top: 1px solid var(--border-strong);
-  box-shadow: 0 -8px 32px -24px rgb(0 0 0 / 0.35);
+  border: 1px solid var(--border);
+  border-bottom: 0;
+  border-radius: var(--radius-l) var(--radius-l) 0 0;
+  box-shadow: var(--shadow-pop);
   padding-bottom: env(safe-area-inset-bottom);
   animation: consent-in var(--dur-base) var(--ease-enter) both;
 }
@@ -93,7 +95,8 @@
   gap: var(--space-4);
   padding: var(--space-3);
   border: 1px solid var(--border);
-  border-radius: var(--radius-s);
+  border-radius: var(--radius-m);
+  background: var(--surface-sunken);
 }
 
 .consent__row-title {
@@ -113,7 +116,7 @@
   height: 18px;
   margin-top: 2px;
   flex: none;
-  accent-color: var(--accent);
+  accent-color: var(--solid);
 }
 
 .consent__panel-actions {
@@ -125,7 +128,7 @@
 
 @media (max-width: 899.98px) {
   .consent__inner {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     gap: var(--space-4);
   }
 }
@@ -152,10 +155,10 @@
 }
 
 .form__summary {
-  border-left: 2px solid var(--danger);
+  border: 1px solid color-mix(in oklab, var(--danger) 28%, transparent);
   background: var(--danger-soft);
   padding: var(--space-3) var(--space-4);
-  border-radius: var(--radius-s);
+  border-radius: var(--radius-m);
   font-size: var(--text-small);
   line-height: 1.5;
 }
@@ -191,6 +194,12 @@
   align-items: center;
 }
 
+/* Without a configured site key the widget never mounts. Do not reserve 65px
+   of dead space for it in that case. */
+.form__turnstile:empty {
+  min-height: 0;
+}
+
 .form__honeypot {
   position: absolute;
   left: -9999px;
@@ -205,8 +214,9 @@
   gap: var(--space-6);
   padding: var(--space-6);
   border: 1px solid var(--border);
-  border-radius: var(--radius-m);
+  border-radius: var(--radius-l);
   background: var(--surface);
+  box-shadow: var(--shadow-1);
 }
 
 .contact-aside__steps {
@@ -277,8 +287,9 @@
   gap: var(--space-5);
   padding: clamp(1.5rem, 4vw, 2.5rem);
   border: 1px solid var(--border);
-  border-radius: var(--radius-m);
+  border-radius: var(--radius-l);
   background: var(--surface);
+  box-shadow: var(--shadow-1);
   animation: fade-in var(--dur-base) var(--ease-standard) both;
 }
 
@@ -382,7 +393,7 @@
 }
 
 .day:hover {
-  border-color: var(--hairline-strong);
+  border-color: var(--border-strong);
 }
 
 .day[aria-pressed='true'] {
@@ -443,9 +454,9 @@
 }
 
 .slot[aria-pressed='true'] {
-  border-color: var(--accent);
-  background: var(--accent);
-  color: var(--accent-text);
+  border-color: var(--solid);
+  background: var(--solid);
+  color: var(--solid-text);
 }
 
 .slot:disabled {
@@ -481,8 +492,9 @@
 
 .booking__empty {
   padding: var(--space-4);
-  border: 1px dashed var(--border-strong);
-  border-radius: var(--radius-s);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-m);
+  background: var(--surface-sunken);
   font-size: var(--text-small);
   color: var(--text-muted);
   margin-top: var(--space-3);
@@ -503,8 +515,8 @@
   margin-top: var(--space-6);
   padding: var(--space-4) var(--space-5);
   border: 1px solid var(--border);
-  border-radius: var(--radius-m);
-  background: var(--surface);
+  border-radius: var(--radius-l);
+  background: var(--surface-sunken);
 }
 
 .booking__summary > .label {

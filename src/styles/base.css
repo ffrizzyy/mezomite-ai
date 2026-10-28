@@ -32,10 +32,11 @@ body {
   font-size: var(--text-body);
   font-weight: 400;
   line-height: var(--leading-body);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
   font-synthesis-weight: none;
   text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-variant-numeric: proportional-nums;
   min-height: 100dvh;
 }
 
@@ -107,13 +108,14 @@ h1 {
 h2 {
   font-size: var(--text-h2);
   line-height: var(--leading-heading);
+  letter-spacing: var(--tracking-heading);
 }
 
 h3 {
   font-family: var(--font-body);
   font-size: var(--text-h3);
   line-height: 1.3;
-  letter-spacing: -0.012em;
+  letter-spacing: var(--tracking-heading);
 }
 
 p {
@@ -136,7 +138,7 @@ small {
   text-decoration: underline;
   text-decoration-thickness: 1px;
   text-underline-offset: 0.22em;
-  text-decoration-color: color-mix(in oklab, currentColor 45%, transparent);
+  text-decoration-color: color-mix(in oklab, currentColor 40%, transparent);
   transition: text-decoration-color var(--dur-fast) var(--ease-standard);
 }
 
@@ -183,7 +185,7 @@ small {
 :focus-visible {
   outline: 2px solid var(--focus);
   outline-offset: 2px;
-  border-radius: 2px;
+  border-radius: 4px;
 }
 
 :focus:not(:focus-visible) {
@@ -265,8 +267,9 @@ small {
   gap: var(--space-4);
 }
 
+/* A section is separated by air and one hairline, nothing more. */
 .section {
-  padding-block: clamp(3.5rem, 7vw, 6rem);
+  padding-block: clamp(4rem, 8vw, 7rem);
   border-top: 1px solid var(--border);
 }
 
@@ -275,14 +278,14 @@ small {
 }
 
 .section--tight {
-  padding-block: clamp(2.5rem, 5vw, 4rem);
+  padding-block: clamp(3rem, 5vw, 4.5rem);
 }
 
 .section__head {
   display: flex;
   flex-direction: column;
   gap: var(--space-3);
-  margin-bottom: var(--space-10);
+  margin-bottom: var(--space-12);
   max-width: var(--measure);
 }
 
@@ -296,7 +299,7 @@ small {
 /* --------------------------------------------------------------- Labels */
 
 .label {
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--text-label);
   font-weight: 500;
   letter-spacing: var(--tracking-label);
@@ -316,12 +319,14 @@ small {
   color: var(--text);
 }
 
-/* A small square tick, used before labels in the blueprint flavour. */
+/* A 4px dot, used before labels. The mark is a rhythm cue, not a bullet. */
 .label--ticked::before {
   content: '';
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
   background: currentColor;
+  opacity: 0.55;
   flex: none;
 }
 
@@ -342,79 +347,45 @@ small {
 
 .lede {
   font-size: var(--text-lead);
-  line-height: 1.5;
+  line-height: 1.55;
+  letter-spacing: -0.005em;
   color: var(--text-muted);
-  max-width: 56ch;
+  max-width: 58ch;
+  text-wrap: pretty;
 }
 
 .measure {
   max-width: var(--measure);
 }
 
-.tick-rule {
-  height: 1px;
-  background: var(--border);
+/* --------------------------------------------------------------- Surface wash */
+
+/* A soft light source behind a hero or a page header. No grid, no texture:
+   the wash is there to separate the first screen from the rest, not to
+   decorate it. */
+.wash {
   position: relative;
-}
-
-.tick-rule::before,
-.tick-rule::after {
-  content: '';
-  position: absolute;
-  top: -2px;
-  width: 1px;
-  height: 5px;
-  background: var(--border-strong);
-}
-
-.tick-rule::before {
-  left: 0;
-}
-
-.tick-rule::after {
-  right: 0;
-}
-
-/* --------------------------------------------------------------- Blueprint flavour */
-
-.blueprint {
-  position: relative;
-  background-color: var(--surface);
+  background-color: var(--bg);
   background-image:
-    linear-gradient(to right, var(--grid-line) 1px, transparent 1px),
-    linear-gradient(to bottom, var(--grid-line) 1px, transparent 1px);
-  background-size: 32px 32px;
-  background-position: center top;
+    radial-gradient(
+      120% 90% at 50% -30%,
+      color-mix(in oklab, var(--accent) 7%, transparent),
+      transparent 62%
+    ),
+    radial-gradient(
+      60% 50% at 100% 0%,
+      color-mix(in oklab, var(--accent) 4%, transparent),
+      transparent 70%
+    );
 }
 
-.blueprint--fade {
-  -webkit-mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 0%, #000 72%, transparent 100%);
-}
-
-/* Crosshair ticks for panel corners. */
-.corners {
-  position: relative;
-}
-
-.corners::before,
-.corners::after {
-  content: '+';
-  position: absolute;
-  font-family: var(--font-mono);
-  font-size: 10px;
-  line-height: 1;
-  color: var(--hairline-strong);
-}
-
-.corners::before {
-  top: -5px;
-  left: -1px;
-}
-
-.corners::after {
-  bottom: -5px;
-  right: -1px;
+.wash--fade {
+  background-image:
+    radial-gradient(
+      120% 90% at 50% -30%,
+      color-mix(in oklab, var(--accent) 7%, transparent),
+      transparent 62%
+    );
 }
 
 /* --------------------------------------------------------------- Prose */
@@ -430,7 +401,7 @@ small {
 }
 
 .prose h2 {
-  font-size: clamp(1.35rem, 2.4vw, 1.75rem);
+  font-size: clamp(1.375rem, 2.4vw, 1.75rem);
   line-height: 1.2;
   margin-top: 2.25em;
   scroll-margin-top: calc(var(--header-height) + var(--space-6));
@@ -455,10 +426,14 @@ small {
 }
 
 .prose ul li::before {
-  content: '—';
+  content: '';
   position: absolute;
   left: 0;
-  color: var(--text-muted);
+  top: 0.68em;
+  width: 5px;
+  height: 1.5px;
+  border-radius: 1px;
+  background: var(--text-faint);
 }
 
 .prose ol {
@@ -470,8 +445,8 @@ small {
   content: counter(step) '.';
   position: absolute;
   left: 0;
-  font-family: var(--font-mono);
   font-size: var(--text-small);
+  font-variant-numeric: tabular-nums;
   color: var(--text-muted);
 }
 
@@ -487,7 +462,7 @@ small {
   font-size: 0.9em;
   background: var(--surface-sunken);
   padding: 0.1em 0.35em;
-  border-radius: var(--radius-s);
+  border-radius: var(--radius-xs);
 }
 
 /* --------------------------------------------------------------- A11y helpers */
@@ -509,11 +484,11 @@ small {
   top: var(--space-2);
   left: var(--space-2);
   z-index: var(--z-skip);
-  background: var(--accent);
-  color: var(--accent-text);
+  background: var(--solid);
+  color: var(--solid-text);
   padding: var(--space-3) var(--space-4);
   border-radius: var(--radius-s);
-  font-weight: 600;
+  font-weight: 500;
   font-size: var(--text-small);
   transform: translateY(-160%);
   transition: transform var(--dur-fast) var(--ease-enter);

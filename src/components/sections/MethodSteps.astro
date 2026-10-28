@@ -67,7 +67,7 @@ const t = getCopy(locale);
 
 <style>
   .steps {
-    border-top: 1px solid var(--border-strong);
+    border-top: 1px solid var(--border);
   }
 
   .step {
@@ -87,12 +87,14 @@ const t = getCopy(locale);
   }
 
   .step__number {
-    font-family: var(--font-mono);
-    font-size: clamp(2rem, 4vw, 2.75rem);
-    font-weight: 400;
+    font-family: var(--font-body);
+    font-size: clamp(1.75rem, 3vw, 2.25rem);
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
     line-height: 1;
-    letter-spacing: -0.03em;
-    color: var(--accent);
+    letter-spacing: -0.04em;
+    color: var(--text);
+    opacity: 0.9;
   }
 
   .step__title {
@@ -127,13 +129,15 @@ const t = getCopy(locale);
   .step__bucket {
     padding: var(--space-4) var(--space-5);
     border: 1px solid var(--border);
-    border-radius: var(--radius-s);
+    border-radius: var(--radius-m);
     background: var(--surface);
+    box-shadow: var(--shadow-1);
   }
 
   .step__bucket--output {
-    border-color: color-mix(in oklab, var(--accent) 40%, var(--border));
+    border-color: color-mix(in oklab, var(--accent) 30%, var(--border));
     background: var(--accent-quiet);
+    box-shadow: none;
   }
 
   .step__bucket .label {
@@ -158,7 +162,7 @@ const t = getCopy(locale);
     content: '—';
     position: absolute;
     left: 0;
-    color: var(--border-strong);
+    color: var(--text-faint);
   }
 
   .step__bucket--output li {
@@ -167,7 +171,7 @@ const t = getCopy(locale);
 
   @media (max-width: 899.98px) {
     .step {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
 
     .step__diagram {

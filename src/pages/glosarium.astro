@@ -125,7 +125,7 @@ const entries = (await getCollection('glossary')).sort((a, b) => a.data.order - 
     width: min(24rem, 100%);
   }
 
-  .glossary-search svg {
+  .glossary-search :global(svg) {
     position: absolute;
     left: var(--space-3);
     color: var(--text-muted);
@@ -204,7 +204,7 @@ const entries = (await getCollection('glossary')).sort((a, b) => a.data.order - 
 
   @media (max-width: 767.98px) {
     .term {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>

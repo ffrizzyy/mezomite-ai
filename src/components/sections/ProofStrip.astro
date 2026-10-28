@@ -46,8 +46,8 @@ const t = getCopy(locale);
 
 <style>
   .proof {
-    border-top: 1px solid var(--border-strong);
-    border-bottom: 1px solid var(--border-strong);
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
     background: var(--surface);
   }
 
@@ -62,7 +62,7 @@ const t = getCopy(locale);
   }
 
   .proof__title {
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: var(--text-label);
     font-weight: 500;
     letter-spacing: var(--tracking-label);
@@ -118,7 +118,7 @@ const t = getCopy(locale);
 
   @media (max-width: 767.98px) {
     .proof__grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       gap: var(--space-5);
     }
 

@@ -28,7 +28,7 @@ const t = getCopy(locale);
 
   <section class="section section--flush" aria-labelledby="cases-empty-title">
     <div class="container">
-      <div class="cases-empty corners">
+      <div class="cases-empty">
         <span class="cases-empty__icon">
           <Icon name="seal-check" size={28} />
         </span>
@@ -55,10 +55,11 @@ const t = getCopy(locale);
     grid-template-columns: auto minmax(0, 1fr);
     gap: var(--space-5) var(--space-6);
     align-items: start;
-    padding: clamp(1.75rem, 4vw, 3rem);
-    border: 1px dashed var(--border-strong);
-    border-radius: var(--radius-m);
+    padding: clamp(2rem, 4vw, 3rem);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-l);
     background: var(--surface);
+    box-shadow: var(--shadow-1);
     max-width: 52rem;
   }
 
@@ -69,7 +70,7 @@ const t = getCopy(locale);
     width: 3rem;
     height: 3rem;
     border: 1px solid var(--border);
-    border-radius: var(--radius-s);
+    border-radius: var(--radius-m);
     color: var(--accent);
     background: var(--accent-quiet);
   }
@@ -97,7 +98,7 @@ const t = getCopy(locale);
 
   @media (max-width: 599.98px) {
     .cases-empty {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
 
     .cases-empty__actions {

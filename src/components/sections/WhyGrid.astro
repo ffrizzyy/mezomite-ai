@@ -28,7 +28,7 @@ const items = t.home.whyItems;
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0;
-    border-top: 1px solid var(--border-strong);
+    border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
   }
 
@@ -68,7 +68,7 @@ const items = t.home.whyItems;
 
   @media (max-width: 899.98px) {
     .why {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
 
     .why__item {

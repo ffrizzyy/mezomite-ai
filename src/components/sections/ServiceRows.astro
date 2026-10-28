@@ -112,7 +112,7 @@ const servicesHref = route('services', locale);
 <style>
   /* ------------------------------------------------------------- Compact */
   .service-list {
-    border-top: 1px solid var(--border-strong);
+    border-top: 1px solid var(--border);
   }
 
   .service-list li {
@@ -266,7 +266,7 @@ const servicesHref = route('services', locale);
     color: var(--text-muted);
   }
 
-  .ticks svg {
+  .ticks :global(svg) {
     margin-top: 0.2em;
     color: var(--accent);
   }
@@ -301,7 +301,7 @@ const servicesHref = route('services', locale);
     }
 
     .service__body {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
 
     .service__includes {
@@ -309,6 +309,14 @@ const servicesHref = route('services', locale);
       padding-top: var(--space-5);
       border-left: 0;
       border-top: 1px solid var(--border);
+    }
+  }
+
+  @media (max-width: 359.98px) {
+    /* The price is a nowrap figure. Below 360px the hanging column it shares
+       with the title is too narrow, so let it use the full row. */
+    .service__price {
+      grid-column: 1 / -1;
     }
   }
 

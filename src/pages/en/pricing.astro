@@ -68,7 +68,7 @@ const entry = PACKAGES.find((item) => item.entry) ?? PACKAGES[0];
 
   <section class="section" aria-labelledby="free-title">
     <div class="container">
-      <div class="free-panel corners">
+      <div class="free-panel">
         <div class="free-panel__copy">
           <p class="label label--ticked label--accent">{t.common.freeDiagnosticShort}</p>
           <h2 id="free-title">{t.pricing.freeTitle}</h2>
@@ -95,7 +95,7 @@ const entry = PACKAGES.find((item) => item.entry) ?? PACKAGES[0];
           <h2 id="payment-title" class="visually-hidden">{t.pricing.paymentTitle}</h2>
           <p>{t.pricing.paymentBody}</p>
         </div>
-        <p class="payment__seal mono">
+        <p class="payment__seal">
           <Icon name="shield-check" size={20} />
           No payment is taken on this site
         </p>
@@ -133,7 +133,7 @@ const entry = PACKAGES.find((item) => item.entry) ?? PACKAGES[0];
   .choose {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    border-top: 1px solid var(--border-strong);
+    border-top: 1px solid var(--border);
     border-left: 1px solid var(--border);
   }
 
@@ -162,10 +162,11 @@ const entry = PACKAGES.find((item) => item.entry) ?? PACKAGES[0];
     grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.8fr);
     gap: clamp(1.5rem, 4vw, 3rem);
     align-items: end;
-    padding: clamp(1.75rem, 4vw, 2.75rem);
-    border: 1px solid var(--border-strong);
-    border-radius: var(--radius-m);
+    padding: clamp(2rem, 4vw, 3rem);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-xl);
     background: var(--accent-quiet);
+    box-shadow: var(--shadow-1);
   }
 
   .free-panel__copy h2 {
@@ -194,7 +195,7 @@ const entry = PACKAGES.find((item) => item.entry) ?? PACKAGES[0];
     line-height: 1.5;
   }
 
-  .free-panel__note svg {
+  .free-panel__note :global(svg) {
     margin-top: 0.15em;
   }
 
@@ -204,7 +205,7 @@ const entry = PACKAGES.find((item) => item.entry) ?? PACKAGES[0];
     gap: clamp(1.5rem, 4vw, 3rem);
     align-items: start;
     padding-top: var(--space-5);
-    border-top: 1px solid var(--border-strong);
+    border-top: 1px solid var(--border);
   }
 
   .payment p:not(.label):not(.payment__seal) {
@@ -227,12 +228,12 @@ const entry = PACKAGES.find((item) => item.entry) ?? PACKAGES[0];
 
   @media (max-width: 899.98px) {
     .choose {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
 
     .free-panel,
     .payment {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
 
     .free-panel__action {

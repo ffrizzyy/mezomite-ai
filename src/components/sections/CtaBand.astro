@@ -29,7 +29,7 @@ const {
 
 <section class="section cta-band" aria-labelledby="cta-band-title">
   <div class="container">
-    <div class="cta-band__panel corners">
+    <div class="cta-band__panel panel--ink">
       <div class="cta-band__copy">
         <p class="label label--ticked label--accent">{eyebrow}</p>
         <h2 id="cta-band-title">{title}</h2>
@@ -51,17 +51,9 @@ const {
     grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr);
     align-items: end;
     gap: clamp(1.5rem, 4vw, 3rem);
-    padding: clamp(1.75rem, 4vw, 3rem);
-    border: 1px solid var(--border-strong);
-    border-radius: var(--radius-m);
-    background:
-      linear-gradient(to bottom, transparent, var(--surface)),
-      repeating-linear-gradient(
-        to right,
-        var(--grid-line) 0 1px,
-        transparent 1px 32px
-      ),
-      var(--surface);
+    padding: clamp(2rem, 4vw, 3.25rem);
+    border-radius: var(--radius-xl);
+    box-shadow: var(--shadow-2);
   }
 
   .cta-band__copy h2 {
@@ -84,7 +76,7 @@ const {
 
   @media (max-width: 899.98px) {
     .cta-band__panel {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       align-items: start;
     }
 

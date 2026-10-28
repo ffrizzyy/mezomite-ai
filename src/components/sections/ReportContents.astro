@@ -28,7 +28,7 @@ const items = REPORT_CONTENTS[locale];
   .report {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    border-top: 1px solid var(--border-strong);
+    border-top: 1px solid var(--border);
     border-left: 1px solid var(--border);
   }
 
@@ -55,7 +55,7 @@ const items = REPORT_CONTENTS[locale];
 
   @media (max-width: 767.98px) {
     .report {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>

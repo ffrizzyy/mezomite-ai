@@ -52,41 +52,42 @@
 /* ------------------------------------------------------------ CountUp */
 
 .counter {
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-variant-numeric: tabular-nums;
   font-feature-settings: 'tnum' 1;
+  letter-spacing: -0.03em;
 }
 
 /* ------------------------------------------------------------ ShinyText */
 
+/* The sheen is a *repeating* gradient whose outer stops are currentColor, so
+   every glyph is painted on every frame. A non-repeating gradient slid past the
+   element leaves half the text transparent, which reads as a clipped word. */
 .shiny-text {
   background-image: linear-gradient(
     100deg,
     currentColor 0%,
-    currentColor 38%,
-    color-mix(in oklab, currentColor 35%, white) 50%,
-    currentColor 62%,
+    currentColor 42%,
+    color-mix(in oklab, currentColor 68%, var(--text-faint)) 50%,
+    currentColor 58%,
     currentColor 100%
   );
-  background-size: 260% 100%;
-  background-repeat: no-repeat;
-  background-position: 120% 0;
+  background-size: 180% 100%;
+  background-repeat: repeat;
   -webkit-background-clip: text;
   background-clip: text;
+  /* Keep `color` intact: the gradient reads currentColor, and a transparent
+     colour would make the whole sweep invisible. Only the glyph fill is cut. */
   -webkit-text-fill-color: transparent;
-  color: transparent;
-  animation: shiny-sweep 6s var(--ease-standard) infinite;
+  animation: shiny-sweep 4.5s linear infinite;
 }
 
 @keyframes shiny-sweep {
-  0% {
-    background-position: 120% 0;
+  from {
+    background-position: 0% 0;
   }
-  22% {
-    background-position: -40% 0;
-  }
-  100% {
-    background-position: -40% 0;
+  to {
+    background-position: -180% 0;
   }
 }
 
@@ -106,9 +107,9 @@
   z-index: 0;
   border-radius: inherit;
   background: radial-gradient(
-    260px circle at var(--mx, 50%) var(--my, 0%),
-    color-mix(in oklab, var(--accent) 10%, transparent),
-    transparent 72%
+    240px circle at var(--mx, 50%) var(--my, 0%),
+    color-mix(in oklab, var(--accent) 7%, transparent),
+    transparent 70%
   );
   opacity: 0;
   transition: opacity var(--dur-base) var(--ease-standard);

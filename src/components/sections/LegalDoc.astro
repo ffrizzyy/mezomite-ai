@@ -44,7 +44,7 @@ const contentsLabel = locale === 'id' ? 'Isi halaman' : 'On this page';
 
     <p class="legal-doc__updated">
       <span class="label">{updatedLabel}</span>
-      <span class="mono">{doc.updated}</span>
+      <span class="tabular">{doc.updated}</span>
     </p>
 
     <p class="lede legal-doc__intro">{doc.intro}</p>
@@ -116,7 +116,7 @@ const contentsLabel = locale === 'id' ? 'Isi halaman' : 'On this page';
     align-items: flex-start;
   }
 
-  .legal-draft svg {
+  .legal-draft :global(svg) {
     margin-top: 0.15em;
     color: var(--warning);
   }
@@ -147,7 +147,7 @@ const contentsLabel = locale === 'id' ? 'Isi halaman' : 'On this page';
 
   @media (max-width: 899.98px) {
     .legal-layout {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
 
     .legal-toc {

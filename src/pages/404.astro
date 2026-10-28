@@ -23,7 +23,7 @@ const links = [
   description={t.pages.notFound.description}
   noIndex
 >
-  <section class="not-found blueprint" aria-labelledby="not-found-title">
+  <section class="not-found wash" aria-labelledby="not-found-title">
     <div class="container not-found__inner">
       <div class="not-found__code" aria-hidden="true">
         <span>4</span>
@@ -92,12 +92,13 @@ const links = [
     align-items: center;
     gap: var(--space-2);
     grid-column: 1 / -1;
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: clamp(4rem, 14vw, 10rem);
-    font-weight: 500;
+    font-weight: 600;
     line-height: 0.8;
     letter-spacing: -0.06em;
     color: var(--text);
+    font-variant-numeric: tabular-nums;
   }
 
   .not-found__zero {
@@ -144,7 +145,7 @@ const links = [
 
   @media (max-width: 767.98px) {
     .not-found__inner {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>

@@ -18,7 +18,7 @@ const bookingHref = route('booking', locale);
 const methodHref = route('method', locale);
 ---
 
-<section class="hero blueprint blueprint--fade" aria-labelledby="hero-title">
+<section class="hero wash wash--fade" aria-labelledby="hero-title">
   <div class="container hero__grid">
     <div class="hero__copy">
       <p class="label label--ticked label--accent rise">{t.home.eyebrow}</p>
@@ -52,7 +52,7 @@ const methodHref = route('method', locale);
       </p>
     </div>
 
-    <aside class="hero__panel corners rise" style="--rise-delay: 120ms">
+    <aside class="hero__panel rise" style="--rise-delay: 120ms">
       <div class="hero__panel-head">
         <p class="label label--ticked">{t.home.specTitle}</p>
         <span class="badge badge--accent">{t.common.entryPackage}</span>
@@ -79,7 +79,7 @@ const methodHref = route('method', locale);
         <span class="hero__node hero__node--accent">04</span>
       </div>
 
-      <p class="hero__panel-foot mono">
+      <p class="hero__panel-foot">
         {locale === 'id' ? 'Audit · Peta · Skor · Laporan' : 'Audit · Map · Score · Report'}
       </p>
     </aside>
@@ -89,16 +89,16 @@ const methodHref = route('method', locale);
 <style>
   .hero {
     position: relative;
-    padding-block: clamp(3rem, 7vw, 5.5rem) clamp(3rem, 6vw, 5rem);
+    padding-block: clamp(3.5rem, 7.5vw, 6.5rem) clamp(3.5rem, 6vw, 5.5rem);
     border-bottom: 1px solid var(--border);
     overflow: hidden;
   }
 
   .hero__grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.55fr) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 0.92fr);
     gap: clamp(2rem, 5vw, 4.5rem);
-    align-items: start;
+    align-items: center;
   }
 
   .hero__copy {
@@ -108,15 +108,16 @@ const methodHref = route('method', locale);
 
   .hero__title {
     margin-top: var(--space-5);
-    max-width: 20ch;
+    max-width: 17ch;
   }
 
   .hero__lead {
     margin-top: var(--space-6);
     font-size: var(--text-lead);
-    line-height: 1.5;
+    line-height: 1.55;
+    letter-spacing: -0.005em;
     color: var(--text-muted);
-    max-width: 54ch;
+    max-width: 46ch;
   }
 
   .hero__offer {
@@ -126,7 +127,7 @@ const methodHref = route('method', locale);
     gap: var(--space-3) var(--space-5);
     margin-top: var(--space-8);
     padding-top: var(--space-5);
-    border-top: 1px solid var(--border-strong);
+    border-top: 1px solid var(--border);
   }
 
   .hero__price {
@@ -159,11 +160,11 @@ const methodHref = route('method', locale);
 
   .hero__panel {
     position: relative;
-    margin-top: var(--space-3);
     padding: var(--space-6);
-    background: color-mix(in oklab, var(--surface) 92%, transparent);
-    border: 1px solid var(--border-strong);
-    border-radius: var(--radius-s);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-l);
+    box-shadow: var(--shadow-2);
   }
 
   .hero__panel-head {
@@ -212,12 +213,12 @@ const methodHref = route('method', locale);
     width: 2rem;
     height: 2rem;
     flex: none;
-    border: 1px solid var(--border-strong);
+    border: 1px solid var(--border);
     border-radius: var(--radius-s);
     font-family: var(--font-mono);
-    font-size: var(--text-label);
+    font-size: 0.625rem;
     color: var(--text-muted);
-    background: var(--surface);
+    background: var(--surface-sunken);
   }
 
   .hero__node--wide {
@@ -225,9 +226,10 @@ const methodHref = route('method', locale);
   }
 
   .hero__node--accent {
-    border-color: var(--accent);
+    border-color: transparent;
     background: var(--accent);
     color: var(--accent-text);
+    box-shadow: var(--shadow-2);
   }
 
   .hero__link {
@@ -248,25 +250,28 @@ const methodHref = route('method', locale);
   .hero__panel-foot {
     margin-top: var(--space-2);
     font-size: var(--text-label);
-    letter-spacing: 0.1em;
+    letter-spacing: 0.07em;
     text-transform: uppercase;
-    color: var(--text-muted);
+    color: var(--text-faint);
   }
 
   @media (max-width: 1023.98px) {
     .hero__grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
+      align-items: start;
     }
 
     .hero__panel {
       max-width: 32rem;
-      margin-top: 0;
     }
   }
 
   @media (max-width: 599.98px) {
     .hero__title {
       max-width: none;
+      /* `balance` fills the longest lines first and can leave a single short
+         word on its own line; `pretty` keeps the last two lines even. */
+      text-wrap: pretty;
     }
 
     .hero__actions > :global(.btn) {

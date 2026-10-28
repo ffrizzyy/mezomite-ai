@@ -209,20 +209,20 @@ const waHref = whatsappLink(locale, route(routeKey, locale));
     position: sticky;
     top: 0;
     z-index: var(--z-header);
-    background: color-mix(in oklab, var(--bg) 88%, transparent);
+    background: color-mix(in oklab, var(--bg) 82%, transparent);
     border-bottom: 1px solid transparent;
     transition: border-color var(--dur-base) var(--ease-standard), background-color var(--dur-base) var(--ease-standard);
   }
 
   @supports (backdrop-filter: blur(12px)) {
     .site-header {
-      backdrop-filter: blur(14px) saturate(1.15);
+      backdrop-filter: blur(18px) saturate(1.6);
     }
   }
 
   .site-header[data-scrolled='true'] {
     border-bottom-color: var(--border);
-    background: color-mix(in oklab, var(--bg) 95%, transparent);
+    background: color-mix(in oklab, var(--bg) 92%, transparent);
   }
 
   .header__inner {
@@ -242,30 +242,31 @@ const waHref = whatsappLink(locale, route(routeKey, locale));
   }
 
   .brand__mark {
-    width: 1.625rem;
-    height: 1.625rem;
+    width: 1.5rem;
+    height: 1.5rem;
     object-fit: contain;
   }
 
   .brand__name {
-    font-family: var(--font-display);
-    font-size: 1.125rem;
+    font-family: var(--font-body);
+    font-size: 1.0625rem;
     font-weight: 600;
-    letter-spacing: -0.03em;
+    letter-spacing: -0.025em;
     line-height: 1;
   }
 
   .brand__tld {
-    font-family: var(--font-mono);
-    font-size: 0.75rem;
-    letter-spacing: 0;
-    color: var(--text-muted);
-    margin-left: -0.06em;
+    font-family: inherit;
+    font-size: 0.9375em;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    color: var(--text-faint);
+    margin-left: -0.03em;
   }
 
   .header__nav {
     display: flex;
-    gap: var(--space-6);
+    gap: var(--space-1);
     margin-left: auto;
   }
 
@@ -275,26 +276,21 @@ const waHref = whatsappLink(locale, route(routeKey, locale));
     text-decoration: none;
     font-size: var(--text-small);
     font-weight: 500;
-    padding-block: 0.55rem;
-    transition: color var(--dur-fast) var(--ease-standard);
+    padding: 0.4rem 0.625rem;
+    border-radius: var(--radius-s);
+    transition:
+      color var(--dur-fast) var(--ease-standard),
+      background-color var(--dur-fast) var(--ease-standard);
   }
 
   .header__nav a:hover {
     color: var(--text);
+    background: var(--surface-hover);
   }
 
   .header__nav a[aria-current='page'] {
     color: var(--text);
-  }
-
-  .header__nav a[aria-current='page']::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 0.15rem;
-    height: 2px;
-    background: var(--accent);
+    background: var(--surface-hover);
   }
 
   .header__tools {
@@ -310,19 +306,19 @@ const waHref = whatsappLink(locale, route(routeKey, locale));
     gap: 0.4rem;
     font-family: var(--font-mono);
     font-size: var(--text-label);
-    letter-spacing: 0.08em;
+    letter-spacing: 0.06em;
     padding-inline: var(--space-1);
   }
 
   .lang__current {
     color: var(--text);
-    font-weight: 600;
+    font-weight: 500;
   }
 
   .lang__sep {
     width: 1px;
-    height: 11px;
-    background: var(--border);
+    height: 10px;
+    background: var(--border-strong);
   }
 
   .lang__other {
@@ -448,11 +444,11 @@ const waHref = whatsappLink(locale, route(routeKey, locale));
     .mobile-nav__link {
       color: var(--text);
       text-decoration: none;
-      font-family: var(--font-display);
-      font-size: 1.375rem;
+      font-family: var(--font-body);
+      font-size: 1.25rem;
       font-weight: 600;
-      letter-spacing: -0.02em;
-      padding-block: 0.7rem;
+      letter-spacing: -0.025em;
+      padding-block: 0.85rem;
       border-bottom: 1px solid var(--border);
     }
 

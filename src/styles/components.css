@@ -8,28 +8,31 @@
   --btn-bg: transparent;
   --btn-fg: var(--text);
   --btn-border: transparent;
+  --btn-shadow: none;
   position: relative;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
   min-height: 44px;
-  padding: 0.6875rem 1.125rem;
+  padding: 0.625rem 1.125rem;
   border: 1px solid var(--btn-border);
   border-radius: var(--radius-s);
   background: var(--btn-bg);
   color: var(--btn-fg);
+  box-shadow: var(--btn-shadow);
   font-family: var(--font-body);
   font-size: 0.9375rem;
-  font-weight: 600;
+  font-weight: 500;
   line-height: 1.2;
-  letter-spacing: -0.005em;
+  letter-spacing: -0.008em;
   text-decoration: none;
   white-space: nowrap;
   cursor: pointer;
   transition:
     background-color var(--dur-fast) var(--ease-standard),
     border-color var(--dur-fast) var(--ease-standard),
+    box-shadow var(--dur-fast) var(--ease-standard),
     color var(--dur-fast) var(--ease-standard),
     transform var(--dur-instant) var(--ease-standard);
 }
@@ -38,9 +41,9 @@
   text-decoration: none;
 }
 
-/* Press is a 98% squeeze, never a bounce. High-frequency interaction. */
+/* Press is a 97% squeeze, never a bounce. High-frequency interaction. */
 .btn:active {
-  transform: scale(0.98);
+  transform: scale(0.97);
 }
 
 .btn:focus-visible {
@@ -52,27 +55,30 @@
 .btn[aria-disabled='true'],
 .btn[data-pending='true'] {
   cursor: not-allowed;
-  opacity: 0.6;
+  opacity: 0.55;
 }
 
 .btn--primary {
-  --btn-bg: var(--accent);
-  --btn-fg: var(--accent-text);
+  --btn-bg: var(--solid);
+  --btn-fg: var(--solid-text);
+  --btn-shadow: var(--shadow-1);
 }
 
 .btn--primary:hover:not(:disabled) {
-  --btn-bg: var(--accent-hover);
+  --btn-bg: var(--solid-hover);
+  --btn-shadow: var(--shadow-2);
 }
 
 .btn--secondary {
   --btn-bg: var(--surface);
   --btn-fg: var(--text);
   --btn-border: var(--border);
+  --btn-shadow: var(--shadow-1);
 }
 
 .btn--secondary:hover:not(:disabled) {
+  --btn-bg: var(--surface-hover);
   --btn-border: var(--border-strong);
-  --btn-bg: var(--surface-raised);
 }
 
 .btn--ghost {
@@ -81,7 +87,7 @@
 }
 
 .btn--ghost:hover:not(:disabled) {
-  --btn-bg: var(--surface-sunken);
+  --btn-bg: var(--surface-hover);
 }
 
 .btn--quiet {
@@ -96,7 +102,7 @@
 
 .btn--sm {
   min-height: 36px;
-  padding: 0.4375rem 0.75rem;
+  padding: 0.375rem 0.75rem;
   font-size: var(--text-small);
 }
 
@@ -117,20 +123,21 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   border-radius: var(--radius-s);
   border: 1px solid transparent;
-  color: var(--text);
+  color: var(--text-muted);
   background: transparent;
   transition:
     background-color var(--dur-fast) var(--ease-standard),
-    border-color var(--dur-fast) var(--ease-standard);
+    border-color var(--dur-fast) var(--ease-standard),
+    color var(--dur-fast) var(--ease-standard);
 }
 
 .icon-btn:hover {
-  background: var(--surface-sunken);
-  border-color: var(--border);
+  background: var(--surface-hover);
+  color: var(--text);
 }
 
 .icon-btn:active {
@@ -142,31 +149,31 @@
 .badge {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
-  padding: 0.25rem 0.5rem;
+  gap: var(--space-1);
+  padding: 0.25rem 0.5625rem;
   border: 1px solid var(--border);
-  border-radius: var(--radius-s);
+  border-radius: var(--radius-pill);
   background: var(--surface);
   color: var(--text-muted);
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--text-label);
   font-weight: 500;
-  letter-spacing: var(--tracking-label);
+  letter-spacing: 0.045em;
   line-height: 1.4;
   text-transform: uppercase;
   white-space: nowrap;
 }
 
 .badge--accent {
-  border-color: color-mix(in oklab, var(--accent) 35%, transparent);
+  border-color: transparent;
   background: var(--accent-soft);
   color: var(--accent);
 }
 
 .badge--solid {
-  border-color: var(--accent);
-  background: var(--accent);
-  color: var(--accent-text);
+  border-color: transparent;
+  background: var(--solid);
+  color: var(--solid-text);
 }
 
 /* ------------------------------------------------------------------ Card */
@@ -179,7 +186,8 @@
   padding: var(--space-6);
   background: var(--surface);
   border: 1px solid var(--border);
-  border-radius: var(--radius-m);
+  border-radius: var(--radius-l);
+  box-shadow: var(--shadow-1);
 }
 
 .card--flush {
@@ -187,7 +195,7 @@
 }
 
 .card--lg {
-  padding: clamp(1.5rem, 3vw, 2rem);
+  padding: clamp(1.5rem, 3vw, 2.25rem);
 }
 
 .card--interactive {
@@ -199,14 +207,55 @@
 
 @media (hover: hover) {
   .card--interactive:hover {
-    transform: translateY(-2px);
-    border-color: var(--hairline-strong);
+    transform: translateY(-1px);
+    border-color: var(--border-strong);
     box-shadow: var(--shadow-card);
   }
 }
 
 .card--interactive:focus-within {
   border-color: var(--accent);
+}
+
+/* An ink panel inverts the page for one section. Buttons follow the panel,
+   never the page, so the contrast inside it stays correct in both themes. */
+.panel--ink {
+  background-color: var(--panel-bg);
+  background-image: radial-gradient(
+    120% 140% at 0% 0%,
+    color-mix(in oklab, var(--accent) 20%, transparent),
+    transparent 58%
+  );
+  color: var(--panel-fg);
+  border: 1px solid color-mix(in oklab, var(--panel-fg) 10%, transparent);
+}
+
+.panel--ink .lede,
+.panel--ink .label,
+.panel--ink .muted {
+  color: color-mix(in oklab, var(--panel-fg) 66%, transparent);
+}
+
+.panel--ink .btn--primary {
+  --btn-bg: var(--panel-fg);
+  --btn-fg: var(--panel-bg);
+  --btn-shadow: none;
+}
+
+.panel--ink .btn--primary:hover:not(:disabled) {
+  --btn-bg: color-mix(in oklab, var(--panel-fg) 88%, var(--panel-bg));
+}
+
+.panel--ink .btn--secondary {
+  --btn-bg: transparent;
+  --btn-fg: var(--panel-fg);
+  --btn-border: color-mix(in oklab, var(--panel-fg) 26%, transparent);
+  --btn-shadow: none;
+}
+
+.panel--ink .btn--secondary:hover:not(:disabled) {
+  --btn-bg: color-mix(in oklab, var(--panel-fg) 10%, transparent);
+  --btn-border: color-mix(in oklab, var(--panel-fg) 40%, transparent);
 }
 
 /* ------------------------------------------------------------------ Form */
@@ -219,7 +268,7 @@
 
 .field__label {
   font-size: var(--text-small);
-  font-weight: 600;
+  font-weight: 500;
   color: var(--text);
 }
 
@@ -237,31 +286,34 @@
 .field__control {
   width: 100%;
   min-height: 44px;
-  padding: 0.625rem 0.75rem;
+  padding: 0.5625rem 0.75rem;
   border: 1px solid var(--border);
   border-radius: var(--radius-s);
   background: var(--surface);
   color: var(--text);
   font-size: var(--text-body);
   line-height: 1.5;
+  box-shadow: none;
   transition:
     border-color var(--dur-fast) var(--ease-standard),
-    background-color var(--dur-fast) var(--ease-standard);
+    background-color var(--dur-fast) var(--ease-standard),
+    box-shadow var(--dur-fast) var(--ease-standard);
 }
 
 .field__control::placeholder {
-  color: var(--text-muted);
-  opacity: 0.7;
+  color: var(--text-faint);
+  opacity: 1;
 }
 
 .field__control:hover {
-  border-color: var(--hairline-strong);
+  border-color: var(--border-strong);
 }
 
 .field__control:focus-visible {
   border-color: var(--focus);
   outline: 2px solid var(--focus);
   outline-offset: 0;
+  box-shadow: none;
 }
 
 .field__control[aria-invalid='true'] {
@@ -335,7 +387,7 @@ textarea.field__control {
   display: grid;
   place-content: center;
   border: 1px solid var(--border-strong);
-  border-radius: var(--radius-s);
+  border-radius: var(--radius-xs);
   background: var(--surface);
   cursor: pointer;
   transition:
@@ -348,14 +400,14 @@ textarea.field__control {
   width: 10px;
   height: 10px;
   transform: scale(0);
-  background: var(--accent-text);
+  background: var(--solid-text);
   clip-path: polygon(14% 44%, 0 65%, 40% 100%, 100% 16%, 83% 0%, 38% 62%);
-  transition: transform var(--dur-fast) var(--ease-enter);
+  transition: transform var(--dur-fast) var(--ease-spring);
 }
 
 .check input[type='checkbox']:checked {
-  background: var(--accent);
-  border-color: var(--accent);
+  background: var(--solid);
+  border-color: var(--solid);
 }
 
 .check input[type='checkbox']:checked::before {
@@ -385,26 +437,25 @@ textarea.field__control {
   gap: var(--space-3);
   padding: var(--space-3) var(--space-4);
   border: 1px solid var(--border);
-  border-left-width: 2px;
-  border-radius: var(--radius-s);
+  border-radius: var(--radius-m);
   background: var(--surface-sunken);
   font-size: var(--text-small);
   line-height: 1.55;
 }
 
 .alert--danger {
-  border-left-color: var(--danger);
+  border-color: color-mix(in oklab, var(--danger) 28%, transparent);
   background: var(--danger-soft);
   color: var(--text);
 }
 
 .alert--success {
-  border-left-color: var(--success);
+  border-color: color-mix(in oklab, var(--success) 28%, transparent);
   background: var(--success-soft);
 }
 
 .alert--info {
-  border-left-color: var(--accent);
+  border-color: color-mix(in oklab, var(--accent) 22%, transparent);
   background: var(--accent-quiet);
 }
 
@@ -423,7 +474,7 @@ textarea.field__control {
 }
 
 .table th {
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--text-label);
   font-weight: 500;
   letter-spacing: var(--tracking-label);
@@ -485,23 +536,24 @@ textarea.field__control {
 }
 
 .index-num {
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-size: var(--text-label);
+  font-weight: 500;
   font-variant-numeric: tabular-nums;
-  letter-spacing: var(--tracking-label);
-  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
 }
 
 .price {
-  font-family: var(--font-mono);
+  font-family: var(--font-body);
   font-variant-numeric: tabular-nums;
   font-weight: 600;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.03em;
   white-space: nowrap;
 }
 
 .price--lg {
-  font-size: clamp(1.5rem, 3vw, 2rem);
+  font-size: clamp(1.625rem, 3vw, 2rem);
   line-height: 1.1;
 }
 
@@ -540,7 +592,7 @@ textarea.field__control {
 
   .table--stacked td::before {
     content: attr(data-label);
-    font-family: var(--font-mono);
+    font-family: var(--font-body);
     font-size: var(--text-label);
     letter-spacing: var(--tracking-label);
     text-transform: uppercase;

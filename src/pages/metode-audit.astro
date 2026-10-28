@@ -24,7 +24,7 @@ const flowLabel = `Alur lima langkah audit: ${METHOD_STEPS.map((step) => step.ti
   description={t.pages.method.description}
 >
   <PageHeader
-    tone="blueprint"
+    tone="wash"
     eyebrow={t.method.eyebrow}
     title={t.method.title}
     lead={t.method.lead}
@@ -141,7 +141,7 @@ const flowLabel = `Alur lima langkah audit: ${METHOD_STEPS.map((step) => step.ti
     max-width: 60ch;
   }
 
-  .prepare-list svg {
+  .prepare-list :global(svg) {
     margin-top: 0.25em;
     color: var(--accent);
   }
@@ -166,7 +166,7 @@ const flowLabel = `Alur lima langkah audit: ${METHOD_STEPS.map((step) => step.ti
 
   @media (max-width: 899.98px) {
     .prepare-grid {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 </style>

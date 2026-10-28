@@ -10,13 +10,13 @@ interface Props {
   lead?: string;
   /** Small facts under the rule: duration, price, or availability. */
   meta?: { label: string; value: string }[];
-  tone?: 'default' | 'blueprint';
+  tone?: 'default' | 'wash';
 }
 
 const { eyebrow, title, lead, meta = [], tone = 'default' } = Astro.props;
 ---
 
-<header class:list={['page-header', tone === 'blueprint' && 'page-header--blueprint blueprint']}>
+<header class:list={['page-header', tone === 'wash' && 'page-header--wash wash']}>
   <div class="container">
     <div class="page-header__inner">
       <div class="page-header__copy stack stack--tight">
@@ -35,7 +35,7 @@ const { eyebrow, title, lead, meta = [], tone = 'default' } = Astro.props;
           {meta.map((item) => (
             <div>
               <dt class="label">{item.label}</dt>
-              <dd class="mono">{item.value}</dd>
+              <dd class="tabular">{item.value}</dd>
             </div>
           ))}
         </dl>
@@ -50,8 +50,8 @@ const { eyebrow, title, lead, meta = [], tone = 'default' } = Astro.props;
     border-bottom: 1px solid var(--border);
   }
 
-  .page-header--blueprint {
-    border-bottom-color: var(--border-strong);
+  .page-header--wash {
+    border-bottom-color: var(--border);
     background-color: var(--bg);
   }
 
@@ -97,7 +97,7 @@ const { eyebrow, title, lead, meta = [], tone = 'default' } = Astro.props;
 
   @media (max-width: 767.98px) {
     .page-header__inner {
-      grid-template-columns: 1fr;
+      grid-template-columns: minmax(0, 1fr);
       align-items: start;
     }
 

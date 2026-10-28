@@ -132,7 +132,7 @@ export const id = {
   home: {
     eyebrow: 'Audit proses · Otomasi · Agen AI',
     title: 'Kami audit cara kerja Anda, lalu otomatiskan bagian yang repetitif.',
-    lead: 'Dua minggu, satu laporan: peta alur kerja, biaya per proses, dan daftar peluang yang sudah diberi skor.',
+    lead: 'Dua minggu, satu laporan: peta alur kerja, biaya tiap proses, dan daftar peluang yang sudah diurutkan.',
     priceLabel: 'Paket awal',
     priceNote: 'Satu area proses, laporan, dan sesi presentasi.',
     primaryCta: 'Jadwalkan panggilan 30 menit',
@@ -148,40 +148,40 @@ export const id = {
     proofTitle: 'Rekam jejak singkat',
     proofNote: 'Angka diperbarui Oktober 2026. Rincian per industri kami bawakan saat panggilan.',
     proofEmpty:
-      'Belum ada angka yang bisa kami publikasikan. Yang kami punya: metode yang bisa Anda periksa, dan harga yang tertera.',
+      'Belum ada angka yang bisa kami tampilkan. Yang kami punya: metode yang bisa Anda periksa, dan harga yang tertera di halaman ini.',
     servicesEyebrow: 'Layanan',
     servicesTitle: 'Tiga cara kami bekerja sama',
     servicesLead:
-      'Mulai dari audit. Naik ke implementasi hanya kalau temuannya layak dibangun, dan itu keputusan Anda, bukan kami.',
+      'Mulai dari audit. Lanjut ke implementasi hanya kalau temuannya memang layak dibangun — dan itu keputusan Anda, bukan kami.',
     servicesCta: 'Lihat semua layanan',
     whyEyebrow: 'Kenapa cara ini berbeda',
     whyTitle: 'Kami menjual metode, bukan janji',
     whyItems: [
       {
         index: '01',
-        title: 'Harga tertera sebelum kontak',
-        body: 'Paket awal punya harga dan cakupan yang bisa Anda baca sekarang. Tidak ada penawaran yang lahir setelah tiga panggilan.',
+        title: 'Harga kelihatan sebelum Anda menghubungi kami',
+        body: 'Harga dan cakupan Paket Awal bisa Anda baca sekarang. Tidak ada penawaran yang muncul setelah tiga panggilan.',
       },
       {
         index: '02',
-        title: 'Metodenya adalah produknya',
-        body: 'Setiap langkah audit punya masukan, keluaran, dan ukuran. Anda bisa membandingkan kami dengan firma lain tanpa perlu bertanya.',
+        title: 'Metodenya sendiri yang jadi produk',
+        body: 'Tiap langkah audit punya masukan, keluaran, dan ukuran. Anda bisa membandingkan kami dengan firma lain tanpa harus bertanya dulu.',
       },
       {
         index: '03',
-        title: 'Kami mulai dari proses, bukan perangkat',
-        body: 'Otomasi yang dibeli sebelum prosesnya dipetakan berakhir tidak terpakai. Urutannya kami balik: peta dulu, perangkat kemudian.',
+        title: 'Mulai dari proses, bukan dari aplikasi',
+        body: 'Otomasi yang dibeli sebelum prosesnya dipetakan biasanya berakhir tidak terpakai. Kami balik urutannya: peta dulu, aplikasi belakangan.',
       },
     ],
     methodEyebrow: 'Metode',
     methodTitle: 'Audit yang bisa Anda periksa langkahnya',
     methodLead:
-      'Lima langkah, masing-masing dengan masukan dan keluaran yang jelas. Tidak ada bagian yang disembunyikan di balik sesi konsultasi.',
+      'Lima langkah, masing-masing dengan masukan dan keluaran yang jelas. Tidak ada bagian yang kami sembunyikan di balik “sesi konsultasi”.',
     methodCta: 'Baca metode audit',
     ctaEyebrow: 'Langkah berikutnya',
     ctaTitle: 'Ceritakan proses yang paling menyita waktu Anda.',
     ctaLead:
-      'Satu panggilan 30 menit, tanpa biaya. Kalau audit bukan langkah yang tepat untuk Anda sekarang, kami akan mengatakannya di panggilan itu.',
+      'Satu panggilan 30 menit, tanpa biaya. Kalau audit bukan langkah yang tepat untuk Anda sekarang, kami bilang apa adanya di panggilan itu.',
     ctaPrimary: 'Jadwalkan panggilan',
     ctaSecondary: 'Kirim pesan',
   },
@@ -189,7 +189,7 @@ export const id = {
   services: {
     eyebrow: 'Layanan',
     title: 'Tiga layanan, satu urutan',
-    lead: 'Kami tidak menjual tiga hal sekaligus. Audit dulu, karena implementasi tanpa peta proses berakhir sebagai perangkat yang tidak dipakai.',
+    lead: 'Kami tidak menjual tiga-tiganya sekaligus. Audit dulu, karena implementasi tanpa peta proses biasanya berakhir jadi aplikasi yang tidak dipakai.',
     orderNote: 'Diurutkan dari harga terendah ke tertinggi.',
     priceLabel: 'Harga mulai',
     ctaTitle: 'Belum yakin harus mulai dari mana?',
@@ -200,7 +200,7 @@ export const id = {
   method: {
     eyebrow: 'Metode audit',
     title: 'Lima langkah, masing-masing dengan keluaran',
-    lead: 'Ini bukan ringkasan pemasaran. Ini urutan kerja yang kami lakukan, termasuk hal yang harus Anda siapkan dan waktu yang dibutuhkan.',
+    lead: 'Ini bukan ringkasan jualan. Ini urutan kerja kami, termasuk apa yang perlu Anda siapkan dan berapa lama tiap langkahnya.',
     stepLabel: 'Langkah',
     consultantLabel: 'Yang kami lakukan',
     clientLabel: 'Yang Anda siapkan',
@@ -225,7 +225,7 @@ export const id = {
   pricing: {
     eyebrow: 'Harga',
     title: 'Harga tertera, cakupan tertulis',
-    lead: 'Tiga paket. Harga di halaman ini sama dengan harga di invoice. Tidak ada penawaran yang lahir setelah panggilan penjualan.',
+    lead: 'Tiga paket. Harga di halaman ini sama dengan harga di invoice. Tidak ada harga yang muncul setelah panggilan jualan.',
     entryLabel: 'Titik mulai',
     chooseTitle: 'Cara memilih paket',
     chooseItems: [
@@ -253,11 +253,11 @@ export const id = {
     faq: [
       {
         q: 'Apakah harga bisa berubah di tengah pekerjaan?',
-        a: 'Harga tetap untuk cakupan yang tertulis di halaman ini. Kalau lingkupnya berubah, kami kirim penawaran baru sebelum pekerjaan tambahan dimulai. Tidak ada biaya kejutan di invoice.',
+        a: 'Harga tetap untuk cakupan yang tertulis di halaman ini. Kalau lingkupnya berubah, kami kirim penawaran baru sebelum pekerjaan tambahan dimulai. Tidak ada baris kejutan di invoice.',
       },
       {
         q: 'Bagaimana kalau kami belum punya data yang rapi?',
-        a: 'Itu kondisi normal. Kami memakai estimasi dari wawancara dan pengamatan, lalu menandai setiap angka estimasi di laporan supaya Anda tahu mana yang perlu diverifikasi.',
+        a: 'Itu justru kondisi yang paling sering kami temui. Kami memakai estimasi dari wawancara dan pengamatan, lalu menandai setiap angka estimasi di laporan supaya Anda tahu mana yang perlu dicek.',
       },
       {
         q: 'Apakah bisa mulai dari diagnostik saja?',
@@ -265,7 +265,7 @@ export const id = {
       },
       {
         q: 'Berapa lama sampai pekerjaan dimulai?',
-        a: 'Biasanya 5–10 hari kerja setelah paket disetujui dan pembayaran pertama masuk. Kami memberi tanggal mulai tertulis sebelum Anda membayar.',
+        a: 'Biasanya 5–10 hari kerja setelah paket disetujui dan pembayaran pertama masuk. Anda dapat tanggal mulai tertulis sebelum membayar.',
       },
       {
         q: 'Apakah Anda menandatangani NDA?',
@@ -277,7 +277,7 @@ export const id = {
   contact: {
     eyebrow: 'Hubungi kami',
     title: 'Ceritakan proses yang ingin Anda perbaiki',
-    lead: 'Semakin spesifik, semakin cepat kami bisa memberi jawaban yang berguna. Kami membalas dalam 1 hari kerja.',
+    lead: 'Makin spesifik, makin cepat kami bisa memberi jawaban yang berguna. Kami membalas dalam 1 hari kerja.',
     formTitle: 'Formulir kontak',
     name: 'Nama lengkap',
     namePlaceholder: 'Nama Anda',
@@ -299,7 +299,7 @@ export const id = {
     asideSteps: [
       { index: '01', title: 'Kami baca pesan Anda', body: 'Dalam 1 hari kerja, dari orang yang akan mengerjakan pekerjaannya, bukan tim penjualan.' },
       { index: '02', title: 'Panggilan 30 menit', body: 'Kalau relevan, kami tawarkan sesi diagnostik tanpa biaya untuk mempersempit masalahnya.' },
-      { index: '03', title: 'Ringkasan tertulis', body: 'Setelah panggilan, Anda menerima ringkasan berisi langkah yang kami sarankan dan harganya.' },
+      { index: '03', title: 'Ringkasan tertulis', body: 'Setelah panggilan, Anda dapat ringkasan berisi langkah yang kami sarankan beserta harganya.' },
     ],
     asideChannels: 'Atau hubungi langsung',
     asideEmailLabel: 'Email',
@@ -385,10 +385,10 @@ export const id = {
   cases: {
     eyebrow: 'Studi kasus',
     title: 'Bukti, kalau sudah ada izinnya',
-    lead: 'Kami hanya menerbitkan studi kasus dengan izin tertulis dari klien. Sampai izin pertama ada, halaman ini kosong dengan sengaja.',
+    lead: 'Kami hanya menerbitkan studi kasus kalau kliennya sudah memberi izin tertulis. Sebelum izin pertama ada, halaman ini sengaja kami biarkan kosong.',
     emptyTitle: 'Belum ada studi kasus yang diterbitkan',
     emptyBody:
-      'Kami memilih tidak mengisi halaman ini dengan contoh yang tidak nyata. Kalau Anda ingin melihat pekerjaan kami, kami bisa membahasnya di panggilan dengan batas kerahasiaan yang disepakati lebih dulu.',
+      'Kami tidak mau mengisi halaman ini dengan contoh karangan. Kalau ingin melihat pekerjaan kami, kita bisa bahas di panggilan, dengan kesepakatan kerahasiaan lebih dulu.',
     cta: 'Bahas di panggilan',
   },
 

@@ -131,7 +131,7 @@ export const en = {
   home: {
     eyebrow: 'Process audit · Automation · AI agents',
     title: 'We audit how your business runs, then automate the repetitive parts.',
-    lead: 'Two weeks, one report: the workflow map, the cost of each process, and a ranked list of opportunities.',
+    lead: 'Two weeks, one report: your workflow map, what each process costs, and a ranked list of opportunities.',
     priceLabel: 'Entry package',
     priceNote: 'One process area, the report, and a findings session.',
     primaryCta: 'Book a 30-minute call',
@@ -147,29 +147,29 @@ export const en = {
     proofTitle: 'A short record',
     proofNote: 'Figures updated October 2026. We will bring the industry breakdown to the call.',
     proofEmpty:
-      'There are no figures we can publish yet. What we do have: a method you can inspect, and a price on the page.',
+      'There are no numbers we can publish yet. What we do have: a method you can check, and a price on this page.',
     servicesEyebrow: 'Services',
     servicesTitle: 'Three ways to work with us',
     servicesLead:
-      'Start with the audit. Move to implementation only when the findings justify it, and that is your decision, not ours.',
+      'Start with the audit. Move to implementation only when the findings actually justify it — and that call is yours, not ours.',
     servicesCta: 'View all services',
     whyEyebrow: 'Why this is different',
     whyTitle: 'We sell the method, not a promise',
     whyItems: [
       {
         index: '01',
-        title: 'The price is published before contact',
-        body: 'The entry package has a price and a scope you can read now. No quote that appears after three calls.',
+        title: 'You see the price before you talk to us',
+        body: 'The entry package has its price and scope on this page. No quote that appears after three calls.',
       },
       {
         index: '02',
         title: 'The method is the product',
-        body: 'Every audit step has an input, an output, and a measure. You can compare us with another firm without having to ask.',
+        body: 'Every audit step has an input, an output, and a measure. You can compare us with another firm without asking us first.',
       },
       {
         index: '03',
-        title: 'We start with the process, not the software',
-        body: 'Automation bought before the process is mapped ends up unused. We reverse the order: map first, tools second.',
+        title: 'Process first, software second',
+        body: 'Automation bought before the process is mapped usually ends up unused. We reverse the order: map first, tools later.',
       },
     ],
     methodEyebrow: 'Method',
@@ -180,7 +180,7 @@ export const en = {
     ctaEyebrow: 'Next step',
     ctaTitle: 'Tell us which process costs you the most time.',
     ctaLead:
-      'One 30-minute call, free. If an audit is not the right next step for you, we will say so on that call.',
+      'One 30-minute call, free. If an audit is not the right next step for you, we will say it plainly on that call.',
     ctaPrimary: 'Book a call',
     ctaSecondary: 'Send a message',
   },
@@ -188,7 +188,7 @@ export const en = {
   services: {
     eyebrow: 'Services',
     title: 'Three services, one order',
-    lead: 'We do not sell all three at once. The audit comes first, because implementation without a process map ends as software nobody uses.',
+    lead: 'We don’t sell all three at once. The audit comes first, because implementation without a process map usually ends up as software nobody opens.',
     orderNote: 'Ordered from lowest price to highest.',
     priceLabel: 'Starting price',
     ctaTitle: 'Not sure where to start?',
@@ -199,7 +199,7 @@ export const en = {
   method: {
     eyebrow: 'Audit method',
     title: 'Five steps, each with an output',
-    lead: 'This is not a marketing summary. It is the sequence of work we do, including what you need to prepare and how long each step takes.',
+    lead: 'This is not a sales summary. It is the work sequence, including what you need to prepare and how long each step takes.',
     stepLabel: 'Step',
     consultantLabel: 'What we do',
     clientLabel: 'What you prepare',
@@ -224,7 +224,7 @@ export const en = {
   pricing: {
     eyebrow: 'Pricing',
     title: 'Published prices, written scope',
-    lead: 'Three packages. The price on this page is the price on the invoice. No quote that appears after a sales call.',
+    lead: 'Three packages. The price on this page is the price on the invoice. Nothing new appears after a sales call.',
     entryLabel: 'Start here',
     chooseTitle: 'How to choose',
     chooseItems: [
@@ -252,11 +252,11 @@ export const en = {
     faq: [
       {
         q: 'Can the price change mid-engagement?',
-        a: 'The price is fixed for the scope written on this page. If the scope changes, we send a new quote before the extra work starts. There are no surprise lines on the invoice.',
+        a: 'The price is fixed for the scope on this page. If the scope changes, we send a new quote before the extra work starts. No surprise lines on the invoice.',
       },
       {
         q: 'What if our data is a mess?',
-        a: 'That is the normal case. We use estimates from interviews and observation, then mark every estimate in the report so you know which numbers need verifying.',
+        a: 'That is the normal case. We use estimates from interviews and observation, then flag every estimate in the report so you know what needs checking.',
       },
       {
         q: 'Can we start with the diagnostic only?',
@@ -298,7 +298,7 @@ export const en = {
     asideSteps: [
       { index: '01', title: 'We read your message', body: 'Within one business day, from the person who would do the work, not a sales team.' },
       { index: '02', title: 'A 30-minute call', body: 'Where it is useful, we offer a free diagnostic session to narrow the problem down.' },
-      { index: '03', title: 'A written summary', body: 'After the call you receive a summary with our recommended next step and its price.' },
+      { index: '03', title: 'A written summary', body: 'After the call you get a short summary: what we recommend next, and what it costs.' },
     ],
     asideChannels: 'Or reach us directly',
     asideEmailLabel: 'Email',
@@ -384,10 +384,10 @@ export const en = {
   cases: {
     eyebrow: 'Case studies',
     title: 'Evidence, once permission exists',
-    lead: 'We publish case studies only with the client’s written consent. Until the first consent exists, this page stays empty on purpose.',
+    lead: 'We publish a case study only when the client has given written consent. Until the first one exists, this page stays empty on purpose.',
     emptyTitle: 'No case studies published yet',
     emptyBody:
-      'We chose not to fill this page with invented examples. If you want to see our work, we can discuss it on a call with a confidentiality agreement in place first.',
+      'We won’t fill this page with invented examples. If you want to see the work, we can walk through it on a call, with a confidentiality agreement in place first.',
     cta: 'Discuss it on a call',
   },
 
